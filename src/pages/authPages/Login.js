@@ -16,13 +16,16 @@ import { Spin, Form } from 'antd';
 // import usePasswordToggle from '../smallComponents/usePasswordToggle'
 import { Input } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { loginAUser } from '../../redux/actions/auth.action';
+import { connect } from 'react-redux';
 
 
 
-function Login() {
+function Login(props) {
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [form] = Form.useForm();
+  
   // const { setUserData } = useContext(CompleteDataContext);
   // const location = useLocation();
   // const query = new URLSearchParams(location.search);
@@ -31,7 +34,8 @@ function Login() {
 
   // const { register, handleSubmit, control } = useForm();
 
-  const onSubmit = async ({ username, password }, values) => {
+  const onSubmit = async ({ username, password}) => {
+    const request = await props.loginAUser({username, password});
     // try {
     //   setIsAuthenticating(true);
     //   localStorage.clear();
@@ -51,6 +55,8 @@ function Login() {
     //   setIsAuthenticating(false)
     //   setErrorMessage(exception.response.data.error);
     // }
+
+    // loginAUser
   };
 
   const removeErrorMessage = (e) => {
@@ -75,7 +81,8 @@ function Login() {
         <h1 className='signup-login-heading first-heading--auth'>
           Welcome Back
         </h1>
-        <Form.Item name='username'
+        <Form.Item 
+        name='username'
         label='Username'
         rules={[
           { required: true, message: 'Please enter user name' },
@@ -86,9 +93,9 @@ function Login() {
           <Input className='signup-login-contact-input outlined-input' size='large' />
         </Form.Item>
 
-        <Form.Item name='password'
+        <Form.Item 
+        name='password'
         label='Password'
-        // hasFeedback
         validateTrigger={['onChange', 'onBlur']}
         rules={[
           { required: true, message: 'Please enter password' },
@@ -106,8 +113,11 @@ function Login() {
             Forgot Password?
           </Link> */}
         </div>
+        <Form.Item>
+        <button type='submit' className='signup-login-contact-button'>Log in</button>
+        </Form.Item>
 
-        <button className='signup-login-contact-button'>Log in</button>
+        
         </Form>
       </div>
         
@@ -117,7 +127,15 @@ function Login() {
   );
 }
 
-export default Login;
+const mapDispatchToProps = {
+  loginAUser
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
 

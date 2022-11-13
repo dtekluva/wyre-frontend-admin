@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import AuthPages from './pageswitchers/AuthPages';
 
 function App() {
+  // console.log('thi sis the value the user entered +++++++++++++++');
   return (
     // <div className="App">
     //   <header className="App-header">
