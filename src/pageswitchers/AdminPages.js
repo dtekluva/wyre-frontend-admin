@@ -1,20 +1,20 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Overview from '../adminPages/Overview';
-import AddDevices from '../adminPages/AddDevices';
-import ViewBranches from '../adminPages/ViewBranches';
-import ViewDevices from '../adminPages/ViewDevices';
-import ViewOrganisation from '../adminPages/ViewOrganisation';
-import Messages from '../adminPages/Messages';
-import Error from '../adminPages/Error';
+import Overview from '../pages/adminPages/Overview';
+// import AddDevices from '../pages/adminPages/AddDevices';
+// import ViewBranches from '../pages/adminPages/ViewBranches';
+// import ViewDevices from '../pages/adminPages/ViewDevices';
+// import ViewOrganisation from '../pages/adminPages/ViewOrganisation';
+// import Messages from '../pages/adminPages/Messages';
+// import Error from '../pagesx/adminPages/Error';
 
 import ScrollToTop from '../helpers/ScrollToTop';
 
 import AdminHeader from '../components/AdminHeader';
 import TopBar from '../components/AdminTopBar';
-import AddClients from '../adminPages/AddClients';
-import ViewBranch from '../adminPages/branches/ViewBranch';
+// import AddClients from '../adminPages/AddClients';
+// import ViewBranch from '../adminPages/branches/ViewBranch';
 
 function AdminPages() {
   return (
@@ -27,16 +27,15 @@ function AdminPages() {
         <ScrollToTop>
           <div className='page-content'>
             <Switch>
-              <Route exact path='/' component={Overview} />
-              <Route path='/add-devices' component={AddDevices} />
-              <Route path='/view-branches' component={ViewBranches} />
-              <Route path='/add-clients' component={AddClients} />
-              <Route path='/view-devices' component={ViewDevices} />
-              <Route path='/view-client' component={ViewOrganisation} />
-              <Route path='/messages' component={Messages} />
-              <Route path='/view-branch' component={ViewBranch} />
-
-              <Route component={Error} />
+              <Route exact path='/' component={<Overview />} />
+              {/* <Route path='/add-devices' element={<AddDevices />} />
+              <Route path='/view-branches' element={<ViewBranches />} />
+              <Route path='/add-clients' element={<AddClients />} />
+              <Route path='/view-devices' element={<ViewDevices />} />
+              <Route path='/view-client' element={<ViewOrganisation />} />
+              <Route path='/messages' element={<Messages />} />
+              <Route path='/view-branch' element={<ViewBranch />} /> */}
+              {/* <Route component={Error} /> */}
             </Switch>
           </div>
         </ScrollToTop>

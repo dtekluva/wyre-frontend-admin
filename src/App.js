@@ -3,6 +3,7 @@ import './App.css';
 import 'antd/dist/antd.css';
 // import AdminPages from './pageswitchers/AdminPages';
 import AuthPages from './pageswitchers/AuthPages';
+import AdminPages from './pageswitchers/AdminPages';
 
 function App() {
   // console.log('thi sis the value the user entered +++++++++++++++');
@@ -30,7 +31,9 @@ function App() {
       //   <AdminPages />
       // ) :
       (
-        <AuthPages />
+        // <AuthPages />
+        <AdminPages />
+        
       )
       
       }

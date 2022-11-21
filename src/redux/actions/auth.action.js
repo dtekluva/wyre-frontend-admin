@@ -9,11 +9,13 @@ export const loginAUser = (parameters) => async (dispatch) => {
   const requestUrl = `/token/`;
   try {
     const response = await APIServiceNoAuth.post(requestUrl, parameters);
-    dispatch(loginUserSuccess(response.data.data));
+
+    dispatch(loginUserSuccess(response.data));
+    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
     dispatch(loginUserLoading(false))
-    return { fullfilled: true, message: response.data.detail }
+    return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(loginUserLoading(false));
-    return { fullfilled: false, message: error.response.detail }
+    return { fulfilled: false, message: error.response.data.detail }
   }
 };

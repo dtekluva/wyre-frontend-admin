@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 
-import adminHttpServices from '../services/admin';
+// import adminHttpServices from '../services/admin';
 
-import BreadCrumb from '../components/BreadCrumb';
+// import BreadCrumb from '../components/BreadCrumb';
 import AdminOverviewTable from '../components/tables/adminTables/AdminOverviewTable';
 
 
@@ -16,20 +16,20 @@ const breadCrumbRoutes = [
 ];
 
 function Overview({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminOverviewData, setadminOverviewData] = useState([]);
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(`${match.url} hide-top-bar`);
-    }
-  }, [match, setCurrentUrl]);
+  // useEffect(() => {
+  //   if (match && match.url) {
+  //     setCurrentUrl(`${match.url} hide-top-bar`);
+  //   }
+  // }, [match, setCurrentUrl]);
 
-  useEffect(() => {
-    adminHttpServices.getAll('overview').then((returnedData) => {
-      setadminOverviewData(returnedData);
-    });
-  }, []);
+  // useEffect(() => {
+  //   adminHttpServices.getAll('overview').then((returnedData) => {
+  //     setadminOverviewData(returnedData);
+  //   });
+  // }, []);
 
   return (
     <>
