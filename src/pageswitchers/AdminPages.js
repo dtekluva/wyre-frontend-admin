@@ -11,7 +11,7 @@ import Overview from '../pages/adminPages/Overview';
 
 import ScrollToTop from '../helpers/ScrollToTop';
 
-import AdminHeader from '../components/AdminHeader';
+import AdminHeader from '../components/header/AdminHeader';
 import TopBar from '../components/AdminTopBar';
 // import AddClients from '../adminPages/AddClients';
 // import ViewBranch from '../adminPages/branches/ViewBranch';

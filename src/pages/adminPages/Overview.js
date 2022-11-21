@@ -5,10 +5,10 @@ import React, { useEffect, useState, useContext } from 'react';
 // import adminHttpServices from '../services/admin';
 
 // import BreadCrumb from '../components/BreadCrumb';
-import AdminOverviewTable from '../components/tables/adminTables/AdminOverviewTable';
+import AdminOverviewTable from '../../components/tables/adminTables/AdminOverviewTable';
 
 
-import ExcelIcon from '../icons/ExcelIcon';
+import ExcelIcon from '../../components/icons/ExcelIcon';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -33,9 +33,9 @@ function Overview({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      {/* <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-      </div>
+      </div> */}
 
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>

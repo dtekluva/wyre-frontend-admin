@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 import AuthHeaderLink from './AuthHeaderLink';
 
-import LatestLogo from '../../icons/LatestLogo';
-import Hamburger from '../../icons/Hamburger';
+import LatestLogo from '../icons/LatestLogo';
+import Hamburger from '../icons/Hamburger';
 
 function AuthHeader() {
 //   const { isNavOpen, setIsNavOpen } = useContext(CompleteDataContext);
