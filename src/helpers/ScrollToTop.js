@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 
 function ScrollToTop({ history, children }) {
   useEffect(() => {
@@ -15,4 +15,4 @@ function ScrollToTop({ history, children }) {
   return <Fragment>{children}</Fragment>;
 }
 
-export default withRouter(ScrollToTop);
+export default (ScrollToTop);

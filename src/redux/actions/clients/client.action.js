@@ -1,14 +1,14 @@
-import { APIServiceNoAuth } from "../../config/api/apiConfig";
-import { loginUserLoading, loginUserSuccess } from "./auth.creator";
+import { APIService } from "../../../config/api/apiConfig";
+
+import { loginUserLoading, loginUserSuccess } from "./client.creator";
 
 
 
-
-export const loginAUser = (parameters) => async (dispatch) => {
+export const getClients = (parameters) => async (dispatch) => {
   dispatch(loginUserLoading(true));
   const requestUrl = `/token/`;
   try {
-    const response = await APIServiceNoAuth.post(requestUrl, parameters);
+    const response = await APIService.get(requestUrl, parameters);
 
     dispatch(loginUserSuccess(response.data));
     window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));

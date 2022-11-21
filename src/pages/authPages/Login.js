@@ -16,7 +16,7 @@ import { Spin, Form, notification } from 'antd';
 // import usePasswordToggle from '../smallComponents/usePasswordToggle'
 import { Input } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { loginAUser } from '../../redux/actions/auth.action';
+import { loginAUser } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
 
 
@@ -45,6 +45,7 @@ function Login(props) {
     }
     const query = new URLSearchParams(location.search);
     const from = query.get('from') || 'dashboard';
+    window.location.href = '/overview'
     // try {
     //   setIsAuthenticating(true);
     //   localStorage.clear();

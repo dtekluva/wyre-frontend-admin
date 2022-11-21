@@ -24,7 +24,7 @@ function AdminPages() {
       <main className='auth-container'>
         <TopBar />
 
-        <ScrollToTop>
+        {/* <ScrollToTop> */}
           <div className='page-content'>
             <Switch>
               <Route exact path='/' component={Overview} />
@@ -39,7 +39,7 @@ function AdminPages() {
               <Route component={Error} />
             </Switch>
           </div>
-        </ScrollToTop>
+        {/* </ScrollToTop> */}
       </main>
     </div>
   );

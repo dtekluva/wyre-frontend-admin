@@ -1,19 +1,19 @@
 import React, { useContext, useState } from 'react';
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 import { Link } from 'react-router-dom';
 import { Input, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import AddDeviceForm from '../adminPages/modal/AddDeviceForm';
-import AddUserForm from '../adminPages/modal/AddUserForm';
-
+// import AddDeviceForm from '../adminPages/modal/AddDeviceForm';
+// import AddUserForm from '../adminPages/modal/AddUserForm';
+const isSidebarOpen = false;
 function TopBar() {
   // modal functions for add user form and add device form starts 
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   // modal functions ends 
 
-  const { isSidebarOpen, currentUrl } = useContext(CompleteDataContext);
-
+  // const { isSidebarOpen, currentUrl } = useContext(CompleteDataContext);
+  const currentUrl = ['view-client'];
   const isTopBarAdminOrganisationRightDisplayed = currentUrl.includes(
     'view-client'
   );
@@ -110,14 +110,14 @@ function TopBar() {
       <Modal visible={visible}
         onOk={() => setVisible(false)}
         onCancel={() => setVisible(false)} width={1000} footer={null} >
-        <AddDeviceForm />
+        {/* <AddDeviceForm /> */}
       </Modal>
 
       {/* Add User Form modal  */}
       <Modal visible={visible2}
         onOk={() => setVisible2(false)}
         onCancel={() => setVisible2(false)} width={1000} footer={null} >
-        <AddUserForm />
+        {/* <AddUserForm /> */}
       </Modal>
     </div>
   );

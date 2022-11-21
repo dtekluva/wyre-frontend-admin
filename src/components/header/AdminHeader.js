@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import CompleteDataContext from '../Context';
-import { useHistory } from 'react-router';
+// import CompleteDataContext from '../Context';
+// import { useNavigation } from 'react-router';
 import { useDispatch } from 'react-redux';
 
 import HeaderLink from './HeaderLink';
@@ -15,24 +15,26 @@ import MessageIcon from '../icons/MessageIcon';
 import NotificationIcon from '../icons/NotificationIcon';
 import ChevronDown from '../icons/ChevronDown';
 
-import avatar from '../images/avatar.png';
+import avatar from '../../images/avatar.png';
 
-import HeaderLinkWithDropdown from './groups/HeaderLinkWithDropdown';
-import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropdown';
-import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
-import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
+import HeaderLinkWithDropdown from '../groups/HeaderLinkWithDropdown';
+import HeaderMobileAvatarWithDropdown from '../groups/HeaderMobileAvatarWithDropdown';
+import HeaderDesktopAvatarWithDropdown from '../groups/HeaderDesktopAvatarWithDropdown';
+import HeaderGroup1AndNav from '../groups/HeaderGroup1AndNav';
 import LogoutIcon from '../icons/LogoutIcon';
-import { logoutUser } from '../redux/actions/auth/actionCreators';
+import { logoutUser } from '../../redux/actions/auth/auth.creator';
 import LatestLogo from '../icons/LatestLogo';
 
+const isNavOpen = false;
+
 function Header() {
-  const {
-    isNavOpen,
-    setIsNavOpen,
-    isSidebarOpen,
-    setIsSidebarOpen,
-    organization
-  } = useContext(CompleteDataContext);
+  // const {
+    // isNavOpen,
+    // setIsNavOpen,
+    // isSidebarOpen,
+    // setIsSidebarOpen,
+  //   organization
+  // } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
@@ -40,16 +42,16 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const history = useHistory();
+  // const navigate = useNavigation();
 
   const toggleNav = () => {
-    setIsNavOpen(!isNavOpen);
-    setIsSidebarOpen(false);
+    // setIsNavOpen(!isNavOpen);
+    // setIsSidebarOpen(false);
   };
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    setIsNavOpen(false);
+    // setIsSidebarOpen(!isSidebarOpen);
+    // setIsNavOpen(false);
   };
 
   const toggleNavLinkDropdown = () => {
@@ -76,14 +78,14 @@ function Header() {
 
 
     // Go home
-    history.push('/');
+    // navigate('/');
 
     window.href = '/';
     // Refresh page
     // history.go(0);
   };
 
-  const { image: orgImage } = organization
+  // const { image: orgImage } = organization
 
   return (
     <header className='header h-no-linear-gradient'>
@@ -119,7 +121,7 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink onClick={toggleNav} url='/' linkText='Admin Overview' />
+            <HeaderLink onClick={toggleNav} url='/overview' linkText='Admin Overview' />
 
             <HeaderLinkWithDropdown
               className='header-nav-list__item header-link-with-dropdown'
@@ -144,7 +146,7 @@ function Header() {
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url='/view-client'
-                  linkText='View Client'
+                  linkText='View Clients'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
@@ -194,7 +196,7 @@ function Header() {
                 onClick={toggleMobileAvatarMenu}
                 className='header-avatar'
               >
-                <img src={orgImage} alt='' />
+                {/* <img src={orgImage} alt='' /> */}
               </button>
 
               <ul

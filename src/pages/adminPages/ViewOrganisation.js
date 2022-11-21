@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 
-import adminHttpServices from '../services/admin';
+// import adminHttpServices from '../services/admin';
 
-import BreadCrumb from '../components/BreadCrumb';
-import AdminClientsTable from '../components/tables/adminTables/AdminClientsTable';
+import BreadCrumb from '../../components/BreadCrumb';
+import AdminClientsTable from '../../components/tables/adminTables/AdminClientsTable';
 
 
-import ExcelIcon from '../icons/ExcelIcon';
+import ExcelIcon from '../../components/icons/ExcelIcon';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -17,20 +17,20 @@ const breadCrumbRoutes = [
 ];
 
 function ViewOrganisation({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminClientsData, setAdminClientsData] = useState([]);
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
+  // useEffect(() => {
+  //   if (match && match.url) {
+  //     setCurrentUrl(match.url);
+  //   }
+  // }, [match, setCurrentUrl]);
 
-  useEffect(() => {
-    adminHttpServices.getAll('clients').then((returnedData) => {
-      setAdminClientsData(returnedData);
-    });
-  }, []);
+  // useEffect(() => {
+  //   adminHttpServices.getAll('clients').then((returnedData) => {
+  //     setAdminClientsData(returnedData);
+  //   });
+  // }, []);
 
   return (
     <>

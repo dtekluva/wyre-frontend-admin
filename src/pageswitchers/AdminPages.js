@@ -1,18 +1,18 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Overview from '../pages/adminPages/Overview';
 // import AddDevices from '../pages/adminPages/AddDevices';
 // import ViewBranches from '../pages/adminPages/ViewBranches';
 // import ViewDevices from '../pages/adminPages/ViewDevices';
-// import ViewOrganisation from '../pages/adminPages/ViewOrganisation';
+import ViewOrganisation from '../pages/adminPages/ViewOrganisation';
 // import Messages from '../pages/adminPages/Messages';
 // import Error from '../pagesx/adminPages/Error';
 
 import ScrollToTop from '../helpers/ScrollToTop';
 
 import AdminHeader from '../components/header/AdminHeader';
-import TopBar from '../components/AdminTopBar';
+import TopBar from '../components/header/AdminTopBar';
 // import AddClients from '../adminPages/AddClients';
 // import ViewBranch from '../adminPages/branches/ViewBranch';
 
@@ -24,10 +24,11 @@ function AdminPages() {
       <main className='auth-container'>
         <TopBar />
 
-        <ScrollToTop>
+        {/* <ScrollToTop> */}
           <div className='page-content'>
-            <Switch>
-              <Route exact path='/' component={<Overview />} />
+            <Routes>
+              <Route exact path='/overview' element={<Overview />} />
+              <Route path='/view-client' element={<ViewOrganisation />} />
               {/* <Route path='/add-devices' element={<AddDevices />} />
               <Route path='/view-branches' element={<ViewBranches />} />
               <Route path='/add-clients' element={<AddClients />} />
@@ -36,9 +37,9 @@ function AdminPages() {
               <Route path='/messages' element={<Messages />} />
               <Route path='/view-branch' element={<ViewBranch />} /> */}
               {/* <Route component={Error} /> */}
-            </Switch>
+            </Routes>
           </div>
-        </ScrollToTop>
+        {/* </ScrollToTop> */}
       </main>
     </div>
   );
