@@ -11,7 +11,7 @@ export const loginAUser = (parameters) => async (dispatch) => {
     const response = await APIServiceNoAuth.post(requestUrl, parameters);
 
     dispatch(loginUserSuccess(response.data));
-    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
+    window.localStorage.setItem('loggedWyreUserAdmin', JSON.stringify(response.data));
     dispatch(loginUserLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {

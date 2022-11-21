@@ -25,11 +25,11 @@ const useConfig = async (config) => {
     //     // call refresh right here
     //     await getNewRefreshToken()
     // }
-    // const customConfig = config;
-    // if (localStorage.loggedWyreUser) {
-    //     const user = JSON.parse(localStorage.loggedWyreUser);
-    //     customConfig.headers.Authorization = `Bearer ${user.access}`;
-    // }
+    const customConfig = config;
+    if (localStorage.loggedWyreUserAdmin) {
+        const user = JSON.parse(localStorage.loggedWyreUserAdmin);
+        customConfig.headers.Authorization = `Bearer ${user.access}`;
+    }
 
     return config;
 };

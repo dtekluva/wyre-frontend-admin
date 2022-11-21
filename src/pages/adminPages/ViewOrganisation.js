@@ -9,6 +9,8 @@ import AdminClientsTable from '../../components/tables/adminTables/AdminClientsT
 
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
+import { getClients } from '../../redux/actions/clients/client.action';
+import { connect } from 'react-redux';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -16,7 +18,7 @@ const breadCrumbRoutes = [
   { url: '#', name: 'View Organisation', id: 3 },
 ];
 
-function ViewOrganisation({ match }) {
+function ViewOrganisation(props) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminClientsData, setAdminClientsData] = useState([]);
 
@@ -26,11 +28,12 @@ function ViewOrganisation({ match }) {
   //   }
   // }, [match, setCurrentUrl]);
 
-  // useEffect(() => {
-  //   adminHttpServices.getAll('clients').then((returnedData) => {
-  //     setAdminClientsData(returnedData);
-  //   });
-  // }, []);
+  useEffect(() => {
+    // getClients.getAll('clients').then((returnedData) => {
+    //   setAdminClientsData(returnedData);
+    // });
+    props.getClients();
+  }, []);
 
   return (
     <>
@@ -61,14 +64,23 @@ function ViewOrganisation({ match }) {
         </div>
 
         <div className='h-overflow-auto'>
-          <AdminClientsTable listOfClientsData={adminClientsData} />
+          <AdminClientsTable listOfClientsData={props.clients?.fetchedClientData} />
         </div>
       </article>
     </>
   );
 }
 
-export default ViewOrganisation;
+const mapDispatchToProps = {
+  getClients
+};
+
+const mapStateToProps = (state) => ({
+  client: state.client,
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewOrganisation);
 
 
 
