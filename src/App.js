@@ -4,8 +4,22 @@ import 'antd/dist/antd.css';
 // import AdminPages from './pageswitchers/AdminPages';
 import AuthPages from './pageswitchers/AuthPages';
 import AdminPages from './pageswitchers/AdminPages';
+import jwtDecode from 'jwt-decode';
+import ClientAdminPages from './pageswitchers/ClientAdminPages';
 
 function App() {
+  const getToken = localStorage.getItem('loggedWyreUserAdmin')
+  // const clearToken = localStorage.removeItem("loggedWyreUserAdmin")
+  let decodedSuperAdmin = null;
+  if (getToken) {
+    const isSuperAdminToken = JSON.parse(getToken);
+    // console.log(JSON.parse(getToken));
+    decodedSuperAdmin = jwtDecode(isSuperAdminToken.access)
+    console.log(isSuperAdminToken);
+    console.log(decodedSuperAdmin);
+  } else {
+    console.log('Please enter Correct Credentials');
+  }
   // console.log('thi sis the value the user entered +++++++++++++++');
   return (
     // <div className="App">
@@ -30,11 +44,17 @@ function App() {
       // isUserAdmin ? (
       //   <AdminPages />
       // ) :
-      (
+      // (
         // <AuthPages />
-        <AdminPages />
+        // <AdminPages />
         
-      )
+      // )
+      (decodedSuperAdmin && decodedSuperAdmin.role_text === "SUPERADMIN") ? <AdminPages />
+      : (decodedSuperAdmin && decodedSuperAdmin.role_text === "CLIENT_ADMIN") ? <ClientAdminPages />
+      :
+      <AuthPages />
+
+
       
       }
     </>
