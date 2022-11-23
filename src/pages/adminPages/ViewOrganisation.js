@@ -21,6 +21,7 @@ const breadCrumbRoutes = [
 function ViewOrganisation(props) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminClientsData, setAdminClientsData] = useState([]);
+  console.log('here is the client information and here we go ============>>>>>>', props.client);
 
   // useEffect(() => {
   //   if (match && match.url) {
@@ -64,7 +65,7 @@ function ViewOrganisation(props) {
         </div>
 
         <div className='h-overflow-auto'>
-          <AdminClientsTable listOfClientsData={props.clients?.fetchedClientData} />
+          <AdminClientsTable listOfClientsData={props.client?.fetchedClient} />
         </div>
       </article>
     </>

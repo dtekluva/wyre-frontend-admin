@@ -1,6 +1,6 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { getClientLoading, getClientSuccess } from "./client.creator";
+import { addClientLoading, addClientSuccess, getClientLoading, getClientSuccess } from "./client.creator";
 
 
 
@@ -18,6 +18,24 @@ export const getClients = (parameters={}) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getClientLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const addAClient = (parameters={}) => async (dispatch) => {
+
+  console.log('===================================>>>>>>>>>', parameters)
+  dispatch(addClientLoading(true));
+
+  const requestUrl = `/cadmin/clients`;
+  try {
+    // const response = await APIService.post(requestUrl, parameters);
+
+    // dispatch(addClientSuccess(response.data));
+    dispatch(addClientLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(addClientLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

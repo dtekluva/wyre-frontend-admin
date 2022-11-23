@@ -74,13 +74,13 @@ function Header() {
 
   const logOut = () => {
     dispatch(logoutUser());
-    window.localStorage.removeItem('loggedWyreUser');
+    window.localStorage.removeItem('loggedWyreUserAdmin');
 
 
     // Go home
     // navigate('/');
 
-    window.href = '/';
+    window.location.href = '/';
     // Refresh page
     // history.go(0);
   };

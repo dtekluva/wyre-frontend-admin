@@ -45,7 +45,7 @@ function Login(props) {
     }
     const query = new URLSearchParams(location.search);
     const from = query.get('from') || 'dashboard';
-    window.location.href = '/overview'
+    window.location.href = '/overview';
     // try {
     //   setIsAuthenticating(true);
     //   localStorage.clear();
@@ -75,7 +75,7 @@ function Login(props) {
 
   return (
     <div className='auth-page-container'>
-      <Spin spinning={isAuthenticating} >
+      <Spin spinning={props.auth.loginUserLoading} >
         <div
           className='signup-login-contact-form'
         // onSubmit={handleSubmit(onSubmit)}

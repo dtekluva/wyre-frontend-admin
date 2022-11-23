@@ -1,13 +1,14 @@
 import React, { useEffect, useContext } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { Button, DatePicker, Select, Upload } from 'antd';
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 
 import { Input, Form } from 'antd';
 
 import { CaretDownFilled } from '@ant-design/icons';
 
-import BreadCrumb from '../components/BreadCrumb';
+import BreadCrumb from '../../components/BreadCrumb';
+import { connect } from 'react-redux';
+import { addAClient } from '../../redux/actions/clients/client.action';
 
 
 const breadCrumbRoutes = [
@@ -19,45 +20,47 @@ const breadCrumbRoutes = [
 
 const { Option } = Select;
 
-const AddClients = ({ match }) => {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+const AddClients = (props) => {
+  
+  // const { setCurrentUrl } = useContext(CompleteDataContext);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  // const { register, handleSubmit, setValue, control, errors } = useForm();
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
+  // useEffect(() => {
+  //   if (match && match.url) {
+  //     setCurrentUrl(match.url);
+  //   }
+  // }, [match, setCurrentUrl]);
 
-  const dateAddedPicker = (
-    <DatePicker
-      format='DD-MM-YYYY'
-      className='generic-input'
-      id='equipment-purchase-date'
-      onChange={(e) => setValue('dateAdded', e.target.value, true)}
-    />
-  );
+  // const dateAddedPicker = (
+  //   <DatePicker
+  //     format='DD-MM-YYYY'
+  //     className='generic-input'
+  //     id='equipment-purchase-date'
+  //     onChange={(e) => setValue('dateAdded', e.target.value, true)}
+  //   />
+  // );
 
-  const activeStateSelector = (
-    <Select
-      className='cost-tracker-select h-4-br'
-      id='active-state'
-      defaultValue='true'
-      suffixIcon={<CaretDownFilled />}
-      onChange={(e) => setValue('activeState', e.target.value, true)}
-    >
-      <Option className='active-state-option' value='true'>
-        True
-      </Option>
-      <Option className='active-state-option' value='false'>
-        False
-      </Option>
-    </Select>
-  );
+  // const activeStateSelector = (
+  //   <Select
+  //     className='cost-tracker-select h-4-br'
+  //     id='active-state'
+  //     defaultValue='true'
+  //     suffixIcon={<CaretDownFilled />}
+  //     onChange={(e) => setValue('activeState', e.target.value, true)}
+  //   >
+  //     <Option className='active-state-option' value='true'>
+  //       True
+  //     </Option>
+  //     <Option className='active-state-option' value='false'>
+  //       False
+  //     </Option>
+  //   </Select>
+  // );
 
-  const onSubmit = ({ deviceCode, deviceType, activeState, dateAdded }) => {
-    console.log(deviceCode, deviceType, activeState, dateAdded);
+  const onSubmit = async (values) => {
+    const request = await props.addAClient();
+    console.log('this is the values ==========>>>>>>>>>>>>>>>>>>>>>>>>>', request)
   };
 
   return (
@@ -80,7 +83,7 @@ const AddClients = ({ match }) => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
+            onFinish={onSubmit}
             // onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
@@ -161,11 +164,13 @@ const AddClients = ({ match }) => {
                   </Upload>
                 </Form.Item>
               </div>
+              <div className='add-client-input-container'>
+              </div>
 
             </div>
             <div className='add-client-button-wrapper'>
               <button className='generic-submit-button'>
-                Add
+                Add Client
               </button>
             </div>
 
@@ -177,4 +182,13 @@ const AddClients = ({ match }) => {
   );
 }
 
-export default AddClients;
+const mapDispatchToProps = {
+  addAClient
+};
+
+const mapStateToProps = (state) => ({
+  client: state.client,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddClients);
+
