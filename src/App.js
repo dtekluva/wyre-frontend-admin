@@ -6,6 +6,7 @@ import AuthPages from './pageswitchers/AuthPages';
 import AdminPages from './pageswitchers/AdminPages';
 import jwtDecode from 'jwt-decode';
 import ClientAdminPages from './pageswitchers/ClientAdminPages';
+import WyreAdminPages from './pageswitchers/WyreAdminPages'
 
 function App() {
   const getToken = localStorage.getItem('loggedWyreUserAdmin')
@@ -51,6 +52,7 @@ function App() {
       // )
       (decodedSuperAdmin && decodedSuperAdmin.role_text === "SUPERADMIN") ? <AdminPages />
       : (decodedSuperAdmin && decodedSuperAdmin.role_text === "CLIENT_ADMIN") ? <ClientAdminPages />
+      : (decodedSuperAdmin && decodedSuperAdmin.role_text === "ADMIN") ? <WyreAdminPages />
       :
       <AuthPages />
 

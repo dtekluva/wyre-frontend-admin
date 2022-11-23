@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 
-import adminHttpServices from '../services/admin';
+// import adminHttpServices from '../services/admin';
 
-import BreadCrumb from '../components/BreadCrumb';
-import AdminBranchesTable from '../components/tables/adminTables/AdminBranchesTable';
+import BreadCrumb from '../../components/BreadCrumb';
+import AdminBranchesTable from '../../components/tables/adminTables/AdminBranchesTable';
 
 
-import ExcelIcon from '../icons/ExcelIcon';
+import ExcelIcon from '../../components/icons/ExcelIcon';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -17,20 +17,20 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranches({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminBranchesData, setAdminBranchesData] = useState([]);
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
+  // useEffect(() => {
+  //   if (match && match.url) {
+  //     setCurrentUrl(match.url);
+  //   }
+  // }, [match, setCurrentUrl]);
 
-  useEffect(() => {
-    adminHttpServices.getAll('branches').then((returnedData) => {
-      setAdminBranchesData(returnedData);
-    });
-  }, []);
+  // useEffect(() => {
+  //   adminHttpServices.getAll('branches').then((returnedData) => {
+  //     setAdminBranchesData(returnedData);
+  //   });
+  // }, []);
 
   return (
     <>

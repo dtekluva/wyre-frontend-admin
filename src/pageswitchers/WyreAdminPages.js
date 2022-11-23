@@ -17,7 +17,7 @@ import TopBar from '../components/header/AdminTopBar';
 // import AddClients from '../adminPages/AddClients';
 // import ViewBranch from '../adminPages/branches/ViewBranch';
 
-function ClientAdminPages() {
+function WyreAdminPages() {
   return (
     <div>
       <AdminHeader />
@@ -46,4 +46,4 @@ function ClientAdminPages() {
   );
 }
 
-export default ClientAdminPages;
+export default WyreAdminPages;
