@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import Overview from '../pages/adminPages/Overview';
-// import AddDevices from '../pages/adminPages/AddDevices';
+import AddDevices from '../pages/adminPages/AddDevices';
 // import ViewBranches from '../pages/adminPages/ViewBranches';
 // import ViewDevices from '../pages/adminPages/ViewDevices';
 import ViewOrganisation from '../pages/adminPages/ViewOrganisation';
@@ -31,7 +31,8 @@ function AdminPages() {
               <Route exact path='/overview' element={<Overview />} />
               <Route path='/view-client' element={<ViewOrganisation />} />
               <Route path='/add-clients' element={<AddClients />} />
-              {/* <Route path='/add-devices' element={<AddDevices />} />
+              <Route path='/add-devices' element={<AddDevices />} />
+              {/* 
               <Route path='/view-branches' element={<ViewBranches />} />
               <Route path='/add-clients' element={<AddClients />} />
               <Route path='/view-devices' element={<ViewDevices />} />
