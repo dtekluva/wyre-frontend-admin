@@ -94,6 +94,7 @@ class AdminOverviewTable extends React.Component {
 
   render() {
     const data = this.props.overviewListData;
+    const loading = this.props.loading;
 
     const columns = [
       {
@@ -112,36 +113,52 @@ class AdminOverviewTable extends React.Component {
         sorter: (a, b) => a.total_energy - b.total_energy,
         sortDirections: ['descend', 'ascend'],
       },
+      // {
+      //   title: 'Maximum Demand (kW)',
+      //   dataIndex: 'max_demand',
+      //   key: 'max_demand',
+      //   ...this.getColumnSearchProps('max_demand'),
+      //   sorter: (a, b) => a.max_demand - b.max_demand,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Minimum Demand (kW)',
+      //   dataIndex: 'min_demand',
+      //   key: 'min_demand',
+      //   ...this.getColumnSearchProps('min_demand'),
+      //   sorter: (a, b) => a.min_demand - b.min_demand,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Average Demand (kW)',
+      //   dataIndex: 'avg_demand',
+      //   key: 'avg_demand',
+      //   ...this.getColumnSearchProps('avg_demand'),
+      //   sorter: (a, b) => a.avg_demand - b.avg_demand,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Score (%)',
+      //   dataIndex: 'score',
+      //   key: 'score',
+      //   ...this.getColumnSearchProps('score'),
+      //   sorter: (a, b) => a.score - b.score,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
       {
-        title: 'Maximum Demand (kW)',
-        dataIndex: 'max_demand',
-        key: 'max_demand',
-        ...this.getColumnSearchProps('max_demand'),
-        sorter: (a, b) => a.max_demand - b.max_demand,
+        title: 'Utility (kW)',
+        dataIndex: 'utility',
+        key: 'utility',
+        ...this.getColumnSearchProps('utility'),
+        // sorter: (a, b) => a.max_demand - b.max_demand,
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Minimum Demand (kW)',
-        dataIndex: 'min_demand',
-        key: 'min_demand',
-        ...this.getColumnSearchProps('min_demand'),
-        sorter: (a, b) => a.min_demand - b.min_demand,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Average Demand (kW)',
-        dataIndex: 'avg_demand',
-        key: 'avg_demand',
-        ...this.getColumnSearchProps('avg_demand'),
-        sorter: (a, b) => a.avg_demand - b.avg_demand,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Score (%)',
-        dataIndex: 'score',
-        key: 'score',
-        ...this.getColumnSearchProps('score'),
-        sorter: (a, b) => a.score - b.score,
+        title: 'Diesel (kW)',
+        dataIndex: 'diesel',
+        key: 'diesel',
+        ...this.getColumnSearchProps('dieseldiesel'),
+        // sorter: (a, b) => a.max_demand - b.max_demand,
         sortDirections: ['descend', 'ascend'],
       },
       {
@@ -164,10 +181,12 @@ class AdminOverviewTable extends React.Component {
       <>
         <Table
           className='table-striped-rows'
+          size='large'
+          loading={loading}
           columns={columns}
           dataSource={data}
           rowKey={(record) => record.id}
-          pagination={false}
+          pagination={true}
           footer={() => ``}
         />
       </>

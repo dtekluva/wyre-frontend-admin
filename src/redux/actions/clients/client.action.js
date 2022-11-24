@@ -1,6 +1,6 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { addClientLoading, addClientSuccess, getClientLoading, getClientSuccess } from "./client.creator";
+import { addClientLoading, addClientSuccess, getClientLoading, getClientOverviewLoading, getClientOverviewSuccess, getClientSuccess } from "./client.creator";
 
 
 
@@ -18,6 +18,24 @@ export const getClients = (parameters={}) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getClientLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+export const getClientsOverview = (parameters={}) => async (dispatch) => {
+
+  dispatch(getClientOverviewLoading(true));
+
+  const requestUrl = `cadmin/clients/01-08-2022%2000:00/30-08-2022%2000:00`;
+  try {
+    const response = await APIService.get(requestUrl, parameters);
+
+    console.log('this is the response data', response.data);
+    dispatch(getClientOverviewSuccess(response.data.authenticatedData));
+    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
+    dispatch(getClientOverviewLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getClientOverviewLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

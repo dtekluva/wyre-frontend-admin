@@ -9,13 +9,18 @@ import AdminOverviewTable from '../../components/tables/adminTables/AdminOvervie
 
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
+import BreadCrumb from '../../components/BreadCrumb';
+import { connect } from 'react-redux';
+import { getClientsOverview } from '../../redux/actions/clients/client.action';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Admin Overview', id: 2 },
 ];
 
-function Overview({ match }) {
+
+
+function Overview(props) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminOverviewData, setadminOverviewData] = useState([]);
 
@@ -31,11 +36,15 @@ function Overview({ match }) {
   //   });
   // }, []);
 
+  useEffect(() => {
+    props.getClientsOverview();
+  }, []);
+
   return (
     <>
-      {/* <div className='breadcrumb-and-print-buttons'>
+      <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-      </div> */}
+      </div>
 
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>
@@ -60,11 +69,21 @@ function Overview({ match }) {
         </div>
 
         <div className='h-overflow-auto'>
-          <AdminOverviewTable overviewListData={adminOverviewData} />
+          <AdminOverviewTable loading={props.client.fetchClientOverviewLoading} 
+          overviewListData={props.client?.fetchedClientOverview} />
         </div>
       </article>
     </>
   );
 }
 
-export default Overview;
+const mapDispatchToProps = {
+  getClientsOverview
+};
+
+const mapStateToProps = (state) => ({
+  client: state.client,
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Overview);

@@ -3,6 +3,8 @@ import clientTypes from "./cleint.types";
 const INITIAL_STATE = {
     fetchClientLoading: false,
     fetchedClient: false,
+    fetchClientOverviewLoading: false,
+    fetchedClientOverview: false,
     newClientLoading: false,
     newClient: false,
 };
@@ -25,6 +27,21 @@ const clientReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 fetchedClient: action.payload,
+
+            };
+        case clientTypes.GET_CLIENT_OVERVIEW_LOADING:
+
+            return {
+
+                ...state,
+                fetchClientOverviewLoading: action.payload,
+
+            };
+        case clientTypes.GET_CLIENT_OVERVIEW_SUCCESS:
+
+            return {
+                ...state,
+                fetchedClientOverview: action.payload,
 
             };
         case clientTypes.ADD_CLIENT_SUCCESS:

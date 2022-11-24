@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+// import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, Select } from 'antd';
-import CompleteDataContext from '../Context';
+// import CompleteDataContext from '../Context';
 
 import { CaretDownFilled } from '@ant-design/icons';
 
-import BreadCrumb from '../components/BreadCrumb';
+import BreadCrumb from '../../components/BreadCrumb';
 
 
 const breadCrumbRoutes = [
@@ -18,22 +18,22 @@ const breadCrumbRoutes = [
 const { Option } = Select;
 
 function AddDevices({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  // const { setCurrentUrl } = useContext(CompleteDataContext);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  // const { register, handleSubmit, setValue, control, errors } = useForm();
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
+  // useEffect(() => {
+  //   if (match && match.url) {
+  //     setCurrentUrl(match.url);
+  //   }
+  // }, [match, setCurrentUrl]);
 
   const dateAddedPicker = (
     <DatePicker
       format='DD-MM-YYYY'
       className='generic-input'
       id='equipment-purchase-date'
-      onChange={(e) => setValue('dateAdded', e.target.value, true)}
+      // onChange={(e) => setValue('dateAdded', e.target.value, true)}
     />
   );
 
@@ -43,7 +43,7 @@ function AddDevices({ match }) {
       id='active-state'
       defaultValue='true'
       suffixIcon={<CaretDownFilled />}
-      onChange={(e) => setValue('activeState', e.target.value, true)}
+      // onChange={(e) => setValue('activeState', e.target.value, true)}
     >
       <Option className='active-state-option' value='true'>
         True
@@ -60,7 +60,7 @@ function AddDevices({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      {/* <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
@@ -164,7 +164,7 @@ function AddDevices({ match }) {
             </button>
           </form>
         </section>
-      </div>
+      </div> */}
     </>
   );
 }
