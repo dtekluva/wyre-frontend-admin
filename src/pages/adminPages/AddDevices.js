@@ -3,7 +3,7 @@ import React, { useEffect, useContext } from 'react';
 import { DatePicker, Select } from 'antd';
 // import CompleteDataContext from '../Context';
 
-import { CaretDownFilled } from '@ant-design/icons';
+// import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../../components/BreadCrumb';
 
@@ -42,7 +42,7 @@ function AddDevices({ match }) {
       className='cost-tracker-select h-4-br'
       id='active-state'
       defaultValue='true'
-      suffixIcon={<CaretDownFilled />}
+      // suffixIcon={<CaretDownFilled />}
       // onChange={(e) => setValue('activeState', e.target.value, true)}
     >
       <Option className='active-state-option' value='true'>
@@ -60,7 +60,7 @@ function AddDevices({ match }) {
 
   return (
     <>
-      {/* <div className='breadcrumb-and-print-buttons'>
+       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
@@ -71,7 +71,7 @@ function AddDevices({ match }) {
           <form
             className='cost-tracker-form'
             action='#'
-            onSubmit={handleSubmit(onSubmit)}
+            // onSubmit={handleSubmit(onSubmit)}
           >
             <div className='cost-tracker-form-inputs-wrapper'>
               <div className='cost-tracker-input-container'>
@@ -86,7 +86,7 @@ function AddDevices({ match }) {
                   type='text'
                   name='deviceCode'
                   id='deviceCode'
-                  ref={register}
+                  // ref={register}
                   required
                   autoFocus
                 />
@@ -105,7 +105,7 @@ function AddDevices({ match }) {
                   inputMode='decimal'
                   name='deviceType'
                   id='deviceType'
-                  ref={register}
+                  // ref={register}
                   required
                 />
               </div>
@@ -118,7 +118,7 @@ function AddDevices({ match }) {
                   Is Active ?
                 </label>
 
-                <Controller
+                {/* <Controller
                   as={activeStateSelector}
                   name='activeState'
                   control={control}
@@ -127,9 +127,9 @@ function AddDevices({ match }) {
                     required: true,
                   }}
                   help={errors.activeState && 'Please select a value'}
-                />
+                /> */}
                 <p className='input-error-message'>
-                  {errors.activeState && 'Please select a value'}
+                  {/* {errors.activeState && 'Please select a value'} */}
                 </p>
               </div>
 
@@ -140,7 +140,7 @@ function AddDevices({ match }) {
                 >
                   Date Added
                 </label>
-                <Controller
+                {/* <Controller
                   as={dateAddedPicker}
                   name='dateAdded'
                   control={control}
@@ -152,9 +152,9 @@ function AddDevices({ match }) {
                     errors.dateAdded && 'Please enter a date' ? 'error' : ''
                   }
                   help={errors.dateAdded && 'Please enter a date'}
-                />
+                /> */}
                 <p className='input-error-message'>
-                  {errors.dateAdded && 'Please enter a date'}
+                  {/* {errors.dateAdded && 'Please enter a date'} */}
                 </p>
               </div>
             </div>
@@ -164,9 +164,9 @@ function AddDevices({ match }) {
             </button>
           </form>
         </section>
-      </div> */}
+      </div> 
     </>
   );
 }
 
-export default AddDevices;
+export default AddDevices;  

@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { connect } from 'react-redux';
+import { getViewBranches } from '../../redux/actions/viewBranches/viewBranches.action';
 
 // import CompleteDataContext from '../Context';
 
@@ -86,4 +88,15 @@ function ViewBranches({ match }) {
   );
 }
 
-export default ViewBranches;
+// const mapStateToProps = {
+//   ViewBranches: state.ViewBranches
+// }
+const mapDispatchToProps = {
+  getViewBranches
+}
+
+const mapStateToProps = (state) => ({
+  ViewBranches: state.ViewBranches,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewBranches);

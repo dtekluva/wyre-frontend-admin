@@ -22,7 +22,7 @@ export const getDevices = (parameters={}) => async (dispatch) => {
   }
 };
 
-export const addADevive = (parameters={}) => async (dispatch) => {
+export const addADevice = (parameters={}) => async (dispatch) => {
 
   console.log('===================================>>>>>>>>>', parameters)
   dispatch(addDeviceLoading(true));
