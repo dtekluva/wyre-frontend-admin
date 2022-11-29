@@ -44,29 +44,8 @@ function Login(props) {
       });
     }
     const query = new URLSearchParams(location.search);
-    const from = query.get('from') || 'dashboard';
-    window.location.href = '/overview';
-    // try {
-    //   setIsAuthenticating(true);
-    //   localStorage.clear();
-
-    //   const user = await loginHttpServices.login2({
-    //     username: username,
-    //     password: password,
-    //   });
-
-    //   window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
-    //   window.location.href = from;
-    //   // dataHttpServices.setUserId(user.data.id);
-    //   // dataHttpServices.setToken(user.data.token);
-    //   // setUserData({ user, decodedUser: jwt(user.data.token)});
-    //   setIsAuthenticating(false)
-    // } catch (exception) {
-    //   setIsAuthenticating(false)
-    //   setErrorMessage(exception.response.data.error);
-    // }
-
-    // loginAUser
+    const from = query.get('from') || '/';
+    window.location.href = '/';
   };
 
   const removeErrorMessage = (e) => {

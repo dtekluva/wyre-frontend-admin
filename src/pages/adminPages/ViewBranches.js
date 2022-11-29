@@ -1,10 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getViewBranches } from '../../redux/actions/viewBranches/viewBranches.action';
 
-// import CompleteDataContext from '../Context';
-
-// import adminHttpServices from '../services/admin';
 
 import BreadCrumb from '../../components/BreadCrumb';
 import AdminBranchesTable from '../../components/tables/adminTables/AdminBranchesTable';
@@ -18,21 +15,13 @@ const breadCrumbRoutes = [
   { url: '#', name: 'View Branches', id: 3 },
 ];
 
-function ViewBranches({ match }) {
-  // const { setCurrentUrl } = useContext(CompleteDataContext);
+function ViewBranches(props) {
   const [adminBranchesData, setAdminBranchesData] = useState([]);
 
-  // useEffect(() => {
-  //   if (match && match.url) {
-  //     setCurrentUrl(match.url);
-  //   }
-  // }, [match, setCurrentUrl]);
-
-  // useEffect(() => {
-  //   adminHttpServices.getAll('branches').then((returnedData) => {
-  //     setAdminBranchesData(returnedData);
-  //   });
-  // }, []);
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const from = query.get('client_id') || props.auth.userData.client_id;
+  }, [])
 
   return (
     <>
@@ -96,7 +85,8 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  ViewBranches: state.ViewBranches,
+  branches: state.branches,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewBranches);

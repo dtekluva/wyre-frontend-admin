@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { Button, DatePicker, Select, Upload } from 'antd';
+import { Button, DatePicker, notification, Select, Upload } from 'antd';
 // import CompleteDataContext from '../Context';
 
 import { Input, Form } from 'antd';
@@ -21,7 +21,7 @@ const breadCrumbRoutes = [
 const { Option } = Select;
 
 const AddClients = (props) => {
-  
+
   // const { setCurrentUrl } = useContext(CompleteDataContext);
 
   // const { register, handleSubmit, setValue, control, errors } = useForm();
@@ -59,8 +59,19 @@ const AddClients = (props) => {
   // );
 
   const onSubmit = async (values) => {
-    const request = await props.addAClient();
-    console.log('this is the values ==========>>>>>>>>>>>>>>>>>>>>>>>>>', request)
+    console.log('this is the file =====================>>>>>>>', values)
+    const { logo, others } = values;
+    const request = await props.addAClient(others, logo.file);
+    if (request.fulfilled) {
+      return notification.info({
+        message: 'successful',
+        description: request.message,
+      });
+    }
+    return notification.error({
+      message: 'failed',
+      description: request.message,
+    });
   };
 
   return (
@@ -88,22 +99,14 @@ const AddClients = (props) => {
             autoComplete="off"
           >
             <div className='add-cclient-form-inputs-wrapper'>
-              {/* <div className='cost-tracker-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                >
-                  Company Name
-                </label>
-                <Input placeholder="ABC" size="large" />
-              </div> */}
 
               <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
                   label="Company Name"
-                  name="companyName"
-                  rules={[{ required: true, message: 'Please input your company name!' }]}
+                  name="name"
+                  rules={[{ required: true, message: 'Please input company name!' }]}
                 >
                   <Input placeholder="ABC" size="large" />
                 </Form.Item>
@@ -113,8 +116,10 @@ const AddClients = (props) => {
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
                   label="Phone Number"
-                  name="phoneNumber"
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  name="phone_number"
+                  rules={[{ required: true, message: 'Please input phone number!' }, 
+                  { pattern: /^\d{11}$/gm, message: 'Phone number can only contain 11 numbers' },
+                ]}
                 >
                   <Input placeholder="Phone Number" size="large" />
                 </Form.Item>
@@ -125,28 +130,31 @@ const AddClients = (props) => {
                   wrapperCol={{ span: 24 }}
                   label="Email"
                   name="email"
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[
+                    { required: true, message: 'Please input your email!' },
+                    {
+                      type: 'email',
+                      message: 'Please enter a valid email!',
+                    }
+                  ]}
                 >
                   <Input placeholder="Email" size="large" />
                 </Form.Item>
               </div>
             </div>
             <div className='add-cclient-form-inputs-wrapper'>
-              {/* <div className='cost-tracker-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                >
-                  Office Address
-                </label>
-                <Input placeholder="ABC" size="large" />
-              </div> */}
               <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
                   label="Office Address"
-                  name="officeAddress"
-                  rules={[{ required: true, message: 'Please input your company name!' }]}
+                  name="address"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input address!'
+                    },
+                  ]}
                 >
                   <Input placeholder="Office Address" size="large" />
                 </Form.Item>
@@ -155,12 +163,23 @@ const AddClients = (props) => {
                 <Form.Item
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
-                  label="Office Address"
-                  name="officeAddress"
-                  rules={[{ required: true, message: 'Please input your company name!' }]}
+                  label="Client Logo"
+                  name="logo"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please add a client logo!'
+                    }
+                  ]}
                 >
-                  <Upload>
-                    <Button >Click to Upload</Button>
+                  <Upload accept="image/*" 
+                  multiple={false}
+                  maxCount="1"
+                  beforeUpload={async (file) => {            
+                    return false;
+                  }}
+                  >
+                    <Button type='' >Click to Upload</Button>
                   </Upload>
                 </Form.Item>
               </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import moment from 'moment';
 
 // import CompleteDataContext from '../Context';
 
@@ -24,20 +25,12 @@ function Overview(props) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminOverviewData, setadminOverviewData] = useState([]);
 
-  // useEffect(() => {
-  //   if (match && match.url) {
-  //     setCurrentUrl(`${match.url} hide-top-bar`);
-  //   }
-  // }, [match, setCurrentUrl]);
-
-  // useEffect(() => {
-  //   adminHttpServices.getAll('overview').then((returnedData) => {
-  //     setadminOverviewData(returnedData);
-  //   });
-  // }, []);
 
   useEffect(() => {
-    props.getClientsOverview();
+    const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+    const endDate = moment().format('DD-MM-YYYY HH:MM');
+    // const endDate = [moment().startOf('month').startOf('day'), moment()]
+    props.getClientsOverview(startDate, endDate);
   }, []);
 
   return (

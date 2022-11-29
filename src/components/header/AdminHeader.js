@@ -121,7 +121,7 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink onClick={toggleNav} url='/overview' linkText='Admin Overview' />
+            <HeaderLink onClick={toggleNav} url='/' linkText='Admin Overview' />
 
             <HeaderLinkWithDropdown
               className='header-nav-list__item header-link-with-dropdown'

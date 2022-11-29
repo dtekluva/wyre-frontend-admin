@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
-// import CompleteDataContext from '../Context';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 // import AddDeviceForm from '../adminPages/modal/AddDeviceForm';
 // import AddUserForm from '../adminPages/modal/AddUserForm';
 const isSidebarOpen = false;
-function TopBar() {
+function AdminTopBar(props) {
   // modal functions for add user form and add device form starts 
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
@@ -45,9 +45,14 @@ function TopBar() {
               : 'top-bar__right h-hide'
           }
         >
-          <Link className='top-bar-right__button h-extra-padding' to='/add-clients' >
-            Add Client
-          </Link>
+          {
+            props.auth.userData.role_text === 'SUPERADMIN' && (
+              <Link className='top-bar-right__button h-extra-padding' to='/add-clients' >
+              Add Client
+            </Link>
+            )
+          }
+
 
         </div>
 
@@ -78,12 +83,18 @@ function TopBar() {
           >
             Compare
           </Link>
-          <Link
-            className='top-bar-right__button h-extra-padding'
-            to='/add-branches'
-          >
-            Add Branch
-          </Link>
+          {
+            props.auth.userData.role_text === 'CLIENT_ADMINN' && (
+              <Link
+
+                className='top-bar-right__button h-extra-padding'
+                to='/add-branches'
+              >
+                Add Branch
+              </Link>
+            )
+          }
+
         </div>
         <div
           className={
@@ -122,5 +133,8 @@ function TopBar() {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 
-export default TopBar;
+export default connect(mapStateToProps, null)(AdminTopBar);

@@ -28,7 +28,7 @@ function AdminPages() {
         {/* <ScrollToTop> */}
           <div className='page-content'>
             <Routes>
-              <Route exact path='/overview' element={<Overview />} />
+              <Route exact path='/' element={<Overview />} />
               <Route path='/view-client' element={<ViewOrganisation />} />
               <Route path='/add-clients' element={<AddClients />} />
               <Route path='/add-devices' element={<AddDevices />} />

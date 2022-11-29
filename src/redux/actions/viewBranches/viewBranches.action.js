@@ -8,7 +8,7 @@ export const getViewBranches = (parameters={}) => async (dispatch) => {
 
   dispatch(getViewBranchesLoading(true));
 
-  const requestUrl = `/cadmin/branches/`;
+  const requestUrl = `/branches/`;
   try {
     const response = await APIService.get(requestUrl, parameters);
 
@@ -24,7 +24,6 @@ export const getViewBranches = (parameters={}) => async (dispatch) => {
 
 export const addAViewBranch = (parameters={}) => async (dispatch) => {
 
-  console.log('===================================>>>>>>>>>', parameters)
   dispatch(addViewBranchesLoading(true));
 
   const requestUrl = `/cadmin/branches/`;

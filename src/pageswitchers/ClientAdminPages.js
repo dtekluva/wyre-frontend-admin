@@ -28,7 +28,7 @@ function ClientAdminPages() {
         {/* <ScrollToTop> */}
           <div className='page-content'>
             <Routes>
-              <Route path='/view-branches' element={<ViewBranches />} />
+              <Route path='/' element={<ViewBranches />} />
               {/* <Route exact path='/overview' element={<Overview />} />
               <Route path='/view-client' element={<ViewOrganisation />} /> */}
               {/* <Route path='/add-devices' element={<AddDevices />} />
