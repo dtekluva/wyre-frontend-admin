@@ -1,4 +1,4 @@
-import viewBranchesTypes from "./viewBranches.types";
+import viewBranchesTypes from "./branches.types";
 
 const INITIAL_STATE = {
     fetchViewBranchesLoading: false,
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     newViewBranches: false,
 };
 
-const viewBranchesReducer = (state = INITIAL_STATE, action) => {
+const branchesReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
 
@@ -50,4 +50,4 @@ const viewBranchesReducer = (state = INITIAL_STATE, action) => {
 
 };
 
-export default viewBranchesReducer;
+export default branchesReducer;

@@ -1,19 +1,20 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { addViewBranchesLoading, addViewBranchesSuccess, getViewBranchesLoading, getViewBranchesSuccess } from "./viewBranches.creator";
+import { addViewBranchesLoading, addViewBranchesSuccess, getViewBranchesLoading, getViewBranchesSuccess } from "./branches.creator";
 
 
 
-export const getViewBranches = (parameters={}) => async (dispatch) => {
+export const getBranches = (startDate, endDate) => async (dispatch) => {
+  
 
   dispatch(getViewBranchesLoading(true));
 
-  const requestUrl = `/branches/`;
+  const requestUrl = `/cadmin/branches/${startDate}/${endDate}`;
   try {
-    const response = await APIService.get(requestUrl, parameters);
+    const response = await APIService.get(requestUrl);
 
-    dispatch(getViewBranchesSuccess(response.data));
-    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
+    dispatch(getViewBranchesSuccess(response.data.authenticatedData));
+    console.log(response.data.authenticatedData);
     dispatch(getViewBranchesLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
@@ -22,7 +23,7 @@ export const getViewBranches = (parameters={}) => async (dispatch) => {
   }
 };
 
-export const addAViewBranch = (parameters={}) => async (dispatch) => {
+export const addABranch = (parameters={}) => async (dispatch) => {
 
   dispatch(addViewBranchesLoading(true));
 

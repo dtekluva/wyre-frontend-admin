@@ -1,11 +1,14 @@
 import React, { useEffect, useContext } from 'react';
 // import { useForm, Controller } from 'react-hook-form';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Form, Select, Button, Input, Checkbox, Space } from 'antd';
 // import CompleteDataContext from '../Context';
 
 // import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../../components/BreadCrumb';
+
+import { addADevice } from '../../redux/actions/devices/device.action';
+import { connect } from 'react-redux';
 
 
 const breadCrumbRoutes = [
@@ -17,7 +20,7 @@ const breadCrumbRoutes = [
 
 const { Option } = Select;
 
-function AddDevices({ match }) {
+function AddDevices({ props, match }) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
 
   // const { register, handleSubmit, setValue, control, errors } = useForm();
@@ -54,13 +57,22 @@ function AddDevices({ match }) {
     </Select>
   );
 
-  const onSubmit = ({ deviceCode, deviceType, activeState, dateAdded }) => {
-    console.log(deviceCode, deviceType, activeState, dateAdded);
+  // const onSubmit = ({ deviceCode, deviceType, activeState, dateAdded }) => {
+  //   console.log(deviceCode, deviceType, activeState, dateAdded);
+  // };
+  
+  const deviceTypes= ["Dell", "Asus", "Toshiba", "Samsung"]
+  const actives= ["Active", "Inactive"]
+  const iconTypes= ["Master", "Slave", "Novice"]
+  const opertHours= ["6Hrs", "12Hrs", "18Hrs", "24Hrs"]
+  const onSubmit = async (values) => {
+    const request = await props.addADevice();
+    console.log('this is the values ==========>>>>>>>>>>>>>>>>>>>>>>>>>', request)
   };
 
   return (
     <>
-       <div className='breadcrumb-and-print-buttons'>
+      <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
@@ -68,13 +80,22 @@ function AddDevices({ match }) {
         <h1 className='center-main-heading'>Devices</h1>
 
         <section className='cost-tracker-form-section'>
-          <form
-            className='cost-tracker-form'
-            action='#'
-            // onSubmit={handleSubmit(onSubmit)}
+          <Form
+            // className='cost-tracker-form'
+            // action='#'
+            // // onSubmit={handleSubmit(onSubmit)}
+            // onFinish={onSubmit}
+
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            initialValues={{ remember: true }}
+            onFinish={onSubmit}
+            // onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <div className='cost-tracker-form-inputs-wrapper'>
-              <div className='cost-tracker-input-container'>
+            <div className='add-cclient-form-inputs-wrapper'> 
+              {/* <div className='cost-tracker-input-container'>
                 <label
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='deviceCode'
@@ -90,9 +111,22 @@ function AddDevices({ match }) {
                   required
                   autoFocus
                 />
+              </div>   */}
+
+               {/* DEVICE NAME  */}
+               <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Device Name"
+                  name="deviceName"
+                  rules={[{ required: true, message: 'Please input your device name!' }]}
+                >
+                  <Input placeholder="Device Name" size="large" />
+                </Form.Item>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              {/* <div className='cost-tracker-input-container'>
                 <label
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='deviceType'
@@ -108,15 +142,46 @@ function AddDevices({ match }) {
                   // ref={register}
                   required
                 />
+              </div> */}
+
+              {/* DEVICE IDENTITY  */}
+              <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Device Identity"
+                  name="deviceIdentity"
+                  rules={[{ required: true, message: 'Please input your device identity!' }]}
+                >
+                  <Input placeholder="Device Identy" size="large" />
+                </Form.Item>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              {/* DEVICE TYPE */}
+              <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Device Type"
+                  name="deviceType"
+                  rules={[{ required: true, message: 'Please select a device type!' }]}
+                >
+                  <Select size='large' placeholder="Device Type">
+                    {deviceTypes.map((deviceType, index) => {
+                      return <Select.Option key={index} value={deviceType}>{deviceType}</Select.Option>
+                    })}
+                  </Select>
+                </Form.Item>
+              </div>
+            </div>
+          <div className='add-cclient-form-inputs-wrapper'>
+              {/* <div className='add-client-input-container'>
                 <label
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='active-state'
                 >
                   Is Active ?
-                </label>
+                </label> */}
 
                 {/* <Controller
                   as={activeStateSelector}
@@ -128,18 +193,35 @@ function AddDevices({ match }) {
                   }}
                   help={errors.activeState && 'Please select a value'}
                 /> */}
-                <p className='input-error-message'>
-                  {/* {errors.activeState && 'Please select a value'} */}
-                </p>
+                {/* <p className='input-error-message'>
+                  {errors.activeState && 'Please select a value'}
+                </p> */}
+              {/* </div> */}
+
+              {/* ACTIVE */}
+              <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Active"
+                  name="isActive"
+                  rules={[{ required: true, message: 'Please select one!' }]}
+                >
+                  <Select size='large' placeholder="Active">
+                  {actives.map((active, index) => {
+                      return <Select.Option key={index} value={active}>{active}</Select.Option>
+                    })}
+                  </Select>
+                </Form.Item>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              {/* <div className='add-client-input-container'>
                 <label
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='equipment-purchase-date'
                 >
                   Date Added
-                </label>
+                </label> */}
                 {/* <Controller
                   as={dateAddedPicker}
                   name='dateAdded'
@@ -153,20 +235,81 @@ function AddDevices({ match }) {
                   }
                   help={errors.dateAdded && 'Please enter a date'}
                 /> */}
-                <p className='input-error-message'>
-                  {/* {errors.dateAdded && 'Please enter a date'} */}
+                {/* <p className='input-error-message'>
+                  {errors.dateAdded && 'Please enter a date'}
                 </p>
+              </div> */}
+              
+              {/* ICON TYPE */}
+              <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Icon Type"
+                  name="iconType"
+                  rules={[{ required: true, message: 'Please select an icon type!' }]}
+                >
+                  <Select size='large' placeholder="Icon Type">
+                    {iconTypes.map((icontype, index) => {
+                      return <Select.Option key={index} value={icontype}>{icontype}</Select.Option>
+                    })}
+                  </Select>
+                </Form.Item>
+              </div>
+
+              {/* OPERATING HOURS */}
+              <div className='add-client-input-container'>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  label="Operating Hours"
+                  name="operatingHours"
+                  rules={[{ required: true, message: 'Please select operating hours!' }]}
+                >
+                  <Select size='large' placeholder="Choose Operating Hours">
+                  {opertHours.map((opertHour, index) => {
+                      return <Select.Option key={index} value={opertHour}>{opertHour}</Select.Option>
+                    })}
+                  </Select>
+                </Form.Item>
               </div>
             </div>
+            <div className='add-cclient-form-inputs-wrapper'>
+              {/* SOURCES */}
+              <div className='add-client-input-container'>
+                <Form.Item 
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }} 
+                  name="remember" 
+                  valuePropName="checked" 
+                >
+                    <Checkbox>Sources</Checkbox>
+                </Form.Item>
+              </div>
+              
+            </div>
 
-            <button className='generic-submit-button cost-tracker-form-submit-button'>
+            {/* <Button className='generic-submit-button cost-tracker-form-submit-button'>
               Add
-            </button>
-          </form>
+            </Button> */}
+            <div className='add-client-button-wrapper'>
+              <button className='generic-submit-button'>
+                Add Device
+              </button>
+            </div>
+          </Form>
         </section>
       </div> 
     </>
   );
 }
 
-export default AddDevices;  
+const mapDispatchToProps = {
+  addADevice
+};
+
+const mapStateToProps = (state) => ({
+  device: state.device,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDevices);  

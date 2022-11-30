@@ -31,7 +31,6 @@ export const getClientsOverview = (startDate, endDate) => async (dispatch) => {
 
     console.log('this is the response data', response.data);
     dispatch(getClientOverviewSuccess(response.data.authenticatedData));
-    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
     dispatch(getClientOverviewLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {

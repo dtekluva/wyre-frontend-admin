@@ -1,5 +1,5 @@
 
-import viewBranchesTypes from "../../reducers/viewBranches/viewBranches.types";
+import viewBranchesTypes from "../../reducers/branches/branches.types";
 
 export const getViewBranchesLoading = (payload = true) => ({
     type: viewBranchesTypes.GET_VIEWBRANCHES_LOADING,

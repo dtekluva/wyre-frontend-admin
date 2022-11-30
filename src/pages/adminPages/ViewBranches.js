@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getViewBranches } from '../../redux/actions/viewBranches/viewBranches.action';
+import { getBranches } from '../../redux/actions/branches/branches.action';
+import moment from 'moment';
 
 
 import BreadCrumb from '../../components/BreadCrumb';
@@ -18,10 +19,23 @@ const breadCrumbRoutes = [
 function ViewBranches(props) {
   const [adminBranchesData, setAdminBranchesData] = useState([]);
 
+  // useEffect(() => {
+  //   const query = new URLSearchParams(window.location.search);
+  //   const from = query.get('client_id') || props.auth.userData.client_id;
+  //   props.getBranches(from)
+  // }, [])
+
   useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    const from = query.get('client_id') || props.auth.userData.client_id;
-  }, [])
+    const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+    const endDate = moment().format('DD-MM-YYYY HH:MM');
+    // const endDate = [moment().startOf('month').startOf('day'), moment()]
+    // const query = new URLSearchParams(window.location.search);
+    // const from = query.get('cadmin/branches/01-08-2022%2000:00/01-08-2022%2000:00') || props.auth.userData.client_id;
+    // console.log(query);
+    console.log(startDate, endDate)
+    
+    props.getBranches(startDate, endDate);
+  }, []);
 
   return (
     <>
@@ -70,7 +84,11 @@ function ViewBranches(props) {
         </div>
 
         <div className='h-overflow-auto'>
-          <AdminBranchesTable listOfBranchesData={adminBranchesData} />
+          {/* <AdminBranchesTable listOfBranchesData={adminBranchesData} /> */}
+        </div>
+        <div className='h-overflow-auto'>
+          <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading} 
+          listOfBranchesData={props.branches?.fetchedViewBranches} />
         </div>
       </article>
     </>
@@ -81,7 +99,7 @@ function ViewBranches(props) {
 //   ViewBranches: state.ViewBranches
 // }
 const mapDispatchToProps = {
-  getViewBranches
+  getBranches
 }
 
 const mapStateToProps = (state) => ({

@@ -29,9 +29,9 @@ export const addADevice = (parameters={}) => async (dispatch) => {
 
   const requestUrl = `/cadmin/devices/`;
   try {
-    // const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.post(requestUrl, parameters);
 
-    // dispatch(addDeviceSuccess(response.data));
+    dispatch(addDeviceSuccess(response.data));
     dispatch(addDeviceLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
