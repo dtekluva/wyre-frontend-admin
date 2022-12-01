@@ -20,7 +20,7 @@ export const getClientOverviewSuccess = (payload = true) => ({
     payload,
   });
 export const addClientLoading = (payload = true) => ({
-    type: clientTypes.GET_CLIENT_LOADING,
+    type: clientTypes.ADD_CLIENT_LOADING,
     payload,
   });
   

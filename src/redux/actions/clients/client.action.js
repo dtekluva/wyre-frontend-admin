@@ -1,4 +1,5 @@
 import { APIService } from "../../../config/api/apiConfig";
+import { delay, multipartFormBuilder } from "../../../helpers/GeneralHelper";
 
 import { addClientLoading, addClientSuccess, getClientLoading, getClientOverviewLoading, getClientOverviewSuccess, getClientSuccess } from "./client.creator";
 
@@ -40,17 +41,15 @@ export const getClientsOverview = (startDate, endDate) => async (dispatch) => {
 };
 
 export const addAClient = (parameters, file) => async (dispatch) => {
-
-  console.log('===================================>>>>>>>>>', parameters)
   dispatch(addClientLoading(true));
-
   const requestUrl = `/cadmin/clients`;
   try {
-    const formData = new FormData(parameters);
+    const formData = multipartFormBuilder(parameters);
     formData.set('file', file);
+
     const response = await APIService.postMultipart(requestUrl, formData);
 
-    // dispatch(addClientSuccess(response.data));
+    dispatch(addClientSuccess(response.data));
     dispatch(addClientLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
