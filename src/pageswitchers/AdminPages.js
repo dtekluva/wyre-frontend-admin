@@ -15,6 +15,8 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AdminHeader from '../components/header/AdminHeader';
 import TopBar from '../components/header/AdminTopBar';
 import AddClients from '../pages/adminPages/AddClients';
+import ViewBranches from '../pages/adminPages/ViewBranches';
+import AddBranches from '../pages/adminPages/AddBranches';
 // import ViewBranch from '../adminPages/branches/ViewBranch';
 
 function AdminPages() {
@@ -30,6 +32,8 @@ function AdminPages() {
             <Routes>
               <Route exact path='/' element={<Overview />} />
               <Route path='/view-client' element={<ViewOrganisation />} />
+              <Route path='/add-branches' element={<AddBranches />} />
+              <Route path='/view-branches' element={<ViewBranches />} />
               <Route path='/add-clients' element={<AddClients />} />
               <Route path='/add-devices' element={<AddDevices />} />
               {/* 

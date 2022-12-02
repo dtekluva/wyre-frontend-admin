@@ -169,7 +169,8 @@ class AdminOverviewTable extends React.Component {
           <button
             type='button'
             className='table-row-button branch-users-view-button'
-            onClick={() => console.log(record)}
+            // onClick={() => console.log(record)}
+            onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
           >
             View
           </button>

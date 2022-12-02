@@ -9,6 +9,7 @@ import AdminBranchesTable from '../../components/tables/adminTables/AdminBranche
 
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
+import { useSearchParams } from 'react-router-dom';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -18,6 +19,7 @@ const breadCrumbRoutes = [
 
 function ViewBranches(props) {
   const [adminBranchesData, setAdminBranchesData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // useEffect(() => {
   //   const query = new URLSearchParams(window.location.search);
@@ -32,6 +34,9 @@ function ViewBranches(props) {
     // const query = new URLSearchParams(window.location.search);
     // const from = query.get('cadmin/branches/01-08-2022%2000:00/01-08-2022%2000:00') || props.auth.userData.client_id;
     // console.log(query);
+    
+     const client_id =searchParams.get("client_id");
+     console.log('This is client-id value', client_id);
     console.log(startDate, endDate)
     
     props.getBranches(startDate, endDate);
@@ -83,9 +88,9 @@ function ViewBranches(props) {
           </div>
         </div>
 
-        <div className='h-overflow-auto'>
-          {/* <AdminBranchesTable listOfBranchesData={adminBranchesData} /> */}
-        </div>
+        {/* <div className='h-overflow-auto'>
+          <AdminBranchesTable listOfBranchesData={adminBranchesData} />
+        </div> */}
         <div className='h-overflow-auto'>
           <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading} 
           listOfBranchesData={props.branches?.fetchedViewBranches} />

@@ -94,6 +94,7 @@ class AdminBranchesTable extends React.Component {
 
   render() {
     const data = this.props.listOfBranchesData;
+    const loading = this.props.loading;
 
     const columns = [
       {
@@ -158,6 +159,8 @@ class AdminBranchesTable extends React.Component {
       <>
         <Table
           className='table-striped-rows'
+          size='large'
+          loading={loading}
           columns={columns}
           dataSource={data}
           rowKey={(record) => record.id}

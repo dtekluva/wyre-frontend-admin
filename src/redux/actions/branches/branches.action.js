@@ -9,12 +9,12 @@ export const getBranches = (startDate, endDate) => async (dispatch) => {
 
   dispatch(getViewBranchesLoading(true));
 
-  const requestUrl = `/cadmin/branches/${startDate}/${endDate}`;
+  const requestUrl = `/cadmin/branches/2/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);
 
     dispatch(getViewBranchesSuccess(response.data.authenticatedData));
-    console.log(response.data.authenticatedData);
+    // console.log(response.data.authenticatedData);
     dispatch(getViewBranchesLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
@@ -29,9 +29,10 @@ export const addABranch = (parameters={}) => async (dispatch) => {
 
   const requestUrl = `/cadmin/branches/`;
   try {
-    // const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.post(requestUrl, parameters);
 
-    // dispatch(addViewBranchesSuccess(response.data));
+    dispatch(addViewBranchesSuccess(response.data));
+    console.log(response.data);
     dispatch(addViewBranchesLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
