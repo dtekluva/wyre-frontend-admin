@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Select, Checkbox, Input } from 'antd';
-import { useForm, Controller } from 'react-hook-form';
+// import { useForm, Controller } from 'react-hook-form';
 import { CaretDownFilled } from '@ant-design/icons';
 
 
@@ -8,14 +8,15 @@ import { CaretDownFilled } from '@ant-design/icons';
 function AddDeviceForm() {
     // modal form 
     const { Option } = Select;
-    const { register, handleSubmit, setValue, control, errors } = useForm();
+    // const { register, handleSubmit, setValue, control, errors } = useForm();
+    const [form] = Form.useForm();
     const deviceTypeSelector = (
         <Select
             className='cost-tracker-select h-4-br'
             id='iconType-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-            onChange={(e) => setValue('iconType', e.target.value, true)}
+        // onChange={(e) => setValue('iconType', e.target.value, true)}
         >
             <Option className='active-state-option' value='EM133'>
                 EM 133
@@ -40,7 +41,7 @@ function AddDeviceForm() {
             id='active-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-            onChange={(e) => setValue('activeState', e.target.value, true)}
+        // onChange={(e) => setValue('activeState', e.target.value, true)}
         >
             <Option className='active-state-option' value='true'>
                 Active
@@ -56,7 +57,7 @@ function AddDeviceForm() {
             id='iconType-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-            onChange={(e) => setValue('iconType', e.target.value, true)}
+        // onChange={(e) => setValue('iconType', e.target.value, true)}
         >
             <Option className='active-state-option' value='500kWh'>
                 500kWh
@@ -93,8 +94,9 @@ function AddDeviceForm() {
                 wrapperCol={{ span: 16 }}
                 initialValues={{ remember: true }}
                 autoComplete="off"
+                form={form}
                 className='cost-tracker-form'
-                onSubmit={handleSubmit(onSubmit)}
+            // onSubmit={handleSubmit(onSubmit)}
             >
                 <div className='add-cclient-form-inputs-wrapper'>
                     <div className='add-client-input-container'>
@@ -127,7 +129,8 @@ function AddDeviceForm() {
                             name="deviceType"
                             rules={[{ required: true, message: 'Please input your device type!' }]}
                         >
-                            <Controller
+                            {deviceTypeSelector}
+                            {/* <Controller
                                 as={deviceTypeSelector}
                                 name='deviceType'
                                 control={control}
@@ -135,8 +138,8 @@ function AddDeviceForm() {
                                 rules={{
                                     required: true,
                                 }}
-                                help={errors.deviceType && 'Please select a value'}
-                            />
+                                // help={errors.deviceType && 'Please select a value'}
+                            /> */}
                         </Form.Item>
                     </div>
                 </div>
@@ -150,7 +153,8 @@ function AddDeviceForm() {
                             name="activeState"
                             rules={[{ required: true, message: 'Please select a value!' }]}
                         >
-                            <Controller
+                            {activeStateSelector}
+                            {/* <Controller
                                 as={activeStateSelector}
                                 name='activeState'
                                 control={control}
@@ -158,8 +162,8 @@ function AddDeviceForm() {
                                 rules={{
                                     required: true,
                                 }}
-                                help={errors.activeState && 'Please select a value'}
-                            />
+                                // help={errors.activeState && 'Please select a value'}
+                            /> */}
                             {/* <p className='input-error-message'>
                                 {errors.activeState && 'Please select a value'}
                             </p> */}
@@ -173,7 +177,8 @@ function AddDeviceForm() {
                             name="iconType"
                             rules={[{ required: true, message: 'Please select a value!' }]}
                         >
-                            <Controller
+                            {iconTypeSelector}
+                            {/* <Controller
                                 as={iconTypeSelector}
                                 name='iconType'
                                 control={control}
@@ -181,14 +186,32 @@ function AddDeviceForm() {
                                 rules={{
                                     required: true,
                                 }}
-                                help={errors.iconType && 'Please select a value'}
-                            />
+                                // help={errors.iconType && 'Please select a value'}
+                            /> */}
                             {/* <p className='input-error-message'>
                                 {errors.iconType && 'Please select a value'}
                             </p> */}
                         </Form.Item>
                     </div>
-                    <div className='add-client-input-container' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%', marginTop: '42px' }}>
+                    <div className='add-client-input-container'
+                    >
+                            <Form.Item
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
+                            label="Device Name"
+                            name="deviceName"
+                            rules={[{ required: true, message: 'Please input your device name!' }]}
+                        >
+                            <Input size="large" />
+                        </Form.Item>
+
+                    </div>
+                </div>
+                <div className='add-cclient-form-inputs-wrapper'>
+
+                    <div className='add-client-input-container'
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%', marginTop: '42px' }}
+                    >
                         <Form.Item
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
@@ -197,19 +220,8 @@ function AddDeviceForm() {
                         >
                             <Checkbox onChange={onChange} name='load'
                                 id='load'
-                                ref={register}
+                                // ref={register}
                                 required>Load</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            name="source"
-                            rules={[{ required: true, message: 'Please select a value!' }]}
-                        >
-                            <Checkbox onChange={onChange} name='source'
-                                id='source'
-                                ref={register}
-                                required>Source</Checkbox>
                         </Form.Item>
                     </div>
                 </div>

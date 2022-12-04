@@ -60,7 +60,6 @@ const AddClients = (props) => {
   // );
 
   const onSubmit = async (values) => {
-    console.log('this is the file =====================>>>>>>>', values)
     const { logo, ...others } = values;
     const request = await props.addAClient(others, logo.file);
     if (request.fulfilled) {

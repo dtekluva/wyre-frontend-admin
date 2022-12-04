@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { Input, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-// import AddDeviceForm from '../adminPages/modal/AddDeviceForm';
-// import AddUserForm from '../adminPages/modal/AddUserForm';
+import AddDeviceForm from '../../pages/adminPages/modal/AddDeviceForm';
+import AddBranchForm from '../../pages/adminPages/modal/AddBranchForm';
+import AddUserForm from '../../pages/adminPages/modal/AddUserForm';
 const isSidebarOpen = false;
 function AdminTopBar(props) {
   // modal functions for add user form and add device form starts 
@@ -121,14 +122,20 @@ function AdminTopBar(props) {
       <Modal visible={visible}
         onOk={() => setVisible(false)}
         onCancel={() => setVisible(false)} width={1000} footer={null} >
-        {/* <AddDeviceForm /> */}
+        <AddDeviceForm />
+      </Modal>
+      {/* Add Branches Form modal  */}
+      <Modal visible={false}
+        onOk={() => setVisible(false)}
+        onCancel={() => setVisible(false)} width={1000} footer={null} >
+        <AddBranchForm />
       </Modal>
 
       {/* Add User Form modal  */}
       <Modal visible={visible2}
         onOk={() => setVisible2(false)}
         onCancel={() => setVisible2(false)} width={1000} footer={null} >
-        {/* <AddUserForm /> */}
+        <AddUserForm />
       </Modal>
     </div>
   );
