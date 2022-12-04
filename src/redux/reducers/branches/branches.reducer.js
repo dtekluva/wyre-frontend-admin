@@ -3,6 +3,8 @@ import viewBranchesTypes from "./branches.types";
 const INITIAL_STATE = {
     fetchViewBranchesLoading: false,
     fetchedViewBranches: false,
+    fetchViewBranchesTopLoading: false,
+    fetchedViewBranchesTop: false,
     newViewBranchesLoading: false,
     newViewBranches: false,
 };
@@ -25,6 +27,22 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 fetchedViewBranches: action.payload,
+
+            };
+        case viewBranchesTypes.GET_VIEWBRANCHES_TOP_LOADING:
+
+            return {
+
+                ...state,
+                fetchViewBranchesTopLoading: action.payload,
+
+            };
+        case viewBranchesTypes.GET_VIEWBRANCHES_TOP_SUCCESS:
+
+            return {
+
+                ...state,
+                fetchedViewBranchesTop: action.payload,
 
             };
         case viewBranchesTypes.ADD_VIEWBRANCHES_SUCCESS:

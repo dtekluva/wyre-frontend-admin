@@ -114,15 +114,31 @@ class AdminBranchesTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Number of Sources',
-        dataIndex: 'number_of_sources',
-        key: 'number_of_sources',
-        ...this.getColumnSearchProps('number_of_sources'),
-        sorter: (a, b) => a.number_of_sources - b.number_of_sources,
+        title: 'Total Energy [kwh]',
+        dataIndex: 'total_energy',
+        key: 'total_energy',
+        ...this.getColumnSearchProps('total_energy'),
+        sorter: (a, b) => a.total_energy - b.total_energy,
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'PAPR (%)',
+        title: 'Baseline Score',
+        dataIndex: 'baseline',
+        key: 'baseline',
+        ...this.getColumnSearchProps('baseline'),
+        sorter: (a, b) => a.baseline - b.baseline,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Cost Of Energy',
+        dataIndex: 'energy_cost',
+        key: 'energy_cost',
+        ...this.getColumnSearchProps('energy_cost'),
+        sorter: (a, b) => a.energy_cost - b.energy_cost,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'PAPR',
         dataIndex: 'papr',
         key: 'papr',
         ...this.getColumnSearchProps('papr'),
@@ -130,7 +146,7 @@ class AdminBranchesTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Generator Efficiency (%)',
+        title: 'Generator Efficiency',
         dataIndex: 'generator_efficiency',
         key: 'generator_efficiency',
         ...this.getColumnSearchProps('generator_efficiency'),
@@ -138,20 +154,27 @@ class AdminBranchesTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Carbon Emission (%)',
-        dataIndex: 'carbon_emission',
-        key: 'carbon_emission',
-        ...this.getColumnSearchProps('carbon_emission'),
-        sorter: (a, b) => a.carbon_emission - b.carbon_emission,
+        title: 'Fuel Efficiency',
+        dataIndex: 'fuel_efficiency',
+        key: 'fuel_efficiency',
+        ...this.getColumnSearchProps('fuel_efficiency'),
+        sorter: (a, b) => a.fuel_efficiency - b.fuel_efficiency,
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Total Score (%)',
-        dataIndex: 'total_score',
-        key: 'total_score',
-        ...this.getColumnSearchProps('total_score'),
-        sorter: (a, b) => a.total_score - b.total_score,
-        sortDirections: ['descend', 'ascend'],
+        title: 'Action',
+        key: 'key',
+        dataIndex: 'key',
+        render: (_, record) => (
+          <button
+            type='button'
+            className='table-row-button branch-users-view-button'
+            // onClick={() => console.log(record)}
+            onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
+          >
+            View
+          </button>
+        ),
       },
     ];
 

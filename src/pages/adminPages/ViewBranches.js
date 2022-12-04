@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getBranches } from '../../redux/actions/branches/branches.action';
+import { addABranch, getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
 import moment from 'moment';
 
 
@@ -20,6 +20,9 @@ const breadCrumbRoutes = [
 function ViewBranches(props) {
   const [adminBranchesData, setAdminBranchesData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const topLoading = props.branches?.fetchViewBranchesTopLoading
+  
+  console.log('THIS IS THE BRANCHES-DETAIL HERE========>>>>>>', props.branches);
 
   // useEffect(() => {
   //   const query = new URLSearchParams(window.location.search);
@@ -35,11 +38,13 @@ function ViewBranches(props) {
     // const from = query.get('cadmin/branches/01-08-2022%2000:00/01-08-2022%2000:00') || props.auth.userData.client_id;
     // console.log(query);
     
-     const client_id =searchParams.get("client_id");
-     console.log('This is client-id value', client_id);
+    const client_id =searchParams.get("client_id");
+    console.log('This is client-id value', client_id);
     console.log(startDate, endDate)
     
-    props.getBranches(startDate, endDate);
+    props.getBranches(client_id, startDate, endDate);
+    props.getBranchesTop(client_id, startDate, endDate)
+    // const topData = props.getBranchesTop.authenticatedData.client_id
   }, []);
 
   return (
@@ -72,19 +77,22 @@ function ViewBranches(props) {
         <div className='branches-total_costs'>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total KWh</p>
-            <p className='branches-total_costs-text'>122,000</p>
+            <p className='branches-total_costs-text'>{ 
+}</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total Cost</p>
-            <p className='branches-total_costs-text'>122,000</p>
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_cost
+}</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Baseline Average</p>
-            <p className='branches-total_costs-text'>22,000KwH</p>
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.baseline_avg
+}</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>CO2</p>
-            <p className='branches-total_costs-text'>22,000KwH</p>
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.co2_total}</p>
           </div>
         </div>
 
@@ -104,7 +112,8 @@ function ViewBranches(props) {
 //   ViewBranches: state.ViewBranches
 // }
 const mapDispatchToProps = {
-  getBranches
+  getBranches,
+  getBranchesTop
 }
 
 const mapStateToProps = (state) => ({
