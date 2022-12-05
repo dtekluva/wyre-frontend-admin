@@ -10,6 +10,7 @@ import AdminBranchesTable from '../../components/tables/adminTables/AdminBranche
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
 import { useSearchParams } from 'react-router-dom';
+import { Spin } from 'antd';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -21,8 +22,11 @@ function ViewBranches(props) {
   const [adminBranchesData, setAdminBranchesData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const topLoading = props.branches?.fetchViewBranchesTopLoading
+  // const approximate = setNum(Number(newValue.toFixed(2)))
   
   console.log('THIS IS THE BRANCHES-DETAIL HERE========>>>>>>', props.branches);
+
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   // useEffect(() => {
   //   const query = new URLSearchParams(window.location.search);
@@ -38,13 +42,13 @@ function ViewBranches(props) {
     // const from = query.get('cadmin/branches/01-08-2022%2000:00/01-08-2022%2000:00') || props.auth.userData.client_id;
     // console.log(query);
     
-    const client_id =searchParams.get("client_id");
+    const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
     console.log('This is client-id value', client_id);
     console.log(startDate, endDate)
     
     props.getBranches(client_id, startDate, endDate);
     props.getBranchesTop(client_id, startDate, endDate)
-    // const topData = props.getBranchesTop.authenticatedData.client_id
+    console.log("this is the USERDATA values===>>>>>>>>>>",props.auth.userData);
   }, []);
 
   return (
@@ -74,27 +78,29 @@ function ViewBranches(props) {
             <span>Download in Excel</span>
           </button>
         </div>
+        <Spin spinning={props.branches?.fetchViewBranchesTopLoading} >
         <div className='branches-total_costs'>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total KWh</p>
-            <p className='branches-total_costs-text'>{ 
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_kwh?.toFixed(2)
 }</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total Cost</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_cost
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_cost?.toFixed(2)
 }</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Baseline Average</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.baseline_avg
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.baseline_avg?.toFixed(2)
 }</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>CO2</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.co2_total}</p>
+            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.co2_total?.toFixed(2)}</p>
           </div>
         </div>
+        </Spin>
 
         {/* <div className='h-overflow-auto'>
           <AdminBranchesTable listOfBranchesData={adminBranchesData} />

@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Row, Col } from 'antd';
-import CompleteDataContext from '../../Context';
+// import CompleteDataContext from '../../Context';
 
-import adminHttpServices from '../../services/admin';
+// import adminHttpServices from '../../services/admin';
 
-import BreadCrumb from '../../components/BreadCrumb';
-import ExcelIcon from '../../icons/ExcelIcon';
-import AdminBranchUsersViewTable from '../../components/tables/adminTables/AdminBranchUsersViewTable';
-import AdminBranchDevicesViewTable from '../../components/tables/adminTables/AdminBranchDevicesViewTable';
+// import BreadCrumb from '../../components/BreadCrumb';
+import BreadCrumb from '../../../components/BreadCrumb';
+// import ExcelIcon from '../../icons/ExcelIcon';
+import ExcelIcon from '../../../components/icons/ExcelIcon';
+// import AdminBranchUsersViewTable from '../../components/tables/adminTables/AdminBranchUsersViewTable';
+import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
+// import AdminBranchDevicesViewTable from '../../components/tables/adminTables/AdminBranchDevicesViewTable';
+import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
 
 const breadCrumbRoutes = [
     { url: '/', name: 'Home', id: 1 },
@@ -16,24 +20,24 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranch({ match }) {
-    const { setCurrentUrl } = useContext(CompleteDataContext);
+    // const { setCurrentUrl } = useContext(CompleteDataContext);
     const [adminBranchUsersViewData, setAdminBranchUsersViewData] = useState([]);
     const [adminBranchDevicesViewData, setAdminBranchDevicesViewData] = useState([]);
 
-    useEffect(() => {
-        if (match && match.url) {
-            setCurrentUrl(match.url);
-        }
-    }, [match, setCurrentUrl]);
+    // useEffect(() => {
+    //     if (match && match.url) {
+    //         setCurrentUrl(match.url);
+    //     }
+    // }, [match, setCurrentUrl]);
 
-    useEffect(() => {
-        adminHttpServices.getAll('branchusersview').then((returnedData) => {
-            setAdminBranchUsersViewData(returnedData);
-        });
-        adminHttpServices.getAll('branchdevicesview').then((returnedData) => {
-            setAdminBranchDevicesViewData(returnedData);
-        });
-    }, []);
+    // useEffect(() => {
+    //     adminHttpServices.getAll('branchusersview').then((returnedData) => {
+    //         setAdminBranchUsersViewData(returnedData);
+    //     });
+    //     adminHttpServices.getAll('branchdevicesview').then((returnedData) => {
+    //         setAdminBranchDevicesViewData(returnedData);
+    //     });
+    // }, []);
 
     return (
         <>
@@ -81,15 +85,15 @@ function ViewBranch({ match }) {
                 </div>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
-                        <h3 className='table-header__heading'>Users</h3>
-                    </div>
-                    <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} />
-                </div>
-                <div className='h-overflow-auto'>
-                    <div className='text-center'>
                         <h3 className='table-header__heading'>Devices</h3>
                     </div>
                     <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} />
+                </div>
+                <div className='h-overflow-auto'>
+                    <div className='text-center'>
+                        <h3 className='table-header__heading'>Users</h3>
+                    </div>
+                    <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} />
                 </div>
             </article>
 

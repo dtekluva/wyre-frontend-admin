@@ -93,7 +93,9 @@ class AdminBranchDevicesViewTable extends React.Component {
     };
 
     render() {
-        const data = this.props.listOfBranchDevicesViewData;
+        // const data = this.props.listOfBranchDevicesViewData;
+        const data = this.props.listOfBranchesData;
+        const loading = this.props.loading;
 
         const columns = [
             {
@@ -147,9 +149,19 @@ class AdminBranchDevicesViewTable extends React.Component {
             },
             {
                 title: 'Action',
-                dataIndex: 'action',
-                key: 'action',
-            },
+                key: 'key',
+                dataIndex: 'key',
+                render: (_, record) => (
+                  <button
+                    type='button'
+                    className='table-row-button branch-users-view-button'
+                    onClick={() => console.log("RECORDS HERE..................",record)}
+                    // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
+                  >
+                    Edit
+                  </button>
+                ),
+              },
         ];
 
         return (
@@ -158,6 +170,7 @@ class AdminBranchDevicesViewTable extends React.Component {
                     className='table-striped-rows'
                     columns={columns}
                     dataSource={data}
+                    loading={loading}
                     rowKey={(record) => record.id}
                     pagination={false}
                     footer={() => ``}
