@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect } from 'react';
 
-// import CompleteDataContext from '../Context';
-
-// import adminHttpServices from '../services/admin';
 
 import BreadCrumb from '../../components/BreadCrumb';
 import AdminClientsTable from '../../components/tables/adminTables/AdminClientsTable';
@@ -19,21 +16,12 @@ const breadCrumbRoutes = [
 ];
 
 function ViewOrganisation(props) {
-  // const { setCurrentUrl } = useContext(CompleteDataContext);
-  const [adminClientsData, setAdminClientsData] = useState([]);
-  console.log('here is the client information and here we go ============>>>>>>', props.client);
-
-  // useEffect(() => {
-  //   if (match && match.url) {
-  //     setCurrentUrl(match.url);
-  //   }
-  // }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    // getClients.getAll('clients').then((returnedData) => {
-    //   setAdminClientsData(returnedData);
-    // });
-    props.getClients();
+    if(!props.client?.fetchedClient){
+      props.getClients();
+    }
+
   }, []);
 
   return (

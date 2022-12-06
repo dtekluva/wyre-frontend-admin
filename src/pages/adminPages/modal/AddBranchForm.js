@@ -1,29 +1,35 @@
 import React from 'react';
 
-import { Form, Input, notification} from 'antd';
+import { Form, Input, notification, Spin } from 'antd';
 
 
-
-import { addABranch } from '../../../redux/actions/branches/branches.action';
+import { getBranches, getBranchesTop, addABranch } from '../../../redux/actions/branches/branches.action';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import moment from 'moment';
 
 
 
 function AddBranchesForm(props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+  const [form] = Form.useForm();
   const onSubmit = async (values) => {
-    const client_id = searchParams.get('/client_id');
+    const client_id = searchParams.get("client_id");
     console.log('This is client-id value', client_id);
     console.log('this is the AddBranches value =====================>>>>>>>', values)
-    // window.location.href = `/view-branches?client_id=${values.client_id}`
-    const request = await props.addABranch();
+    const request = await props.addABranch({ ...values, client: client_id });
     if (request.fulfilled) {
-      return notification.info({
+      form.resetFields();
+      props.setModal(false);
+      notification.info({
         message: 'successful',
         description: request.message,
       });
+
+      const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+      const endDate = moment().format('DD-MM-YYYY HH:MM');
+      props.getBranches(client_id, startDate, endDate);
+      return props.getBranchesTop(client_id, startDate, endDate)
     }
     return notification.error({
       message: 'failed',
@@ -31,50 +37,55 @@ function AddBranchesForm(props) {
     });
   };
 
+  console.log('props.branches?.newViewBranchesLoading', props.branches);
   return (
     <>
       <div className='cost-tracker-forms-content-wrapper'>
-        <h1 className='center-main-heading'>Branche Form</h1>
+        <Spin spinning={props.branches?.newViewBranchesLoading}>
 
-        <section className='cost-tracker-form-section'>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onSubmit}
-            autoComplete="off"
-          >
-            <div className='add-cclient-form-inputs-wrapper'> 
 
-               {/* BRANCH NAME  */}
-               <div className='add-client-input-container'>
-                <Form.Item
-                  labelCol={{ span: 24 }}
-                  wrapperCol={{ span: 24 }}
-                  label="Branch Name"
-                  name="branchName"
-                  rules={[{ required: true, message: 'Please input a bramch name!' }]}
-                >
-                  <Input placeholder="Branch Name" size="large" />
-                </Form.Item>
-              </div>
+          <h1 className='center-main-heading'>Branche Form</h1>
 
-              {/* OFFICE ADDRESS  */}
-              <div className='add-client-input-container'>
-                <Form.Item
-                  labelCol={{ span: 24 }}
-                  wrapperCol={{ span: 24 }}
-                  label="Office Address"
-                  name="officeAddress"
-                  rules={[{ required: true, message: 'Please input an office address!' }]}
-                >
-                  <Input placeholder="Office Address" size="large" />
-                </Form.Item>
-              </div>
+          <section className='cost-tracker-form-section'>
+            <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onSubmit}
+              autoComplete="off"
+              form={form}
+            >
+              <div className='add-cclient-form-inputs-wrapper'>
 
-              {/* CLIENT NAME */}
-              <div className='add-client-input-container'>
+                {/* BRANCH NAME  */}
+                <div className='add-client-input-container'>
+                  <Form.Item
+                    labelCol={{ span: 24 }}
+                    wrapperCol={{ span: 24 }}
+                    label="Branch Name"
+                    name="name"
+                    rules={[{ required: true, message: 'Please input a bramch name!' }]}
+                  >
+                    <Input placeholder="Branch Name" size="large" />
+                  </Form.Item>
+                </div>
+
+                {/* OFFICE ADDRESS  */}
+                <div className='add-client-input-container'>
+                  <Form.Item
+                    labelCol={{ span: 24 }}
+                    wrapperCol={{ span: 24 }}
+                    label="Office Address"
+                    name="address"
+                    rules={[{ required: true, message: 'Please input an office address!' }]}
+                  >
+                    <Input placeholder="Office Address" size="large" />
+                  </Form.Item>
+                </div>
+
+                {/* CLIENT NAME */}
+                {/* <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
@@ -84,22 +95,25 @@ function AddBranchesForm(props) {
                 >
                   <Input placeholder="Client's Name"/>
                 </Form.Item>
+              </div> */}
               </div>
-            </div>
-            <div className='add-client-button-wrapper'>
-              <button className='generic-submit-button'>
-                Add Branch
-              </button>
-            </div>
-          </Form>
-        </section>
-      </div> 
+              <div className='add-client-button-wrapper'>
+                <button className='generic-submit-button'>
+                  Add Branch
+                </button>
+              </div>
+            </Form>
+          </section>
+        </Spin>
+      </div>
     </>
   );
 }
 
 const mapDispatchToProps = {
-  addABranch
+  addABranch,
+  getBranchesTop,
+  getBranches
 };
 
 const mapStateToProps = (state) => ({

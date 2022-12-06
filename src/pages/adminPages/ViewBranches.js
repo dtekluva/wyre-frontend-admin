@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
 
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { addABranch, getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
-// import { getBranch } from '../../redux/actions/branch/branch.action';
-
+import { getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
 import moment from 'moment';
 
 
@@ -22,34 +20,14 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranches(props) {
-  const [adminBranchesData, setAdminBranchesData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const topLoading = props.branches?.fetchViewBranchesTopLoading
-  // const approximate = setNum(Number(newValue.toFixed(2)))
   
-  console.log('THIS IS THE BRANCHES-DETAIL HERE========>>>>>>', props.branches);
-
-  // const [searchParams, setSearchParams] = useSearchParams();
-
-  // useEffect(() => {
-  //   const query = new URLSearchParams(window.location.search);
-  //   const from = query.get('client_id') || props.auth.userData.client_id;
-  //   props.getBranches(from)
-  // }, [])
 
   useEffect(() => {
     const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
     const endDate = moment().format('DD-MM-YYYY HH:MM');
-    // const endDate = [moment().startOf('month').startOf('day'), moment()]
-    // const query = new URLSearchParams(window.location.search);
-    // const from = query.get('cadmin/branches/01-08-2022%2000:00/01-08-2022%2000:00') || props.auth.userData.client_id;
-    // console.log(query);
-    
+
     const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
-    // const client_id =searchParams.get("client_id.branch_id") || props.auth.userData.client_id.branch_id
-    console.log('This is client-id value', client_id);
-    // console.log('This is branch-id value', branch_id);
-    console.log(startDate, endDate)
     
     props.getBranches(client_id, startDate, endDate);
     props.getBranchesTop(client_id, startDate, endDate)
@@ -106,10 +84,7 @@ function ViewBranches(props) {
           </div>
         </div>
         </Spin>
-
-        {/* <div className='h-overflow-auto'>
-          <AdminBranchesTable listOfBranchesData={adminBranchesData} />
-        </div> */}
+ 
         <div className='h-overflow-auto'>
           <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading} 
           listOfBranchesData={props.branches?.fetchedViewBranches} />
@@ -119,9 +94,6 @@ function ViewBranches(props) {
   );
 }
 
-// const mapStateToProps = {
-//   ViewBranches: state.ViewBranches
-// }
 const mapDispatchToProps = {
   getBranches,
   // getBranch,

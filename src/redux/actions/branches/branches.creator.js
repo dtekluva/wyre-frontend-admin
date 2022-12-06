@@ -27,7 +27,7 @@ export const addViewBranchesLoading = (payload = true) => ({
   });
   
 export const addViewBranchesSuccess = (payload = true) => ({
-    type: viewBranchesTypes.GET_VIEWBRANCHES_SUCCESS,
+    type: viewBranchesTypes.ADD_VIEWBRANCHES_SUCCESS,
     payload,
   });
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 // import { Link, useLocation } from 'react-router-dom';
 import { Spin, Form, notification } from 'antd';
 // import { useForm, Controller } from 'react-hook-form';
@@ -25,7 +25,9 @@ function Login(props) {
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [form] = Form.useForm();
-
+  useEffect(()=> {
+    console.log('this should only render once =========>>>>>>>>>>>')
+  }, [])
   // const { setUserData } = useContext(CompleteDataContext);
   // const location = useLocation();
   // const query = new URLSearchParams(location.search);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // import CompleteDataContext from '../Context';
 // import { useNavigation } from 'react-router';
@@ -27,7 +27,7 @@ import LatestLogo from '../icons/LatestLogo';
 
 const isNavOpen = false;
 
-function Header() {
+function AdminHeader() {
   // const {
     // isNavOpen,
     // setIsNavOpen,
@@ -275,4 +275,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default AdminHeader;

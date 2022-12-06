@@ -30,7 +30,10 @@ function Overview(props) {
     const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
     const endDate = moment().format('DD-MM-YYYY HH:MM');
     // const endDate = [moment().startOf('month').startOf('day'), moment()]
-    props.getClientsOverview(startDate, endDate);
+    if(!props.client?.fetchedClientOverview){
+      props.getClientsOverview(startDate, endDate);
+    }
+    
   }, []);
 
   return (

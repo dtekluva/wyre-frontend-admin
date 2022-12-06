@@ -1,10 +1,8 @@
-import React, { useEffect, useContext } from 'react';
-import { Button, DatePicker, notification, Select, Spin, Upload } from 'antd';
-// import CompleteDataContext from '../Context';
+import React from 'react';
+import { Button, notification, Spin, Upload } from 'antd';
 
 import { Input, Form } from 'antd';
 
-import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../../components/BreadCrumb';
 import { connect } from 'react-redux';
@@ -18,46 +16,9 @@ const breadCrumbRoutes = [
   { url: '#', name: 'Add Clients', id: 4 },
 ];
 
-const { Option } = Select;
-
 const AddClients = (props) => {
   const [form] = Form.useForm();
 
-  // const { setCurrentUrl } = useContext(CompleteDataContext);
-
-  // const { register, handleSubmit, setValue, control, errors } = useForm();
-
-  // useEffect(() => {
-  //   if (match && match.url) {
-  //     setCurrentUrl(match.url);
-  //   }
-  // }, [match, setCurrentUrl]);
-
-  // const dateAddedPicker = (
-  //   <DatePicker
-  //     format='DD-MM-YYYY'
-  //     className='generic-input'
-  //     id='equipment-purchase-date'
-  //     onChange={(e) => setValue('dateAdded', e.target.value, true)}
-  //   />
-  // );
-
-  // const activeStateSelector = (
-  //   <Select
-  //     className='cost-tracker-select h-4-br'
-  //     id='active-state'
-  //     defaultValue='true'
-  //     suffixIcon={<CaretDownFilled />}
-  //     onChange={(e) => setValue('activeState', e.target.value, true)}
-  //   >
-  //     <Option className='active-state-option' value='true'>
-  //       True
-  //     </Option>
-  //     <Option className='active-state-option' value='false'>
-  //       False
-  //     </Option>
-  //   </Select>
-  // );
 
   const onSubmit = async (values) => {
     const { logo, ...others } = values;
@@ -87,11 +48,6 @@ const AddClients = (props) => {
           <h1 className='center-main-heading'>Clients</h1>
 
           <section className='cost-tracker-form-section'>
-            {/* <form
-            className='cost-tracker-form'
-            action='#'
-            onSubmit={handleSubmit(onSubmit)}
-          > */}
             <Form
               form={form}
               name="basic"
