@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Row, Col } from 'antd';
-// import CompleteDataContext from '../../Context';
 
-// import adminHttpServices from '../../services/admin';
-
-// import BreadCrumb from '../../components/BreadCrumb';
 import BreadCrumb from '../../../components/BreadCrumb';
-// import ExcelIcon from '../../icons/ExcelIcon';
 import ExcelIcon from '../../../components/icons/ExcelIcon';
-// import AdminBranchUsersViewTable from '../../components/tables/adminTables/AdminBranchUsersViewTable';
+
 import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
-// import AdminBranchDevicesViewTable from '../../components/tables/adminTables/AdminBranchDevicesViewTable';
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
+
+import { connect } from 'react-redux';
+// import { getBranch } from '../../../redux/actions/branch/branch.action';
+import { getDevices } from '../../../redux/actions/devices/device.action';
+
+import moment from 'moment';
+import { useSearchParams } from 'react-router-dom';
 
 const breadCrumbRoutes = [
     { url: '/', name: 'Home', id: 1 },
@@ -19,12 +20,20 @@ const breadCrumbRoutes = [
     { url: '#', name: 'View Organisation', id: 3 },
 ];
 
-function ViewBranch({ match }) {
+function ViewBranch() {
     // const { setCurrentUrl } = useContext(CompleteDataContext);
+    // const [searchParams, setSearchParams] = useSearchParams();
     const [adminBranchUsersViewData, setAdminBranchUsersViewData] = useState([]);
     const [adminBranchDevicesViewData, setAdminBranchDevicesViewData] = useState([]);
 
-    // useEffect(() => {
+    useEffect(() => {
+        // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+        // const endDate = moment().format('DD-MM-YYYY HH:MM');
+        // props.getBranches(client_id, startDate, endDate);
+        // const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
+        // const branch_id =searchParams.get("branch_id") || props.auth.userData.client_id.branch_id
+        // console.log('This is client-id value', client_id);
+        
     //     if (match && match.url) {
     //         setCurrentUrl(match.url);
     //     }
@@ -37,7 +46,7 @@ function ViewBranch({ match }) {
     //     adminHttpServices.getAll('branchdevicesview').then((returnedData) => {
     //         setAdminBranchDevicesViewData(returnedData);
     //     });
-    // }, []);
+    }, []);
 
     return (
         <>
@@ -88,12 +97,17 @@ function ViewBranch({ match }) {
                         <h3 className='table-header__heading'>Devices</h3>
                     </div>
                     <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} />
+                    {/* <AdminBranchDevicesViewTable 
+                      loading= {props.devices?.fetchDeviceLoading}
+                      listOfBranchesData={props.devices?.fetchedDevice} /> */}
                 </div>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Users</h3>
                     </div>
-                    <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} />
+                    <AdminBranchUsersViewTable
+                      loading= {''}
+                     listOfBranchesData={adminBranchUsersViewData} />
                 </div>
             </article>
 
@@ -101,4 +115,16 @@ function ViewBranch({ match }) {
     );
 }
 
-export default ViewBranch
+const mapDispatchToProps = {
+    // getBranch,
+    getDevices
+  }
+  
+  const mapStateToProps = (state) => ({
+    // branch: state.branch,
+    branches: state.branches,
+    auth: state.auth,
+    devices: state.devices
+  });
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewBranch)

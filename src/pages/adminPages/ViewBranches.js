@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+
 import { connect } from 'react-redux';
 import { addABranch, getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
+// import { getBranch } from '../../redux/actions/branch/branch.action';
+
 import moment from 'moment';
 
 
@@ -43,7 +46,9 @@ function ViewBranches(props) {
     // console.log(query);
     
     const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
+    // const client_id =searchParams.get("client_id.branch_id") || props.auth.userData.client_id.branch_id
     console.log('This is client-id value', client_id);
+    // console.log('This is branch-id value', branch_id);
     console.log(startDate, endDate)
     
     props.getBranches(client_id, startDate, endDate);
@@ -119,11 +124,13 @@ function ViewBranches(props) {
 // }
 const mapDispatchToProps = {
   getBranches,
+  // getBranch,
   getBranchesTop
 }
 
 const mapStateToProps = (state) => ({
   branches: state.branches,
+  // branch: state.branch,
   auth: state.auth,
 });
 

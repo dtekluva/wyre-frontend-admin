@@ -22,7 +22,7 @@ export const getViewBranchesTopSuccess = (payload = true) => ({
   });
 
 export const addViewBranchesLoading = (payload = true) => ({
-    type: viewBranchesTypes.GET_VIEWBRANCHES_LOADING,
+    type: viewBranchesTypes.ADD_VIEWBRANCHES_LOADING,
     payload,
   });
   
