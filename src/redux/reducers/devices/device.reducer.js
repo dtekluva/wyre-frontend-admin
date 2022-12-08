@@ -3,6 +3,8 @@ import deviceTypes from "./device.types";
 const INITIAL_STATE = {
     fetchDeviceLoading: false,
     fetchedDevice: false,
+    fetchDeviceOverviewLoading: false,
+    fetchedDeviceOverview: false,
     newDeviceLoading: false,
     newDevice: false,
 };
@@ -25,6 +27,21 @@ const deviceReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 fetchedDevice: action.payload,
+
+            };
+            case deviceTypes.GET_DEVICE_OVERVIEW_LOADING:
+
+            return {
+
+                ...state,
+                fetchDeviceOverviewLoading: action.payload,
+
+            };
+        case deviceTypes.GET_DEVICE_OVERVIEW_SUCCESS:
+
+            return {
+                ...state,
+                fetchedDeviceOverview: action.payload,
 
             };
         case deviceTypes.ADD_DEVICE_SUCCESS:

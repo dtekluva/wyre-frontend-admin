@@ -1,6 +1,6 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { addDeviceLoading, addDeviceSuccess, getDeviceLoading, getDeviceSuccess } from "./device.creator";
+import { addDeviceLoading, addDeviceSuccess, getDeviceLoading, getDeviceOverviewLoading, getDeviceOverviewSuccess, getDeviceSuccess } from "./device.creator";
 
 
 
@@ -13,11 +13,29 @@ export const getDevices = (parameters={}) => async (dispatch) => {
     const response = await APIService.get(requestUrl, parameters);
 
     dispatch(getDeviceSuccess(response.data));
-    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
+    // window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
     dispatch(getDeviceLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getDeviceLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const getDevicesOverview = (startDate, endDate) => async (dispatch) => {
+
+  dispatch(getDeviceOverviewLoading(true));
+
+  const requestUrl = `cadmin/branch/devices/21`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    console.log('this is the response data', response.data);
+    dispatch(getDeviceOverviewSuccess(response.data.authenticatedData));
+    dispatch(getDeviceOverviewLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getDeviceOverviewLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

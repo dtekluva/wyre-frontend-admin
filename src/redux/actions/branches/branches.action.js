@@ -12,6 +12,7 @@ export const getBranches = (clientId, startDate, endDate) => async (dispatch) =>
   const requestUrl = `/cadmin/branches/${clientId}/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);
+    console.log("This is GetBranches response data", response.data);
 
     dispatch(getViewBranchesSuccess(response.data.authenticatedData));
     dispatch(getViewBranchesLoading(false))

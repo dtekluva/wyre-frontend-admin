@@ -94,14 +94,22 @@ class AdminBranchUsersViewTable extends React.Component {
     };
 
     render() {
-        const data = this.props.listOfBranchUsersViewData;
+        const data = this.props.listOfBranchUsersViewData[0];
+        const loading = this.props.loading
 
         const columns = [
             {
+                title: 'Username',
+                dataIndex: 'username',
+                key: 'username',
+                sorter: (a, b) => a.username.localeCompare(b.username),
+                sortDirections: ['descend', 'ascend'],
+            },
+            {
                 title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-                sorter: (a, b) => a.name.localeCompare(b.name),
+                dataIndex: 'first_name',
+                key: 'first_name',
+                sorter: (a, b) => a.first_name.localeCompare(b.first_name),
                 sortDirections: ['descend', 'ascend'],
             },
             {
@@ -126,30 +134,33 @@ class AdminBranchUsersViewTable extends React.Component {
                 sortDirections: ['descend', 'ascend'],
             },
             {
-                title: 'Role',
-                dataIndex: 'role',
-                key: 'role',
-                sorter: (a, b) => a.role - b.role,
-                sortDirections: ['descend', 'ascend'],
-            },
-            {
-                title: 'Permission',
-                dataIndex: 'permission',
-                key: 'permission',
-                sorter: (a, b) => a.permission - b.permission,
+                title: 'Last Login',
+                dataIndex: 'last_login',
+                key: 'last_login',
+                sorter: (a, b) => a.last_login - b.last_login,
                 sortDirections: ['descend', 'ascend'],
             },
             {
                 title: 'Date Added',
-                dataIndex: 'date_added',
-                key: 'date_added',
-                sorter: (a, b) => a.date_added - b.date_added,
+                dataIndex: 'date_joined',
+                key: 'date_joined',
+                sorter: (a, b) => a.date_joined - b.date_joined,
                 sortDirections: ['descend', 'ascend'],
             },
             {
                 title: 'Action',
                 dataIndex: 'action',
                 key: 'action',
+                render: (_, record) => (
+                    <button
+                      type='button'
+                      className='table-row-button branch-users-view-button'
+                      onClick={() => console.log("RECORDS HERE..................",record)}
+                      // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
+                    >
+                      Edit
+                    </button>
+                  ),
             },
         ];
 
@@ -159,6 +170,7 @@ class AdminBranchUsersViewTable extends React.Component {
                     className='table-striped-rows'
                     columns={columns}
                     dataSource={data}
+                    loading={loading}
                     rowKey={(record) => record.id}
                     pagination={false}
                     footer={() => ``}

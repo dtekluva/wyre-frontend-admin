@@ -9,8 +9,17 @@ export const getDeviceSuccess = (payload = true) => ({
     type: deviceTypes.GET_DEVICE_SUCCESS,
     payload,
   });
+  export const getDeviceOverviewLoading = (payload = true) => ({
+    type: deviceTypes.GET_DEVICE_OVERVIEW_LOADING,
+    payload,
+  });
+  
+export const getDeviceOverviewSuccess = (payload = true) => ({
+    type: deviceTypes.GET_DEVICE_OVERVIEW_SUCCESS,
+    payload,
+  });
 export const addDeviceLoading = (payload = true) => ({
-    type: deviceTypes.GET_DEVICE_LOADING,
+    type: deviceTypes.ADD_DEVICE_LOADING,
     payload,
   });
   

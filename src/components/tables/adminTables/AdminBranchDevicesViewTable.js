@@ -94,43 +94,50 @@ class AdminBranchDevicesViewTable extends React.Component {
 
     render() {
         // const data = this.props.listOfBranchDevicesViewData;
-        const data = this.props.listOfBranchesData;
+        const data = this.props.listOfDevicesData[0];
         const loading = this.props.loading;
 
         const columns = [
             {
                 title: 'Device Name',
-                dataIndex: 'device_name',
-                key: 'device_name',
-                sorter: (a, b) => a.device_name.localeCompare(b.device_name),
+                dataIndex: 'name',
+                key: 'name',
+                sorter: (a, b) => a.name.localeCompare(b.name),
+                sortDirections: ['descend', 'ascend'],
+            },
+            {
+                title: 'Device Type',
+                dataIndex: 'type',
+                key: 'type',
+                sorter: (a, b) => a.type.localeCompare(b.type),
                 sortDirections: ['descend', 'ascend'],
             },
             {
                 title: 'Device Identity',
-                dataIndex: 'device_identity',
-                key: 'device_identity',
-                sorter: (a, b) => a.device_identity.localeCompare(b.device_identity),
+                dataIndex: 'device_id',
+                key: 'device_id',
+                sorter: (a, b) => a.device_id.localeCompare(b.device_id),
                 sortDirections: ['descend', 'ascend'],
             },
             {
-                title: 'Source',
-                dataIndex: 'source',
-                key: 'source',
-                sorter: (a, b) => a.source - b.source,
+                title: 'Branch',
+                dataIndex: 'branch',
+                key: 'branch',
+                sorter: (a, b) => a.branch - b.branch,
                 sortDirections: ['descend', 'ascend'],
             },
             {
-                title: 'Load',
-                dataIndex: 'load',
-                key: 'load',
-                sorter: (a, b) => a.load - b.load,
+                title: 'Generator Size',
+                dataIndex: 'gen_size',
+                key: 'gen_size',
+                sorter: (a, b) => a.gen_size - b.gen_size,
                 sortDirections: ['descend', 'ascend'],
             },
             {
-                title: 'Type',
-                dataIndex: 'type',
-                key: 'type',
-                sorter: (a, b) => a.type - b.type,
+                title: 'Fuel Type',
+                dataIndex: 'fuel_type',
+                key: 'fuel_type',
+                sorter: (a, b) => a.fuel_type - b.fuel_type,
                 sortDirections: ['descend', 'ascend'],
             },
             {
@@ -141,10 +148,17 @@ class AdminBranchDevicesViewTable extends React.Component {
                 sortDirections: ['descend', 'ascend'],
             },
             {
-                title: 'Icon Type',
-                dataIndex: 'icon_type',
-                key: 'icon_type',
-                sorter: (a, b) => a.icon_type - b.icon_type,
+                title: 'Start of Operating Hours',
+                dataIndex: 'operating_hours_start',
+                key: 'operating_hours_start',
+                sorter: (a, b) => a.operating_hours_start - b.operating_hours_start,
+                sortDirections: ['descend', 'ascend'],
+            },
+            {
+                title: 'End of Operating Hours',
+                dataIndex: 'operating_hours_end',
+                key: 'operating_hours_end',
+                sorter: (a, b) => a.operating_hours_end - b.operating_hours_end,
                 sortDirections: ['descend', 'ascend'],
             },
             {

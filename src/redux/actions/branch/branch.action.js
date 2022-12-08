@@ -2,17 +2,17 @@ import { APIService } from "../../../config/api/apiConfig";
 
 import { getBranchLoading, getBranchSuccess } from "./branch.creator";
 
-export const getBranch = (clientId, branch_id, startDate, endDate) => async (dispatch) => {
+export const getABranch = (branch_id, startDate, endDate) => async (dispatch) => {
   
 
   dispatch(getBranchLoading(true));
 
-  const requestUrl = `/cadmin/branches/${clientId.branch_id}/${startDate}/${endDate}`;
+  const requestUrl = `/cadmin/branch/21`;
   try {
     const response = await APIService.get(requestUrl);
 
     dispatch(getBranchSuccess(response.data.authenticatedData));
-    console.log("get-branches data here>>>>>>>>>>>>>>>>>>>>>>",response.data.authenticatedData);
+    console.log("get-A-branch data here>>>>>>>>>>>>>>>>>>>>>>",response.data.authenticatedData);
     dispatch(getBranchLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
