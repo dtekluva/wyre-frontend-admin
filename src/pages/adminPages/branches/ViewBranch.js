@@ -29,6 +29,7 @@ function ViewBranch(props) {
     const [adminBranchDevicesViewData, setAdminBranchDevicesViewData] = useState([]);
     console.log("DEVICES OVERVIEW HERE>>>>>>>>>>", props.device);
     console.log("GET-A-BRANCH data here>>>>>>>>>>", props.branch);
+    console.log("BRANCH data TOP here>>>>>>>>>>", props.branch.fetchedBranch);
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -92,16 +93,16 @@ function ViewBranch(props) {
                     <Row>
                         <Col md={8}>
                             <div>
-                                <p className='view_branch-text'>Total Energy: <span>{props.branch?.fetchedBranch.total_kwh?.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Baseline Score: <span>{props.branch?.fetchedBranch.baseline_avg?.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Cost of Energy: <span> {props.branch?.fetchedBranch.energy_cost?.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Total Energy: <span>{props.branch?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Baseline Score: <span>{props.branch?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Cost of Energy: <span> {props.branch?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
                             </div>
                         </Col>
                         <Col md={8}>
                             <div>
-                                <p className='view_branch-text'>Generator Efficiency: <span> {props.branch?.fetchedBranch.generator_efficiency?.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Fuel Efficiency: <span> {props.branch?.fetchedBranch.fuel_efficiency?.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>PAPR: <span>{props.branch?.fetchedBranch.papr?.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Generator Efficiency: <span> {props.branch?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Fuel Efficiency: <span> {props.branch?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>PAPR: <span>{props.branch?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
                             </div>
                         </Col>
                     </Row>

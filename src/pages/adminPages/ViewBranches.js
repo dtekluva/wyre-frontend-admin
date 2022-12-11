@@ -32,6 +32,7 @@ function ViewBranches(props) {
     props.getBranches(client_id, startDate, endDate);
     props.getBranchesTop(client_id, startDate, endDate)
     console.log("this is the USERDATA values===>>>>>>>>>>",props.auth.userData);
+    console.log("FetchedViewBranchesTop>>>>>>>>>>>>", props.branches.fetchedViewBranchesTop);
   }, []);
 
   return (

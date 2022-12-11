@@ -7,7 +7,7 @@ export const getABranch = (branch_id, startDate, endDate) => async (dispatch) =>
 
   dispatch(getBranchLoading(true));
 
-  const requestUrl = `/cadmin/branch/21`;
+  const requestUrl = `/cadmin/branch/${branch_id}/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);
 
