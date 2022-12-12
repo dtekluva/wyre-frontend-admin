@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedViewBranchesTop: false,
     newViewBranchesLoading: false,
     newViewBranches: false,
+    fetchBranchLoading: false,
+    fetchedBranch: false,
 };
 
 const branchesReducer = (state = INITIAL_STATE, action) => {
@@ -59,6 +61,22 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 newViewBranchesLoading: action.payload,
+
+            };
+        case viewBranchesTypes.GET_BRANCH_SUCCESS:
+
+            return {
+
+                ...state,
+                fetchedBranch: action.payload,
+
+            };
+        case viewBranchesTypes.GET_BRANCH_LOADING:
+
+            return {
+
+                ...state,
+                fetchBranchLoading: action.payload,
 
             };
 

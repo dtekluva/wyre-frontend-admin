@@ -1,6 +1,6 @@
 
-import { APIServiceNoAuth } from "../../../config/api/apiConfig";
-import { loginUserLoading } from "./auth.creator";
+import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
+import { addUsersLoading, addUsersSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
 
 
@@ -32,5 +32,37 @@ export const loginAUser = (parameters) => async (dispatch) => {
     return window.location.href = '/';
   } catch (error) {
     return { signedOut: false, error: error.message };
+  }
+};
+
+
+export const getAllRoles = () => async (dispatch) => {
+
+  dispatch(getRolesLoading(true));
+  const requestUrl = `/cadmin/roles`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getRolesSuccess(response.data.authenticatedData));
+    dispatch(getRolesLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getRolesLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+export const addUsers = (parameters) => async (dispatch) => {
+  console.log('this is me in the get reolaldkjslkdjolksjlokcxjkosjndmlokjnsdjko============.>>>>>>>>>.', parameters)
+  dispatch(addUsersLoading(true));
+  const requestUrl = `/cadmin/users/`;
+  try {
+    const response = await APIService.post(requestUrl, parameters);
+
+    dispatch(addUsersSuccess(response.data.authenticatedData));
+    dispatch(addUsersLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(addUsersLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
   }
 };

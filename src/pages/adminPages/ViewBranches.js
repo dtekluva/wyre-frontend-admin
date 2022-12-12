@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
 import moment from 'moment';
@@ -20,6 +20,7 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranches(props) {
+  const [clientId, setClientId] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   
 
@@ -28,11 +29,9 @@ function ViewBranches(props) {
     const endDate = moment().format('DD-MM-YYYY HH:MM');
 
     const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
-    
+    setClientId(client_id);
     props.getBranches(client_id, startDate, endDate);
     props.getBranchesTop(client_id, startDate, endDate)
-    console.log("this is the USERDATA values===>>>>>>>>>>",props.auth.userData);
-    console.log("FetchedViewBranchesTop>>>>>>>>>>>>", props.branches.fetchedViewBranchesTop);
   }, []);
 
   return (
@@ -87,7 +86,8 @@ function ViewBranches(props) {
         </Spin>
  
         <div className='h-overflow-auto'>
-          <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading} 
+          <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading}
+          clientId={clientId}
           listOfBranchesData={props.branches?.fetchedViewBranches} />
         </div>
       </article>
@@ -97,13 +97,11 @@ function ViewBranches(props) {
 
 const mapDispatchToProps = {
   getBranches,
-  // getBranch,
   getBranchesTop
 }
 
 const mapStateToProps = (state) => ({
   branches: state.branches,
-  // branch: state.branch,
   auth: state.auth,
 });
 

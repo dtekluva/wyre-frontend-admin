@@ -1,5 +1,5 @@
 import { APIService } from "../../../config/api/apiConfig";
-import { delay, multipartFormBuilder } from "../../../helpers/GeneralHelper";
+import { multipartFormBuilder } from "../../../helpers/GeneralHelper";
 
 import { addClientLoading, addClientSuccess, getClientLoading, getClientOverviewLoading, getClientOverviewSuccess, getClientSuccess } from "./client.creator";
 
@@ -14,7 +14,7 @@ export const getClients = (parameters={}) => async (dispatch) => {
     const response = await APIService.get(requestUrl, parameters);
 
     dispatch(getClientSuccess(response.data));
-    window.localStorage.setItem('loggedWyreUser', JSON.stringify(response.data));
+
     dispatch(getClientLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {

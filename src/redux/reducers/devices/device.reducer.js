@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedDeviceOverview: false,
     newDeviceLoading: false,
     newDevice: false,
+    fetchDeviceTypeLoading: false,
+    fetchedDeviceType: false,
 };
 
 const deviceReducer = (state = INITIAL_STATE, action) => {
@@ -29,7 +31,20 @@ const deviceReducer = (state = INITIAL_STATE, action) => {
                 fetchedDevice: action.payload,
 
             };
-            case deviceTypes.GET_DEVICE_OVERVIEW_LOADING:
+        case deviceTypes.GET_DEVICE_TYPE_LOADING:
+
+            return {
+                ...state,
+                fetchDeviceTypeLoading: action.payload,
+
+            };
+        case deviceTypes.GET_DEVICE_TYPE_SUCCESS:
+
+            return {
+                ...state,
+                fetchedDeviceType: action.payload,
+            };
+        case deviceTypes.GET_DEVICE_OVERVIEW_LOADING:
 
             return {
 

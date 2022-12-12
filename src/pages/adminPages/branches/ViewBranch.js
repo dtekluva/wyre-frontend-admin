@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Spin } from 'antd';
 
 import BreadCrumb from '../../../components/BreadCrumb';
@@ -8,10 +8,10 @@ import AdminBranchUsersViewTable from '../../../components/tables/adminTables/Ad
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
 
 import { connect } from 'react-redux';
-import { getBranches, getBranchesTop } from '../../../redux/actions/branches/branches.action';
+
 import { getDevicesOverview } from '../../../redux/actions/devices/device.action';
 import { getUsersOverview } from '../../../redux/actions/users/user.action';
-import { getABranch } from '../../../redux/actions/branch/branch.action';
+import { getABranch } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
@@ -23,45 +23,20 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranch(props) {
-    // const { setCurrentUrl } = useContext(CompleteDataContext);
+
     const [searchParams, setSearchParams] = useSearchParams();
-    const [adminBranchUsersViewData, setAdminBranchUsersViewData] = useState([]);
-    const [adminBranchDevicesViewData, setAdminBranchDevicesViewData] = useState([]);
-    console.log("DEVICES OVERVIEW HERE>>>>>>>>>>", props.device);
-    console.log("GET-A-BRANCH data here>>>>>>>>>>", props.branch);
-    console.log("BRANCH data TOP here>>>>>>>>>>", props.branch.fetchedBranch);
+
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
         const endDate = moment().format('DD-MM-YYYY HH:MM');
 
-        // const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
         const branch_id =searchParams.get("branch_id") || props.auth.userData.branch_id;
 
-        // props.getBranches(branch_id, startDate, endDate);
-        // props.getBranchesTop(branch_id, startDate, endDate)
         props.getABranch(branch_id, startDate, endDate);
         props.getDevicesOverview(branch_id, startDate, endDate)
         props.getUsersOverview(branch_id, startDate, endDate)
-        // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-        // const endDate = moment().format('DD-MM-YYYY HH:MM');
-        // props.getBranches(client_id, startDate, endDate);
-        // const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
-        // const branch_id =searchParams.get("branch_id") || props.auth.userData.client_id.branch_id
-        // console.log('This is client-id value', client_id);
-        
-    //     if (match && match.url) {
-    //         setCurrentUrl(match.url);
-    //     }
-    // }, [match, setCurrentUrl]);
 
-    // useEffect(() => {
-    //     adminHttpServices.getAll('branchusersview').then((returnedData) => {
-    //         setAdminBranchUsersViewData(returnedData);
-    //     });
-    //     adminHttpServices.getAll('branchdevicesview').then((returnedData) => {
-    //         setAdminBranchDevicesViewData(returnedData);
-    //     });
     }, []);
 
     return (
@@ -88,21 +63,21 @@ function ViewBranch(props) {
                         <span>Download in Excel</span>
                     </button>
                 </div>
-                <Spin spinning={props.branch?.fetchBranchLoading}>
+                <Spin spinning={props.branches?.fetchBranchLoading}>
                 <div className="view_branch_top">
                     <Row>
                         <Col md={8}>
                             <div>
-                                <p className='view_branch-text'>Total Energy: <span>{props.branch?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Baseline Score: <span>{props.branch?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Cost of Energy: <span> {props.branch?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
                             </div>
                         </Col>
                         <Col md={8}>
                             <div>
-                                <p className='view_branch-text'>Generator Efficiency: <span> {props.branch?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Fuel Efficiency: <span> {props.branch?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>PAPR: <span>{props.branch?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
                             </div>
                         </Col>
                     </Row>
@@ -116,8 +91,8 @@ function ViewBranch(props) {
                     </div>
                     {/* <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} /> */}
                     <AdminBranchDevicesViewTable 
-                      loading= {props.device?.fetchDeviceOverviewLoading}
-                      listOfDevicesData={props.device?.fetchedDeviceOverview} />
+                      loading= {props.devices?.fetchDeviceOverviewLoading}
+                      listOfDevicesData={props.devices?.fetchedDeviceOverview} />
                 </div>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
@@ -136,17 +111,14 @@ function ViewBranch(props) {
 
 const mapDispatchToProps = {
     getABranch,
-    getBranches,
-    getBranchesTop,
     getDevicesOverview,
     getUsersOverview
   }
   
   const mapStateToProps = (state) => ({
-    branch: state.branch,
     branches: state.branches,
     auth: state.auth,
-    device: state.device,
+    devices: state.devices,
     user: state.user
   });
 

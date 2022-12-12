@@ -1,11 +1,15 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { addViewBranchesLoading, addViewBranchesSuccess, getViewBranchesLoading, getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess } from "./branches.creator";
+import {
+  addViewBranchesLoading, addViewBranchesSuccess, getBranchLoading,
+  getBranchSuccess, getViewBranchesLoading,
+  getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
+} from "./branches.creator";
 
 
 
 export const getBranches = (clientId, startDate, endDate) => async (dispatch) => {
-  
+
 
   dispatch(getViewBranchesLoading(true));
 
@@ -24,7 +28,7 @@ export const getBranches = (clientId, startDate, endDate) => async (dispatch) =>
 };
 
 export const getBranchesTop = (clientId, startDate, endDate) => async (dispatch) => {
-  
+
 
   dispatch(getViewBranchesTopLoading(true));
 
@@ -41,14 +45,14 @@ export const getBranchesTop = (clientId, startDate, endDate) => async (dispatch)
   }
 };
 
-export const addABranch = (parameters={}) => async (dispatch) => {
+export const addABranch = (parameters = {}) => async (dispatch) => {
 
   dispatch(addViewBranchesLoading(true));
 
   const requestUrl = `/cadmin/branches/`;
   try {
     const response = await APIService.post(requestUrl, parameters);
-    
+
     console.log('this is the response from adding branch');
     dispatch(addViewBranchesSuccess(response.data));
     console.log(response.data);
@@ -56,6 +60,25 @@ export const addABranch = (parameters={}) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(addViewBranchesLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+
+export const getABranch = (branch_id, startDate, endDate) => async (dispatch) => {
+
+
+  dispatch(getBranchLoading(true));
+
+  const requestUrl = `/cadmin/branch/${branch_id}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getBranchSuccess(response.data.authenticatedData));
+    dispatch(getBranchLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getBranchLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

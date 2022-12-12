@@ -1,238 +1,186 @@
-import React from 'react';
-import { Form, Select, Checkbox, Input } from 'antd';
-// import { useForm, Controller } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import {
+    Form, Select, Checkbox,
+    Input, notification,
+    TimePicker, Spin
+} from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
+import moment from 'moment';
+import { useSearchParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { addADevice, getDeviceTypes } from '../../../redux/actions/devices/device.action';
 
 
 
-function AddDeviceForm() {
+function AddDeviceForm(props) {
+    const [searchParams, setSearchParams] = useSearchParams();
     // modal form 
     const { Option } = Select;
-    // const { register, handleSubmit, setValue, control, errors } = useForm();
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (!props.devices?.fetchedDeviceType) {
+            props.getDeviceTypes();
+        }
+    }, [])
+
+    const onSubmit = async (values) => {
+
+        const branch_id = searchParams.get("branch_id");
+        const client_id = searchParams.get("client_id");
+        const { operating_hours_start, operating_hours_end, ...others } = values;
+        const formatedOperatingStart = moment(operating_hours_start).format('hh:mm');
+        const formatedOperatingEnd = moment(operating_hours_end).format('hh:mm');
+        console.log(formatedOperatingEnd)
+        const request = await props.addADevice({
+            ...others,
+            operating_hours_start: formatedOperatingStart,
+            operating_hours_end: formatedOperatingEnd,
+            branch: branch_id,
+            client: client_id
+        });
+        if (request.fulfilled) {
+            form.resetFields();
+            props.setModal(false);
+            notification.info({
+                message: 'successful',
+                description: request.message,
+            });
+
+            const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+            const endDate = moment().format('DD-MM-YYYY HH:MM');
+            props.getABranch(branch_id, startDate, endDate);
+            props.getDevicesOverview(branch_id, startDate, endDate)
+            props.getBranches(branch_id, startDate, endDate);
+            return props.getBranchesTop(branch_id, startDate, endDate)
+        }
+        return notification.error({
+            message: 'failed',
+            description: request.message,
+        });
+    };
     const deviceTypeSelector = (
         <Select
             className='cost-tracker-select h-4-br'
             id='iconType-state'
-            defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-        // onChange={(e) => setValue('iconType', e.target.value, true)}
         >
-            <Option className='active-state-option' value='EM133'>
-                EM 133
-            </Option>
-            <Option className='active-state-option' value='EM122'>
-                EM 122
-            </Option>
-            <Option className='active-state-option' value='EM111'>
-                EM 111
-            </Option>
-            <Option className='active-state-option' value='EM141'>
-                EM141
-            </Option>
-            <Option className='active-state-option' value='EM210'>
-                EM 210
-            </Option>
+            {
+                props.devices?.fetchedDeviceType && props.devices?.fetchedDeviceType[0]?.map((deviceType) =>
+                    <Option key={deviceType.id} className='active-state-option' value={deviceType.id}>
+                        {deviceType.choice_name}
+                    </Option>
+                )
+            }
         </Select>
     );
-    const activeStateSelector = (
-        <Select
-            className='cost-tracker-select h-4-br'
-            id='active-state'
-            defaultValue='true'
-            suffixIcon={<CaretDownFilled />}
-        // onChange={(e) => setValue('activeState', e.target.value, true)}
-        >
-            <Option className='active-state-option' value='true'>
-                Active
-            </Option>
-            <Option className='active-state-option' value='false'>
-                Inactive
-            </Option>
-        </Select>
-    );
-    const iconTypeSelector = (
-        <Select
-            className='cost-tracker-select h-4-br'
-            id='iconType-state'
-            defaultValue='true'
-            suffixIcon={<CaretDownFilled />}
-        // onChange={(e) => setValue('iconType', e.target.value, true)}
-        >
-            <Option className='active-state-option' value='500kWh'>
-                500kWh
-            </Option>
-            <Option className='active-state-option' value='425kWh'>
-                425kWh
-            </Option>
-            <Option className='active-state-option' value='400kWh'>
-                400kWh
-            </Option>
-            <Option className='active-state-option' value='320kWh'>
-                320kWh
-            </Option>
-            <Option className='active-state-option' value='300kWh'>
-                300kWh
-            </Option>
-        </Select>
-    );
-    const onSubmit = ({ deviceName, deviceIdentity, deviceType, activeState, iconType, load, source }) => {
-        console.log(deviceName, deviceIdentity, deviceType, activeState, iconType, load, source);
-    };
-    function onChange(e) {
-        console.log(`checked = ${e.target.checked}`);
-    }
     // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
-        <h1 className='center-main-heading'>Device Form</h1>
+        <Spin spinning={props.devices?.newDeviceLoading}>
+            <h1 className='center-main-heading'>Device Form</h1>
 
-        <section className='cost-tracker-form-section'>
-            <Form
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                initialValues={{ remember: true }}
-                autoComplete="off"
-                form={form}
-                className='cost-tracker-form'
-            // onSubmit={handleSubmit(onSubmit)}
-            >
-                <div className='add-cclient-form-inputs-wrapper'>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Device Name"
-                            name="deviceName"
-                            rules={[{ required: true, message: 'Please input your device name!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Device Identity"
-                            name="deviceIdentity"
-                            rules={[{ required: true, message: 'Please input your device identity!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Device Type"
-                            name="deviceType"
-                            rules={[{ required: true, message: 'Please input your device type!' }]}
-                        >
-                            {deviceTypeSelector}
-                            {/* <Controller
-                                as={deviceTypeSelector}
-                                name='deviceType'
-                                control={control}
-                                defaultValue=''
-                                rules={{
-                                    required: true,
-                                }}
-                                // help={errors.deviceType && 'Please select a value'}
-                            /> */}
-                        </Form.Item>
-                    </div>
-                </div>
-
-                <div className='add-cclient-form-inputs-wrapper'>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Active"
-                            name="activeState"
-                            rules={[{ required: true, message: 'Please select a value!' }]}
-                        >
-                            {activeStateSelector}
-                            {/* <Controller
-                                as={activeStateSelector}
-                                name='activeState'
-                                control={control}
-                                defaultValue=''
-                                rules={{
-                                    required: true,
-                                }}
-                                // help={errors.activeState && 'Please select a value'}
-                            /> */}
-                            {/* <p className='input-error-message'>
-                                {errors.activeState && 'Please select a value'}
-                            </p> */}
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Icon Type"
-                            name="iconType"
-                            rules={[{ required: true, message: 'Please select a value!' }]}
-                        >
-                            {iconTypeSelector}
-                            {/* <Controller
-                                as={iconTypeSelector}
-                                name='iconType'
-                                control={control}
-                                defaultValue=''
-                                rules={{
-                                    required: true,
-                                }}
-                                // help={errors.iconType && 'Please select a value'}
-                            /> */}
-                            {/* <p className='input-error-message'>
-                                {errors.iconType && 'Please select a value'}
-                            </p> */}
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'
-                    >
+            <section className='cost-tracker-form-section'>
+                <Form
+                    name="basic"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    initialValues={{ remember: true }}
+                    autoComplete="off"
+                    onFinish={onSubmit}
+                    form={form}
+                    className='cost-tracker-form'
+                >
+                    <div className='add-cclient-form-inputs-wrapper large-time-picker' >
+                        <div className='add-client-input-container'>
                             <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Device Name"
-                            name="deviceName"
-                            rules={[{ required: true, message: 'Please input your device name!' }]}
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Device Name"
+                                name="name"
+                                rules={[{ required: true, message: 'Please input your device name!' }]}
+                            >
+                                <Input size="large" />
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Device Type"
+                                name="type"
+                                rules={[{ required: true, message: 'Please select a device type!' }]}
+                            >
+                                {deviceTypeSelector}
+
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Operating Hours Start"
+                                name="operating_hours_start"
+                                rules={[{ required: true, message: 'Please select a device type!' }]}
+                            >
+                                <TimePicker size="large" use12Hours format="h:mm a" />
+
+                            </Form.Item>
+                        </div>
+                    </div>
+
+                    <div className='add-cclient-form-inputs-wrapper large-time-picker'>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Operating Hours End"
+                                name="operating_hours_end"
+                                rules={[{ required: true, message: 'Please select a device type!' }]}
+                            >
+                                <TimePicker size="large" use12Hours format="h:mm a" />
+
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%', marginTop: '42px' }}
                         >
-                            <Input size="large" />
-                        </Form.Item>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                name="is_source"
+                                valuePropName="checked"
+                            >
+                                <Checkbox
+                                    id='load'>Source</Checkbox>
+                            </Form.Item>
+                        </div>
 
                     </div>
-                </div>
-                <div className='add-cclient-form-inputs-wrapper'>
+                    <div className='add-cclient-form-inputs-wrapper'>
 
-                    <div className='add-client-input-container'
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%', marginTop: '42px' }}
-                    >
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            name="load"
-                            rules={[{ required: true, message: 'Please select a value!' }]}
-                        >
-                            <Checkbox onChange={onChange} name='load'
-                                id='load'
-                                // ref={register}
-                                required>Load</Checkbox>
-                        </Form.Item>
+
                     </div>
-                </div>
-                <div className='add_user_form_btn_align'>
-                    <button className='generic-submit-button cost-tracker-form-submit-button'>
-                        Add
-                    </button>
-                </div>
-            </Form>
-        </section>
+                    <div className='add_user_form_btn_align'>
+                        <button className='generic-submit-button cost-tracker-form-submit-button'>
+                            Add
+                        </button>
+                    </div>
+                </Form>
+            </section>
+        </Spin>
     </div>
 }
 
-export default AddDeviceForm
+
+const mapDispatchToProps = {
+    addADevice,
+    getDeviceTypes
+};
+
+const mapStateToProps = (state) => ({
+    devices: state.devices,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDeviceForm); 

@@ -15,8 +15,6 @@ function AddBranchesForm(props) {
   const [form] = Form.useForm();
   const onSubmit = async (values) => {
     const client_id = searchParams.get("client_id");
-    console.log('This is client-id value', client_id);
-    console.log('this is the AddBranches value =====================>>>>>>>', values)
     const request = await props.addABranch({ ...values, client: client_id });
     if (request.fulfilled) {
       form.resetFields();
@@ -37,7 +35,6 @@ function AddBranchesForm(props) {
     });
   };
 
-  console.log('props.branches?.newViewBranchesLoading', props.branches);
   return (
     <>
       <div className='cost-tracker-forms-content-wrapper'>

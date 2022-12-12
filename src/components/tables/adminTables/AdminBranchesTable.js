@@ -169,8 +169,8 @@ class AdminBranchesTable extends React.Component {
           <button
             type='button'
             className='table-row-button branch-users-view-button'
-            // onClick={() => console.log("RECORDS HERE..................",record)}
-            onClick={() => window.location.href = `/view-branch?branch_id=${record.branch_id}`}
+            // onClick={() => console.log("RECORDS HERE..................",record, 'this is the client id',  this.props.clientId)}
+            onClick={() => window.location.href = `/view-branch?branch_id=${record.branch_id}&client_id=${this.props.clientId}`}
           >
             View
           </button>
