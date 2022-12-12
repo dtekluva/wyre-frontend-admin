@@ -94,7 +94,7 @@ class AdminBranchDevicesViewTable extends React.Component {
 
     render() {
         // const data = this.props.listOfBranchDevicesViewData;
-        const data = this.props.listOfDevicesData[0];
+        const data = this.props.listOfDevicesData;
         const loading = this.props.loading;
 
         const columns = [

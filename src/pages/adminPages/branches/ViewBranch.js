@@ -53,7 +53,7 @@ function ViewBranch(props) {
                         </button>
                     </div>
 
-                    <h3 className='table-header__heading'>Richmond Gate</h3>
+                    <h3 className='table-header__heading'>{props.branches?.fetchedBranch[0]?.name}</h3>
 
                     <button
                         type='button'
@@ -101,6 +101,7 @@ function ViewBranch(props) {
                     {/* <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} /> */}
                     <AdminBranchUsersViewTable
                       loading= {props.user?.fetchUserOverviewLoading}
+                      branchName={props.branches?.fetchedBranch[0]?.name}
                       listOfBranchUsersViewData={props.user?.fetchedUserOverview} />
                 </div>
             </article>

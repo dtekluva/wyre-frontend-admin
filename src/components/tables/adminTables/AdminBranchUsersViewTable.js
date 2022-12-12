@@ -94,7 +94,7 @@ class AdminBranchUsersViewTable extends React.Component {
     };
 
     render() {
-        const data = this.props.listOfBranchUsersViewData[0];
+        const data = this.props.listOfBranchUsersViewData;
         const loading = this.props.loading
 
         const columns = [
@@ -111,6 +111,12 @@ class AdminBranchUsersViewTable extends React.Component {
                 key: 'first_name',
                 sorter: (a, b) => a.first_name.localeCompare(b.first_name),
                 sortDirections: ['descend', 'ascend'],
+                render: (_, record) => (
+                    <p>
+                        {`${record.first_name}  ${record.last_name}`}
+                    </p>
+                    
+                )
             },
             {
                 title: 'Phone Number',
@@ -132,6 +138,12 @@ class AdminBranchUsersViewTable extends React.Component {
                 key: 'branch',
                 sorter: (a, b) => a.branch - b.branch,
                 sortDirections: ['descend', 'ascend'],
+                render: (_, record) => (
+                    <p>
+                        {this.props.branchName}
+                    </p>
+                    
+                )
             },
             {
                 title: 'Last Login',
