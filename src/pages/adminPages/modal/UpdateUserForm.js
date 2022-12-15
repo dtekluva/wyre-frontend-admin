@@ -6,7 +6,7 @@ import { getAllRoles, addUsers } from '../../../redux/actions/auth/auth.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
 import { updateUser } from '../../../redux/actions/users/user.action';
 
-function AddUserForm(props) {
+function UpdateUserForm(props) {
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -73,7 +73,7 @@ function AddUserForm(props) {
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.newUserLoading}>
-            <h1 className='center-main-heading'>User Form</h1>
+            <h1 className='center-main-heading'>Update User Form</h1>
 
             <section className='cost-tracker-form-section'>
                 <Form
@@ -193,7 +193,7 @@ function AddUserForm(props) {
 
                     <div className='add_user_form_btn_align'>
                         <button className='generic-submit-button cost-tracker-form-submit-button'>
-                            Add
+                            Update
                         </button>
                     </div>
                 </Form>
@@ -214,4 +214,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserForm);

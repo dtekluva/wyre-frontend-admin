@@ -1,6 +1,6 @@
 
 import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
-import { addUsersLoading, addUsersSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
+import { addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
 
 
@@ -63,6 +63,24 @@ export const addUsers = (parameters) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(addUsersLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const updateUser = (parameters) => async (dispatch) => {
+  dispatch(editUserLoading(true));
+  const requestUrl = `/api/v1/user/35`;
+  try {
+    // const formData = multipartFormBuilder(parameters);
+    // formData.set();
+
+    const response = await APIService.put(requestUrl, parameters);
+
+    dispatch(editUserSuccess(response.data));
+    dispatch(editUserLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editUserLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

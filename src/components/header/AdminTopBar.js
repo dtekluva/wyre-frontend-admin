@@ -130,7 +130,7 @@ function AdminTopBar(props) {
       <Modal open={visibleUser}
         onOk={() => setVisibleUser(false)}
         onCancel={() => setVisibleUser(false)} width={1000} footer={null} >
-        <AddUserForm setModal={setVisibleBranch} />
+        <AddUserForm setModal={setVisibleUser} />
       </Modal>
     </div>
   );
