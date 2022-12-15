@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedUserOverview: false,
     newUserLoading: false,
     newUser: false,
+    updateUserLoading: false,
+    updatedUser: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -58,6 +60,24 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 newUserLoading: action.payload,
+
+            };
+
+        case userTypes.EDIT_USER_SUCCESS:
+
+            return {
+
+                ...state,
+                updatedUser: action.payload,
+
+            };
+
+        case userTypes.EDIT_USER_LOADING:
+
+            return {
+
+                ...state,
+                updateUserLoading: action.payload,
 
             };
 

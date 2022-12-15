@@ -36,3 +36,12 @@ export const addUsersSuccess = (payload = true) => ({
   type: authTypes.ADD_USER_SUCCESS,
   payload,
 });
+export const editUserLoading = (payload = true) => ({
+  type: authTypes.EDIT_USER_LOADING,
+  payload,
+});
+
+export const editUserSuccess = (payload = true) => ({
+  type: authTypes.EDIT_USER_SUCCESS,
+  payload,
+});

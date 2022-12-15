@@ -58,6 +58,24 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 newUsers: action.payload,
             };
 
+        case authTypes.EDIT_USER_SUCCESS:
+
+            return {
+
+                ...state,
+                updatedUser: action.payload,
+
+            };
+
+        case authTypes.EDIT_USER_LOADING:
+
+            return {
+
+                ...state,
+                updateUserLoading: action.payload,
+
+            };
+
         default: return state;
 
     }
