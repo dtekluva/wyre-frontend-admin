@@ -1,21 +1,8 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState, useContext, useEffect } from 'react';
-// import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { Spin, Form, notification } from 'antd';
-// import { useForm, Controller } from 'react-hook-form';
-// import jwt from 'jwt-decode';
-
-// import CompleteDataContext from '../Context';
-// import loginHttpServices from '../services/login';
-// import dataHttpServices from '../services/devices';
-
-// import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
-// import OutlinedInput from '../smallComponents/OutlinedInput';
-// import SocialCluster from '../smallComponents/SocialCluster';
-
-// import usePasswordToggle from '../smallComponents/usePasswordToggle'
 import { Input } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { loginAUser } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
 
@@ -23,18 +10,8 @@ import { connect } from 'react-redux';
 
 function Login(props) {
   const [errorMessage, setErrorMessage] = useState(undefined);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [form] = Form.useForm();
-  useEffect(()=> {
-    console.log('this should only render once =========>>>>>>>>>>>')
-  }, [])
-  // const { setUserData } = useContext(CompleteDataContext);
-  // const location = useLocation();
-  // const query = new URLSearchParams(location.search);
 
-  // const from = query.get('from') || 'dashboard';
-
-  // const { register, handleSubmit, control } = useForm();
 
   const onSubmit = async ({ username, password }) => {
     const request = await props.loginAUser({ username, password });
@@ -50,16 +27,12 @@ function Login(props) {
     window.location.href = '/';
   };
 
-  const removeErrorMessage = (e) => {
-    setErrorMessage(undefined);
-  };
 
   return (
     <div className='auth-page-container'>
       <Spin spinning={props.auth.loginUserLoading} >
         <div
           className='signup-login-contact-form'
-        // onSubmit={handleSubmit(onSubmit)}
         >
           <Form
             form={form}

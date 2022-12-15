@@ -1,6 +1,6 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 // import { useForm, Controller } from 'react-hook-form';
-import { DatePicker, Form, Select, Button, Input, Checkbox, Space } from 'antd';
+import { DatePicker, Form, Select, Input, Checkbox } from 'antd';
 // import CompleteDataContext from '../Context';
 
 // import { CaretDownFilled } from '@ant-design/icons';
@@ -20,16 +20,8 @@ const breadCrumbRoutes = [
 
 const { Option } = Select;
 
-function AddDevices({ props, match }) {
-  // const { setCurrentUrl } = useContext(CompleteDataContext);
+function AddDevices(props) {
 
-  // const { register, handleSubmit, setValue, control, errors } = useForm();
-
-  // useEffect(() => {
-  //   if (match && match.url) {
-  //     setCurrentUrl(match.url);
-  //   }
-  // }, [match, setCurrentUrl]);
 
   const dateAddedPicker = (
     <DatePicker
@@ -81,37 +73,14 @@ function AddDevices({ props, match }) {
 
         <section className='cost-tracker-form-section'>
           <Form
-            // className='cost-tracker-form'
-            // action='#'
-            // // onSubmit={handleSubmit(onSubmit)}
-            // onFinish={onSubmit}
-
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onSubmit}
-            // onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <div className='add-cclient-form-inputs-wrapper'> 
-              {/* <div className='cost-tracker-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='deviceCode'
-                >
-                  Device Code
-                </label>
-                <input
-                  className='generic-input'
-                  type='text'
-                  name='deviceCode'
-                  id='deviceCode'
-                  // ref={register}
-                  required
-                  autoFocus
-                />
-              </div>   */}
 
                {/* DEVICE NAME  */}
                <div className='add-client-input-container'>
@@ -125,26 +94,6 @@ function AddDevices({ props, match }) {
                   <Input placeholder="Device Name" size="large" />
                 </Form.Item>
               </div>
-
-              {/* <div className='cost-tracker-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='deviceType'
-                >
-                  Device Type
-                </label>
-                <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='deviceType'
-                  id='deviceType'
-                  // ref={register}
-                  required
-                />
-              </div> */}
-
-              {/* DEVICE IDENTITY  */}
               <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}
@@ -175,30 +124,6 @@ function AddDevices({ props, match }) {
               </div>
             </div>
           <div className='add-cclient-form-inputs-wrapper'>
-              {/* <div className='add-client-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='active-state'
-                >
-                  Is Active ?
-                </label> */}
-
-                {/* <Controller
-                  as={activeStateSelector}
-                  name='activeState'
-                  control={control}
-                  defaultValue=''
-                  rules={{
-                    required: true,
-                  }}
-                  help={errors.activeState && 'Please select a value'}
-                /> */}
-                {/* <p className='input-error-message'>
-                  {errors.activeState && 'Please select a value'}
-                </p> */}
-              {/* </div> */}
-
-              {/* ACTIVE */}
               <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}
@@ -215,32 +140,6 @@ function AddDevices({ props, match }) {
                 </Form.Item>
               </div>
 
-              {/* <div className='add-client-input-container'>
-                <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='equipment-purchase-date'
-                >
-                  Date Added
-                </label> */}
-                {/* <Controller
-                  as={dateAddedPicker}
-                  name='dateAdded'
-                  control={control}
-                  defaultValue=''
-                  rules={{
-                    required: true,
-                  }}
-                  validateStatus={
-                    errors.dateAdded && 'Please enter a date' ? 'error' : ''
-                  }
-                  help={errors.dateAdded && 'Please enter a date'}
-                /> */}
-                {/* <p className='input-error-message'>
-                  {errors.dateAdded && 'Please enter a date'}
-                </p>
-              </div> */}
-              
-              {/* ICON TYPE */}
               <div className='add-client-input-container'>
                 <Form.Item
                   labelCol={{ span: 24 }}

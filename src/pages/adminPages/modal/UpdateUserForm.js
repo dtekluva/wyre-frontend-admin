@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import { Form, Select, Input, notification, Spin } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getAllRoles, addUsers } from '../../../redux/actions/auth/auth.action';
+import { getAllRoles } from '../../../redux/actions/auth/auth.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
 import { updateUser } from '../../../redux/actions/users/user.action';
 
 function UpdateUserForm(props) {
     const [form] = Form.useForm();
     // const userData= props.userData;
-    console.log("UPDATEUSERFORM data>>>>>>>>", props.userData);
     const initialValues = {
         username: 'Wyre Network',
         phone_number: '08020000000',
