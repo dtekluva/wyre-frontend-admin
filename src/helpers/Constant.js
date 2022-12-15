@@ -1,0 +1,1 @@
+export const LIMIT_50_CHAR = 'file name should not be more than 50 characters'

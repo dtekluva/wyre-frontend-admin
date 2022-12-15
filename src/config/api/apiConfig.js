@@ -7,9 +7,16 @@ import EnvData from '../EnvData';
 
 export const instance = axios.create({
     baseURL: EnvData.REACT_APP_API_URL,
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 200000,
+});
+
+export const instanceMultipart = axios.create({
+    baseURL: EnvData.REACT_APP_API_URL,
     headers: { 'Content-Type': 'application/json' },
     timeout: 200000,
 });
+
 export const instanceNoAuth = axios.create({
     baseURL: EnvData.REACT_APP_API_URL,
     headers: { 'Content-Type': 'application/json' },
@@ -25,11 +32,11 @@ const useConfig = async (config) => {
     //     // call refresh right here
     //     await getNewRefreshToken()
     // }
-    // const customConfig = config;
-    // if (localStorage.loggedWyreUser) {
-    //     const user = JSON.parse(localStorage.loggedWyreUser);
-    //     customConfig.headers.Authorization = `Bearer ${user.access}`;
-    // }
+    const customConfig = config;
+    if (localStorage.loggedWyreUserAdmin) {
+        const user = JSON.parse(localStorage.loggedWyreUserAdmin);
+        customConfig.headers.Authorization = `Bearer ${user.access}`;
+    }
 
     return config;
 };
@@ -43,6 +50,8 @@ const responseError = async (error) => {
 
 instance.interceptors.request.use(useConfig);
 instance.interceptors.response.use(responseOk, responseError);
+instanceMultipart.interceptors.request.use(useConfig);
+instanceMultipart.interceptors.response.use(responseOk, responseError);
 
 export const APIService = {
     get(endpoint, config = null) {
@@ -62,6 +71,18 @@ export const APIService = {
     },
 
     put(endpoint, data) {
+        return instance.put(endpoint, data);
+    },
+    
+    postMultipart(endpoint, data, config={}) {
+        return instance.post(endpoint, data, config);
+    },
+
+    patchMultipart(endpoint, data) {
+        return instance.patch(endpoint, data);
+    },
+
+    putMultipart(endpoint, data) {
         return instance.put(endpoint, data);
     },
 };
