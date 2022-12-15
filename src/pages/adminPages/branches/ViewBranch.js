@@ -39,7 +39,7 @@ function ViewBranch(props) {
 
         props.getABranch(branch_id, startDate, endDate);
         props.getDevicesOverview(branch_id, startDate, endDate)
-        props.getUsersOverview(branch_id, startDate, endDate)
+        props.getUsersOverview(branch_id)
 
     }, []);
 

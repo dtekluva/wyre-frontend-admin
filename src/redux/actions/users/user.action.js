@@ -22,11 +22,11 @@ export const getUsers = (parameters={}) => async (dispatch) => {
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
-export const getUsersOverview = (startDate, endDate) => async (dispatch) => {
+export const getUsersOverview = (branch_id) => async (dispatch) => {
 
   dispatch(getUserOverviewLoading(true));
 
-  const requestUrl = `cadmin/branch/users/21`;
+  const requestUrl = `cadmin/branch/users/${branch_id}`;
   try {
     const response = await APIService.get(requestUrl);
 
@@ -59,14 +59,12 @@ export const getUsersOverview = (startDate, endDate) => async (dispatch) => {
 };
 */
 
-export const updateUser = (parameters) => async (dispatch) => {
+export const updateUser = (userId, values) => async (dispatch) => {
   dispatch(editUserLoading(true));
-  const requestUrl = `/api/v1/user/35`;
+  const requestUrl = `/api/v1/user/${userId}`;
   try {
-    // const formData = multipartFormBuilder(parameters);
-    // formData.set();
 
-    const response = await APIService.put(requestUrl, parameters);
+    const response = await APIService.post(requestUrl, values);
 
     dispatch(editUserSuccess(response.data));
     dispatch(editUserLoading(false))

@@ -8,6 +8,12 @@ import { updateUser } from '../../../redux/actions/users/user.action';
 
 function UpdateUserForm(props) {
     const [form] = Form.useForm();
+    // const userData= props.userData;
+    console.log("UPDATEUSERFORM data>>>>>>>>", props.userData);
+    const initialValues = {
+        username: 'Wyre Network',
+        phone_number: '08020000000',
+    }
 
     useEffect(() => {
         if (!props.auth?.fetchedRoles) {
@@ -22,12 +28,12 @@ function UpdateUserForm(props) {
 
 
     const onUserFormSubmit = async (values) => {
-        const request = await props.addUsers(values);
+        const request = await props.updateUser(props.userData.id, values);
 
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);
-            notification.info({
+            return notification.info({
                 message: 'successful',
                 description: request.message,
             });
@@ -38,6 +44,15 @@ function UpdateUserForm(props) {
         });
 
     }
+    
+    useEffect(() => {
+        form.setFieldsValue({
+            username: props.userData.username,
+            phone_number: props.userData.phone_number,
+            roles: props.userData.roles
+            // password: props.userData.password
+        })
+    }, [props.userData])
 
     const roleSelector = (
         <Select
@@ -72,7 +87,7 @@ function UpdateUserForm(props) {
     // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
-        <Spin spinning={props.auth.newUserLoading}>
+        <Spin spinning={props.user.updateUserLoading}>
             <h1 className='center-main-heading'>Update User Form</h1>
 
             <section className='cost-tracker-form-section'>
@@ -83,33 +98,10 @@ function UpdateUserForm(props) {
                     wrapperCol={{ span: 16 }}
                     autoComplete="off"
                     className='cost-tracker-form'
+                    initialValues={initialValues}
                     onFinish={onUserFormSubmit}
                 >
                     <div className='add-cclient-form-inputs-wrapper'>
-                        {/* <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="First Name"
-                            name="firstName"
-                            rules={[{ required: true, message: 'Please input your name!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Last Name"
-                            name="lastName"
-                            rules={[{ required: true, message: 'Please input your name!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div> */}
-
- 
                         <div className='add-client-input-container'>
                             <Form.Item
                                 labelCol={{ span: 24 }}
@@ -133,30 +125,6 @@ function UpdateUserForm(props) {
                             </Form.Item>
                         </div>
                         <div className='add-client-input-container'>
-                            {/* <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Email Address"
-                            name="emailAddress"
-                            rules={[{ required: true, message: 'Please input your email address!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item> */}
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Password"
-                                name="password"
-                                rules={[{ required: true, message: 'Please input your email address!' }]}
-                            >
-                                <Input type='password' size="large" />
-                            </Form.Item>
-                        </div>
-                    </div>
-
-                    <div className='add-cclient-form-inputs-wrapper'>
-
-                        <div className='add-client-input-container'>
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 wrapperCol={{ span: 24 }}
@@ -167,27 +135,19 @@ function UpdateUserForm(props) {
                                 {roleSelector}
                             </Form.Item>
                         </div>
+                    </div>
+
+                    <div className='add-cclient-form-inputs-wrapper'>
                         <div className='add-client-input-container'>
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 wrapperCol={{ span: 24 }}
-                                label="Client"
-                                name="client"
-                                rules={[{ required: true, message: 'Please select a value!' }]}
-                            >
-                                {clientSelector}
-                            </Form.Item>
-                        </div>
-                        <div className='add-client-input-container'>
-                            {/* <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Pass word"
+                                label="Password"
                                 name="password"
-                                rules={[{ required: true, message: 'Please input your email address!' }]}
+                                // rules={[{ required: true, message: 'Please input your password!' }]}
                             >
                                 <Input type='password' size="large" />
-                            </Form.Item> */}
+                            </Form.Item>
                         </div>
                     </div>
 
@@ -205,13 +165,12 @@ function UpdateUserForm(props) {
 const mapDispatchToProps = {
     getAllRoles,
     getClients,
-    addUsers,
     updateUser,
 }
 const mapStateToProps = (state) => ({
-    auth: state.auth,
     client: state.client,
-    user: state.user
+    user: state.user,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserForm);
