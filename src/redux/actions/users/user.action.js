@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 // import { multipartFormBuilder } from "../../../helpers/GeneralHelper";
 
-import { addUserLoading, addUserSuccess, getUserLoading, getUserOverviewLoading, getUserOverviewSuccess, getUserSuccess } from "./user.creator";
+import { addUserLoading, addUserSuccess, editUserLoading, editUserSuccess, getUserLoading, getUserOverviewLoading, getUserOverviewSuccess, getUserSuccess } from "./user.creator";
 
 
 
@@ -58,3 +58,21 @@ export const getUsersOverview = (startDate, endDate) => async (dispatch) => {
   }
 };
 */
+
+export const updateUser = (parameters) => async (dispatch) => {
+  dispatch(editUserLoading(true));
+  const requestUrl = `/api/v1/user/35`;
+  try {
+    // const formData = multipartFormBuilder(parameters);
+    // formData.set();
+
+    const response = await APIService.put(requestUrl, parameters);
+
+    dispatch(editUserSuccess(response.data));
+    dispatch(editUserLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editUserLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};

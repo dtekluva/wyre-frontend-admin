@@ -95,7 +95,10 @@ class AdminBranchUsersViewTable extends React.Component {
 
     render() {
         const data = this.props.listOfBranchUsersViewData;
-        const loading = this.props.loading
+        const loading = this.props.loading;
+        const openUserModal = this.props.setModal;
+        const showUserModal = this.props.showUserModal;
+        const setUserData = this.props.setUserData;
 
         const columns = [
             {
@@ -167,7 +170,11 @@ class AdminBranchUsersViewTable extends React.Component {
                     <button
                       type='button'
                       className='table-row-button branch-users-view-button'
-                      onClick={() => console.log("RECORDS HERE..................",record)}
+                    //   onClick={() => console.log("RECORDS HERE..................",record)}
+                      onClick={() => {
+                        showUserModal(true)
+                        setUserData(record)
+                      }}
                       // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
                     >
                       Edit

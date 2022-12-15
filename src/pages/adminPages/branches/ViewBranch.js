@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Row, Col, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Spin, Modal } from 'antd';
 
 import BreadCrumb from '../../../components/BreadCrumb';
 import ExcelIcon from '../../../components/icons/ExcelIcon';
@@ -10,11 +10,13 @@ import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/
 import { connect } from 'react-redux';
 
 import { getDevicesOverview } from '../../../redux/actions/devices/device.action';
-import { getUsersOverview } from '../../../redux/actions/users/user.action';
+import { getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
+
+import UpdateUserForm from '../modal/UpdateUserForm';
 
 const breadCrumbRoutes = [
     { url: '/', name: 'Home', id: 1 },
@@ -25,6 +27,9 @@ const breadCrumbRoutes = [
 function ViewBranch(props) {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const [visibleUser, setVisibleUser] = useState(false);
+    const [userData, setUserData] = useState({});
+    console.log("Testing the USERDATA>>>>>>>>>",userData);
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -96,21 +101,24 @@ function ViewBranch(props) {
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Users</h3>
-                    </div>
-                    <Button type="primary" onClick={showModal}>
-                      Open Modal
-                    </Button>
-                    <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                      <p>Some contents...</p>
-                      <p>Some contents...</p>
-                      <p>Some contents...</p>
-                    </Modal>    
+                    </div> 
     
                     {/* <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} /> */}
                     <AdminBranchUsersViewTable
                       loading= {props.user?.fetchUserOverviewLoading}
                       branchName={props.branches?.fetchedBranch[0]?.name}
-                      listOfBranchUsersViewData={props.user?.fetchedUserOverview} />
+                      listOfBranchUsersViewData={props.user?.fetchedUserOverview}
+                      showUserModal={setVisibleUser}
+                      setUserData={setUserData}
+                    />
+                      <Modal open={visibleUser}
+                        onOk={() => setVisibleUser(false)}
+                        onCancel={() => setVisibleUser(false)} width={1000} footer={null} >
+                        <UpdateUserForm 
+                          setModal={setVisibleUser}
+                          userData={userData}
+                        />
+                      </Modal>
                 </div>
             </article>
 
@@ -121,7 +129,8 @@ function ViewBranch(props) {
 const mapDispatchToProps = {
     getABranch,
     getDevicesOverview,
-    getUsersOverview
+    getUsersOverview,
+    updateUser
   }
   
   const mapStateToProps = (state) => ({
