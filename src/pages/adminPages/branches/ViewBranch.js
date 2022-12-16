@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Spin, Modal } from 'antd';
+=======
+import React, { useEffect, useState, useContext } from 'react';
+import { Row, Col, Spin, Modal, Button  } from 'antd';
+>>>>>>> Stashed changes
 
 import BreadCrumb from '../../../components/BreadCrumb';
 import ExcelIcon from '../../../components/icons/ExcelIcon';
@@ -25,10 +30,35 @@ const breadCrumbRoutes = [
 ];
 
 function ViewBranch(props) {
+<<<<<<< Updated upstream
 
     const [searchParams] = useSearchParams();
     const [visibleUser, setVisibleUser] = useState(false);
     const [userData, setUserData] = useState({});
+=======
+    // const { setCurrentUrl } = useContext(CompleteDataContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [adminBranchUsersViewData, setAdminBranchUsersViewData] = useState([]);
+    const [adminBranchDevicesViewData, setAdminBranchDevicesViewData] = useState([]);
+    console.log("DEVICES OVERVIEW HERE>>>>>>>>>>", props.device);
+    console.log("GET-A-BRANCH data here>>>>>>>>>>", props.branch);
+    console.log("BRANCH data TOP here>>>>>>>>>>", props.branch.fetchedBranch);
+    const [visible2, setVisible2] = useState(false);
+    
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+>>>>>>> Stashed changes
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -66,8 +96,13 @@ function ViewBranch(props) {
                         <span>Download in Excel</span>
                     </button>
                 </div>
+<<<<<<< Updated upstream
                 <Spin spinning={props.branches?.fetchBranchLoading}>
                 <div className="view_branch_top">
+=======
+                <Spin spinning={props.branch?.fetchBranchLoading}>
+                <div className="view_branch_top view_branch_top_left">
+>>>>>>> Stashed changes
                     <Row>
                         <Col md={8}>
                             <div>
@@ -100,8 +135,22 @@ function ViewBranch(props) {
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Users</h3>
+<<<<<<< Updated upstream
                     </div> 
     
+=======
+                    </div>
+                    <Button type="primary" onClick={showModal}>
+                      Open Modal
+                    </Button>
+                    <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                      <p>Some contents...</p>
+                      <p>Some contents...</p>
+                      <p>Some contents...</p>
+                    </Modal>    
+    
+                    {/* <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} /> */}
+>>>>>>> Stashed changes
                     <AdminBranchUsersViewTable
                       loading= {props.user?.fetchUserOverviewLoading}
                       branchName={props.branches?.fetchedBranch[0]?.name}
