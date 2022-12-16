@@ -26,10 +26,9 @@ const breadCrumbRoutes = [
 
 function ViewBranch(props) {
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [visibleUser, setVisibleUser] = useState(false);
     const [userData, setUserData] = useState({});
-    console.log("Testing the USERDATA>>>>>>>>>",userData);
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -103,7 +102,6 @@ function ViewBranch(props) {
                         <h3 className='table-header__heading'>Users</h3>
                     </div> 
     
-                    {/* <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} /> */}
                     <AdminBranchUsersViewTable
                       loading= {props.user?.fetchUserOverviewLoading}
                       branchName={props.branches?.fetchedBranch[0]?.name}

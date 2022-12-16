@@ -14,8 +14,8 @@ import { addADevice, getDeviceTypes } from '../../../redux/actions/devices/devic
 
 
 function AddDeviceForm(props) {
-    const [searchParams, setSearchParams] = useSearchParams();
-    // modal form 
+    const [searchParams] = useSearchParams();
+
     const { Option } = Select;
     const [form] = Form.useForm();
 
@@ -32,7 +32,7 @@ function AddDeviceForm(props) {
         const { operating_hours_start, operating_hours_end, ...others } = values;
         const formatedOperatingStart = moment(operating_hours_start).format('hh:mm');
         const formatedOperatingEnd = moment(operating_hours_end).format('hh:mm');
-        console.log(formatedOperatingEnd)
+
         const request = await props.addADevice({
             ...others,
             operating_hours_start: formatedOperatingStart,
@@ -75,7 +75,6 @@ function AddDeviceForm(props) {
             }
         </Select>
     );
-    // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.devices?.newDeviceLoading}>

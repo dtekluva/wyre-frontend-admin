@@ -34,7 +34,6 @@ export const getDevicesOverview = (startDate, endDate) => async (dispatch) => {
   try {
     const response = await APIService.get(requestUrl);
 
-    console.log('this is the response data', response.data);
     dispatch(getDeviceOverviewSuccess(response.data.authenticatedData));
     dispatch(getDeviceOverviewLoading(false))
     return { fulfilled: true, message: 'successful' }

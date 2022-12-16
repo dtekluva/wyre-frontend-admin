@@ -16,7 +16,6 @@ export const getBranches = (clientId, startDate, endDate) => async (dispatch) =>
   const requestUrl = `/cadmin/branches/${clientId}/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);
-    console.log("This is GetBranches response data", response.data);
 
     dispatch(getViewBranchesSuccess(response.data.authenticatedData));
     dispatch(getViewBranchesLoading(false))
@@ -53,9 +52,8 @@ export const addABranch = (parameters = {}) => async (dispatch) => {
   try {
     const response = await APIService.post(requestUrl, parameters);
 
-    console.log('this is the response from adding branch');
     dispatch(addViewBranchesSuccess(response.data));
-    console.log(response.data);
+
     dispatch(addViewBranchesLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
