@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 
 import {
-  addDeviceLoading, addDeviceSuccess, getDeviceLoading,
+  addDeviceLoading, addDeviceSuccess, editDeviceLoading, editDeviceSuccess, getDeviceLoading,
   getDeviceOverviewLoading, getDeviceOverviewSuccess, getDeviceSuccess,
   getDeviceTypeLoading, getDeviceTypeSuccess
 } from "./device.creator";
@@ -26,11 +26,11 @@ export const getDevices = (parameters = {}) => async (dispatch) => {
   }
 };
 
-export const getDevicesOverview = (startDate, endDate) => async (dispatch) => {
+export const getDevicesOverview = (branch_id) => async (dispatch) => {
 
   dispatch(getDeviceOverviewLoading(true));
 
-  const requestUrl = `cadmin/branch/devices/21`;
+  const requestUrl = `cadmin/branch/devices/${branch_id}`;
   try {
     const response = await APIService.get(requestUrl);
 
@@ -74,6 +74,22 @@ export const getDeviceTypes = (parameters = {}) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getDeviceTypeLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const updateDevice = (device_id, values) => async (dispatch) => {
+  dispatch(editDeviceLoading(true));
+  const requestUrl = `/cadmin/device/${device_id}`;
+  try {
+
+    const response = await APIService.post(requestUrl, values);
+
+    dispatch(editDeviceSuccess(response.data));
+    dispatch(editDeviceLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editDeviceLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

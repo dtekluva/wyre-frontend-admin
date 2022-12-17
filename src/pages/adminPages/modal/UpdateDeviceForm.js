@@ -9,13 +9,20 @@ import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { addADevice, getDevicesOverview, getDeviceTypes } from '../../../redux/actions/devices/device.action';
+import { updateDevice, getDeviceTypes, getDevicesOverview } from '../../../redux/actions/devices/device.action';
 
-function AddDeviceForm(props) {
+
+
+function UpdateDeviceForm(props) {
     const [searchParams] = useSearchParams();
-
+    const initialValue = {
+        name: 'Samsung'
+    }
     const { Option } = Select;
-    const [form] = Form.useForm();
+    const [form] = Form.useForm(); 
+    // const deviceData = props.deviceData
+    // console.log("Testing DEVICEDATA>>>>>>>>>>>", deviceData);
+    console.log("FetchedDevceType here...............", props.devices.fetchedDeviceType);
 
     useEffect(() => {
         if (!props.devices?.fetchedDeviceType) {
@@ -23,21 +30,30 @@ function AddDeviceForm(props) {
         }
     }, [])
 
+    useEffect(() => {
+        form.setFieldsValue({
+            name: props.deviceData.name,
+            type: props.deviceData.type,
+            operating_hours_start: moment(props.deviceData.operating_hours_start, 'HH:mm:ss'),
+            operating_hours_end: moment(props.deviceData.operating_hours_end, 'HH:mm:ss'),
+        })
+    }, [props.deviceData])
+
     const onSubmit = async (values) => {
 
+        const device_id = props.deviceData.device_id
         const branch_id = searchParams.get("branch_id");
         const client_id = searchParams.get("client_id");
         const { operating_hours_start, operating_hours_end, ...others } = values;
         const formatedOperatingStart = moment(operating_hours_start).format('hh:mm');
         const formatedOperatingEnd = moment(operating_hours_end).format('hh:mm');
 
-        const request = await props.addADevice({
+        const bodyParams = {
             ...others,
             operating_hours_start: formatedOperatingStart,
             operating_hours_end: formatedOperatingEnd,
-            branch: branch_id,
-            client: client_id
-        });
+        }
+        const request = await props.updateDevice(device_id, bodyParams);
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);
@@ -45,7 +61,8 @@ function AddDeviceForm(props) {
                 message: 'successful',
                 description: request.message,
             });
-            props.getDevicesOverview(branch_id)
+
+            return props.getDevicesOverview(branch_id)
         }
         return notification.error({
             message: 'failed',
@@ -70,16 +87,16 @@ function AddDeviceForm(props) {
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.devices?.newDeviceLoading}>
-            <h1 className='center-main-heading'>Device Form</h1>
+            <h1 className='center-main-heading'>Edit Device Form</h1>
 
             <section className='cost-tracker-form-section'>
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-                    initialValues={{ remember: true }}
                     autoComplete="off"
                     onFinish={onSubmit}
+                    initialValues={initialValue}
                     form={form}
                     className='cost-tracker-form'
                 >
@@ -155,7 +172,7 @@ function AddDeviceForm(props) {
                     </div>
                     <div className='add_user_form_btn_align'>
                         <button className='generic-submit-button cost-tracker-form-submit-button'>
-                            Add
+                            Update Device
                         </button>
                     </div>
                 </Form>
@@ -166,13 +183,13 @@ function AddDeviceForm(props) {
 
 
 const mapDispatchToProps = {
-    addADevice,
+    updateDevice,
     getDeviceTypes,
-    getDevicesOverview,
+    getDevicesOverview
 };
 
 const mapStateToProps = (state) => ({
     devices: state.devices,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddDeviceForm); 
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateDeviceForm); 

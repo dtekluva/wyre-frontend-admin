@@ -95,14 +95,10 @@ class AdminBranchUsersViewTable extends React.Component {
 
     render() {
         const data = this.props.listOfBranchUsersViewData;
-<<<<<<< Updated upstream
         const loading = this.props.loading;
         const openUserModal = this.props.setModal;
         const showUserModal = this.props.showUserModal;
         const setUserData = this.props.setUserData;
-=======
-        const loading = this.props.loading
->>>>>>> Stashed changes
 
         const columns = [
             {

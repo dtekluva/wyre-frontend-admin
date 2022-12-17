@@ -36,4 +36,13 @@ export const addDeviceSuccess = (payload = true) => ({
     type: deviceTypes.GET_DEVICE_TYPE_LOADING,
     payload,
   });
+
+  export const editDeviceLoading = (payload = true) => ({
+    type: deviceTypes.EDIT_DEVICE_LOADING,
+    payload,
+  }); 
+  export const editDeviceSuccess = (payload = true) => ({
+    type: deviceTypes.EDIT_DEVICE_SUCCESS,
+    payload,
+  });
     
