@@ -95,6 +95,8 @@ class AdminBranchesTable extends React.Component {
   render() {
     const data = this.props.listOfBranchesData;
     const loading = this.props.loading;
+    const setVisibleBranch = this.props.setVisibleBranch
+    const setBranchData = this.props.setBranchData
 
     const columns = [
       {
@@ -173,6 +175,26 @@ class AdminBranchesTable extends React.Component {
             onClick={() => window.location.href = `/view-branch?branch_id=${record.branch_id}&client_id=${this.props.clientId}`}
           >
             View
+          </button>
+        ),
+      },
+      {
+        title: 'My-Branch',
+        key: 'key',
+        dataIndex: 'key',
+        render: (_, record) => (
+          <button
+            type='button'
+            className='table-row-button branch-users-view-button'
+            // onClick={() => console.log("RECORDS HERE..................",record, 'this is the client id',  this.props.clientId)}
+            // onClick={() => console.log("Checking the RECORD-DATA>>>>>>>>>>>>>>>>>", record)}
+            onClick={() => {
+              setVisibleBranch(true)
+              setBranchData(record)
+              // console.log("BRANH-DATA Record>>>>>>>>>", setBranchData(record))
+            }}
+          >
+            Edit Branch
           </button>
         ),
       },

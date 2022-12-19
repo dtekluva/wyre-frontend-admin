@@ -78,9 +78,9 @@ export const getDeviceTypes = (parameters = {}) => async (dispatch) => {
   }
 };
 
-export const updateDevice = (device_id, values) => async (dispatch) => {
+export const updateDevice = (id, values) => async (dispatch) => {
   dispatch(editDeviceLoading(true));
-  const requestUrl = `/cadmin/device/${device_id}`;
+  const requestUrl = `/cadmin/device/${id}`;
   try {
 
     const response = await APIService.post(requestUrl, values);

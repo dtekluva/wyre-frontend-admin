@@ -34,6 +34,8 @@ function UpdateDeviceForm(props) {
         form.setFieldsValue({
             name: props.deviceData.name,
             type: props.deviceData.type,
+            device_id: props.deviceData.device_id,
+            branch: props.deviceData.branch,
             operating_hours_start: moment(props.deviceData.operating_hours_start, 'HH:mm:ss'),
             operating_hours_end: moment(props.deviceData.operating_hours_end, 'HH:mm:ss'),
         })
@@ -41,7 +43,9 @@ function UpdateDeviceForm(props) {
 
     const onSubmit = async (values) => {
 
-        const device_id = props.deviceData.device_id
+        const id = props.deviceData.id;
+        const device_id = props.deviceData.device_id;
+        const branch = props.deviceData.branch;
         const branch_id = searchParams.get("branch_id");
         const client_id = searchParams.get("client_id");
         const { operating_hours_start, operating_hours_end, ...others } = values;
@@ -50,10 +54,12 @@ function UpdateDeviceForm(props) {
 
         const bodyParams = {
             ...others,
+            device_id,
+            branch,
             operating_hours_start: formatedOperatingStart,
             operating_hours_end: formatedOperatingEnd,
         }
-        const request = await props.updateDevice(device_id, bodyParams);
+        const request = await props.updateDevice(id, bodyParams);
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);

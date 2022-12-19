@@ -145,9 +145,9 @@ class AdminBranchDevicesViewTable extends React.Component {
             },
             {
                 title: 'Active',
-                dataIndex: 'active',
-                key: 'active',
-                sorter: (a, b) => a.active - b.active,
+                dataIndex: 'is_active',
+                key: 'is_active',
+                sorter: (a, b) => a.is_active - b.is_active,
                 sortDirections: ['descend', 'ascend'],
             },
             {
