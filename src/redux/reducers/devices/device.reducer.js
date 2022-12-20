@@ -9,6 +9,8 @@ const INITIAL_STATE = {
     newDevice: false,
     fetchDeviceTypeLoading: false,
     fetchedDeviceType: false,
+    updateDeviceLoading: false,
+    updatedDevice: false,
 };
 
 const deviceReducer = (state = INITIAL_STATE, action) => {

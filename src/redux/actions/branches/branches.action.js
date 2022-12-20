@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 
 import {
-  addViewBranchesLoading, addViewBranchesSuccess, getBranchLoading,
+  addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchLoading,
   getBranchSuccess, getViewBranchesLoading,
   getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
 } from "./branches.creator";
@@ -77,6 +77,22 @@ export const getABranch = (branch_id, startDate, endDate) => async (dispatch) =>
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getBranchLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const updateBranch = (branch_id, bodyParams) => async (dispatch) => {
+  dispatch(editBranchLoading(true));
+  const requestUrl = `/cadmin/branch/${branch_id}`;
+  try {
+
+    const response = await APIService.post(requestUrl, bodyParams);
+
+    dispatch(editBranchSuccess(response.data));
+    dispatch(editBranchLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editBranchLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

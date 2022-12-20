@@ -186,12 +186,9 @@ class AdminBranchesTable extends React.Component {
           <button
             type='button'
             className='table-row-button branch-users-view-button'
-            // onClick={() => console.log("RECORDS HERE..................",record, 'this is the client id',  this.props.clientId)}
-            // onClick={() => console.log("Checking the RECORD-DATA>>>>>>>>>>>>>>>>>", record)}
             onClick={() => {
               setVisibleBranch(true)
               setBranchData(record)
-              // console.log("BRANH-DATA Record>>>>>>>>>", setBranchData(record))
             }}
           >
             Edit Branch

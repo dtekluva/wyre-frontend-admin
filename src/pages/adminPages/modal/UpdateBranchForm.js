@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Form, Input, notification, Spin } from 'antd';
 
 
-import { getBranches, getBranchesTop, addABranch } from '../../../redux/actions/branches/branches.action';
+import { getBranches, updateBranch } from '../../../redux/actions/branches/branches.action';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import moment from 'moment';
@@ -13,23 +13,29 @@ import moment from 'moment';
 function UpdateBranchForm(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [form] = Form.useForm();
-  const branchData = props.branchData
   const initialValues= {
     name: 'Branch',
     address: 'Officesssssssssssss'
   }
 
   useEffect(() => {
-    // console.log("Testing the BRANCHDATA>>>>>>>>>", branchData);
+    console.log("Testing the BRANCHDATA>>>>>>>>>", props.branchData);
     form.setFieldsValue({
-      name: branchData.name,
-      address: branchData.organisation
+      name: props.branchData.name,
+      address: props.branchData.organisation
     })
-  }, [branchData])
+  }, [props.branchData])
   
   const onSubmit = async (values) => {
     const client_id = searchParams.get("client_id");
-    const request = await props.addABranch({ ...values, client: client_id });
+    const branch_id = props.branchData.branch_id
+
+    const bodyParams = {
+      ...values,
+      client: client_id
+  }
+
+    const request = await props.updateBranch(branch_id, bodyParams);
     if (request.fulfilled) {
       form.resetFields();
       props.setModal(false);
@@ -41,7 +47,6 @@ function UpdateBranchForm(props) {
       const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
       const endDate = moment().format('DD-MM-YYYY HH:MM');
       props.getBranches(client_id, startDate, endDate);
-      return props.getBranchesTop(client_id, startDate, endDate)
     }
     return notification.error({
       message: 'failed',
@@ -55,14 +60,13 @@ function UpdateBranchForm(props) {
         <Spin spinning={props.branches?.newViewBranchesLoading}>
 
 
-          <h1 className='center-main-heading'>Branche Form</h1>
+          <h1 className='center-main-heading'>Edit Branch Form</h1>
 
           <section className='cost-tracker-form-section'>
             <Form
               name="basic"
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 16 }}
-              // initialValues={{ remember: true }}
               initialValues= {initialValues}
               onFinish={onSubmit}
               autoComplete="off"
@@ -96,22 +100,10 @@ function UpdateBranchForm(props) {
                   </Form.Item>
                 </div>
 
-                {/* CLIENT NAME */}
-                {/* <div className='add-client-input-container'>
-                <Form.Item
-                  labelCol={{ span: 24 }}
-                  wrapperCol={{ span: 24 }}
-                  label="Client's Name"
-                  name="clientName"
-                  rules={[{ required: true, message: 'Please input client name!' }]}
-                >
-                  <Input placeholder="Client's Name"/>
-                </Form.Item>
-              </div> */}
               </div>
               <div className='add-client-button-wrapper'>
                 <button className='generic-submit-button'>
-                  Add Branch
+                  Update Branch
                 </button>
               </div>
             </Form>
@@ -119,12 +111,11 @@ function UpdateBranchForm(props) {
         </Spin>
       </div>
     </>
-  );
+  );  
 }
 
 const mapDispatchToProps = {
-  addABranch,
-  getBranchesTop,
+  updateBranch,
   getBranches
 };
 
