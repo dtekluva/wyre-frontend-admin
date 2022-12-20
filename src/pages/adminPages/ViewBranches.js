@@ -11,7 +11,8 @@ import AdminBranchesTable from '../../components/tables/adminTables/AdminBranche
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
 import { useSearchParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Modal, Spin } from 'antd';
+import UpdateBranchForm from './modal/UpdateBranchForm';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -22,6 +23,8 @@ const breadCrumbRoutes = [
 function ViewBranches(props) {
   const [clientId, setClientId] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [visibleBranch, setVisibleBranch] = useState(false)
+  const [branchData, setBranchData] = useState({})
   
 
   useEffect(() => {
@@ -87,8 +90,23 @@ function ViewBranches(props) {
  
         <div className='h-overflow-auto'>
           <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading}
-          clientId={clientId}
-          listOfBranchesData={props.branches?.fetchedViewBranches} />
+             clientId={clientId}
+             listOfBranchesData={props.branches?.fetchedViewBranches}
+             setVisibleBranch={setVisibleBranch}
+             setBranchData= {setBranchData}
+             />
+          <Modal
+            open={visibleBranch}
+            onOk={() => setVisibleBranch(false)}
+            onCancel={() => setVisibleBranch(false)} 
+            width={1000}
+            footer={null}
+          >
+            <UpdateBranchForm  
+               setModal={setVisibleBranch}
+               branchData= {branchData}
+            />
+          </Modal>
         </div>
       </article>
     </>

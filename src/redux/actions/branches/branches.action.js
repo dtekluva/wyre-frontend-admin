@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 
 import {
-  addViewBranchesLoading, addViewBranchesSuccess, getBranchLoading,
+  addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchLoading,
   getBranchSuccess, getViewBranchesLoading,
   getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
 } from "./branches.creator";
@@ -16,7 +16,6 @@ export const getBranches = (clientId, startDate, endDate) => async (dispatch) =>
   const requestUrl = `/cadmin/branches/${clientId}/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);
-    console.log("This is GetBranches response data", response.data);
 
     dispatch(getViewBranchesSuccess(response.data.authenticatedData));
     dispatch(getViewBranchesLoading(false))
@@ -53,9 +52,8 @@ export const addABranch = (parameters = {}) => async (dispatch) => {
   try {
     const response = await APIService.post(requestUrl, parameters);
 
-    console.log('this is the response from adding branch');
     dispatch(addViewBranchesSuccess(response.data));
-    console.log(response.data);
+
     dispatch(addViewBranchesLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
@@ -79,6 +77,22 @@ export const getABranch = (branch_id, startDate, endDate) => async (dispatch) =>
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getBranchLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const updateBranch = (branch_id, bodyParams) => async (dispatch) => {
+  dispatch(editBranchLoading(true));
+  const requestUrl = `/cadmin/branch/${branch_id}`;
+  try {
+
+    const response = await APIService.post(requestUrl, bodyParams);
+
+    dispatch(editBranchSuccess(response.data));
+    dispatch(editBranchLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editBranchLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

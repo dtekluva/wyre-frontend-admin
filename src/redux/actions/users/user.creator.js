@@ -25,7 +25,7 @@ export const addUserLoading = (payload = true) => ({
   });
   
 export const addUserSuccess = (payload = true) => ({
-    type: userTypes.GET_USER_SUCCESS,
+    type: userTypes.ADD_USER_SUCCESS,
     payload,
   });
   

@@ -17,6 +17,7 @@ import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
 
 import UpdateUserForm from '../modal/UpdateUserForm';
+import UpdateDeviceForm from '../modal/UpdateDeviceForm';
 
 const breadCrumbRoutes = [
     { url: '/', name: 'Home', id: 1 },
@@ -26,20 +27,21 @@ const breadCrumbRoutes = [
 
 function ViewBranch(props) {
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [visibleUser, setVisibleUser] = useState(false);
+    const [visibleDevice, setVisibleDevice] = useState(false);
     const [userData, setUserData] = useState({});
-    console.log("Testing the USERDATA>>>>>>>>>",userData);
+    const [deviceData, setDeviceData] = useState({});
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
         const endDate = moment().format('DD-MM-YYYY HH:MM');
 
-        const branch_id =searchParams.get("branch_id") || props.auth.userData.branch_id;
+        const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 
         props.getABranch(branch_id, startDate, endDate);
-        props.getDevicesOverview(branch_id, startDate, endDate)
-        props.getUsersOverview(branch_id, startDate, endDate)
+        props.getDevicesOverview(branch_id)
+        props.getUsersOverview(branch_id)
 
     }, []);
 
@@ -96,14 +98,24 @@ function ViewBranch(props) {
                     {/* <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} /> */}
                     <AdminBranchDevicesViewTable 
                       loading= {props.devices?.fetchDeviceOverviewLoading}
-                      listOfDevicesData={props.devices?.fetchedDeviceOverview} />
+                      listOfDevicesData={props.devices?.fetchedDeviceOverview} 
+                      setVisibleDevice={setVisibleDevice}  
+                      setDeviceData={setDeviceData}                   
+                    />
+                    <Modal open={visibleDevice}
+                        onOk={() => setVisibleDevice(false)}
+                        onCancel={() => setVisibleDevice(false)} width={1000} footer={null} >
+                        <UpdateDeviceForm 
+                          setModal={setVisibleDevice}
+                          deviceData={deviceData}
+                        />
+                    </Modal>
                 </div>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Users</h3>
                     </div> 
     
-                    {/* <AdminBranchUsersViewTable listOfBranchesData={adminBranchUsersViewData} /> */}
                     <AdminBranchUsersViewTable
                       loading= {props.user?.fetchUserOverviewLoading}
                       branchName={props.branches?.fetchedBranch[0]?.name}
@@ -111,14 +123,14 @@ function ViewBranch(props) {
                       showUserModal={setVisibleUser}
                       setUserData={setUserData}
                     />
-                      <Modal open={visibleUser}
+                    <Modal open={visibleUser}
                         onOk={() => setVisibleUser(false)}
                         onCancel={() => setVisibleUser(false)} width={1000} footer={null} >
                         <UpdateUserForm 
                           setModal={setVisibleUser}
                           userData={userData}
                         />
-                      </Modal>
+                    </Modal>
                 </div>
             </article>
 
