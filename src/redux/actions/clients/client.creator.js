@@ -25,7 +25,7 @@ export const addClientLoading = (payload = true) => ({
   });
   
 export const addClientSuccess = (payload = true) => ({
-    type: clientTypes.GET_CLIENT_SUCCESS,
+    type: clientTypes.ADD_CLIENT_SUCCESS,
     payload,
   });
 

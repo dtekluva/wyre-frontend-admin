@@ -52,7 +52,6 @@ export const getAllRoles = () => async (dispatch) => {
   }
 };
 export const addUsers = (parameters) => async (dispatch) => {
-  console.log('this is me in the get reolaldkjslkdjolksjlokcxjkosjndmlokjnsdjko============.>>>>>>>>>.', parameters)
   dispatch(addUsersLoading(true));
   const requestUrl = `/cadmin/users/`;
   try {

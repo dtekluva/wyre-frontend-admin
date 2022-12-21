@@ -41,4 +41,12 @@ export const getBranchSuccess = (payload = true) => ({
     payload,
   });
 
-    
+export const editBranchLoading = (payload = true) => ({
+    type: branchTypes.EDIT_BRANCH_LOADING,
+    payload,
+  });
+  
+export const editBranchSuccess = (payload = true) => ({
+    type: branchTypes.EDIT_BRANCH_SUCCESS,
+    payload,
+  });

@@ -26,9 +26,6 @@ function AddBranches({ props, match }) {
   
   const onSubmit = async (values) => {
     const client_id = searchParams.get('/client_id');
-    console.log('This is client-id value', client_id);
-    console.log('this is the AddBranches value =====================>>>>>>>', values)
-    // window.location.href = `/view-branches?client_id=${values.client_id}`
     const request = await props.addABranch();
     if (request.fulfilled) {
       return notification.info({
@@ -41,7 +38,6 @@ function AddBranches({ props, match }) {
       description: request.message,
     });
     // const request = await props.addABranch();
-    // console.log('this is the values for AddBranch ==========>>>>>>>>>>>>>>>>>>>>>>>>>', request)
   };
 
   return (

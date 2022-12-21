@@ -170,12 +170,10 @@ class AdminBranchUsersViewTable extends React.Component {
                     <button
                       type='button'
                       className='table-row-button branch-users-view-button'
-                    //   onClick={() => console.log("RECORDS HERE..................",record)}
                       onClick={() => {
                         showUserModal(true)
                         setUserData(record)
                       }}
-                      // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
                     >
                       Edit
                     </button>

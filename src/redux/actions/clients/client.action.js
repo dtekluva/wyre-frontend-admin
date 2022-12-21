@@ -30,7 +30,6 @@ export const getClientsOverview = (startDate, endDate) => async (dispatch) => {
   try {
     const response = await APIService.get(requestUrl);
 
-    console.log('this is the response data', response.data);
     dispatch(getClientOverviewSuccess(response.data.authenticatedData));
     dispatch(getClientOverviewLoading(false))
     return { fulfilled: true, message: 'successful' }

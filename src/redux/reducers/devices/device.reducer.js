@@ -9,6 +9,8 @@ const INITIAL_STATE = {
     newDevice: false,
     fetchDeviceTypeLoading: false,
     fetchedDeviceType: false,
+    updateDeviceLoading: false,
+    updatedDevice: false,
 };
 
 const deviceReducer = (state = INITIAL_STATE, action) => {
@@ -59,6 +61,7 @@ const deviceReducer = (state = INITIAL_STATE, action) => {
                 fetchedDeviceOverview: action.payload,
 
             };
+
         case deviceTypes.ADD_DEVICE_SUCCESS:
 
             return {
@@ -75,7 +78,24 @@ const deviceReducer = (state = INITIAL_STATE, action) => {
                 newDeviceLoading: action.payload,
 
             };
+        
+        case deviceTypes.EDIT_DEVICE_SUCCESS:
 
+            return {
+
+                ...state,
+                updatedDevice: action.payload,
+
+            };
+
+        case deviceTypes.EDIT_DEVICE_LOADING:
+
+            return {
+
+                ...state,
+                updateDeviceLoading: action.payload,
+
+            };
         default: return state;
 
     }

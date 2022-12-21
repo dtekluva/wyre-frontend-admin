@@ -96,6 +96,9 @@ class AdminBranchDevicesViewTable extends React.Component {
         // const data = this.props.listOfBranchDevicesViewData;
         const data = this.props.listOfDevicesData;
         const loading = this.props.loading;
+        const setVisibleDevice = this.props.setVisibleDevice;
+        const setDeviceData = this.props.setDeviceData;
+        // console.log(setDeviceData);
 
         const columns = [
             {
@@ -142,9 +145,9 @@ class AdminBranchDevicesViewTable extends React.Component {
             },
             {
                 title: 'Active',
-                dataIndex: 'active',
-                key: 'active',
-                sorter: (a, b) => a.active - b.active,
+                dataIndex: 'is_active',
+                key: 'is_active',
+                sorter: (a, b) => a.is_active - b.is_active,
                 sortDirections: ['descend', 'ascend'],
             },
             {
@@ -169,7 +172,12 @@ class AdminBranchDevicesViewTable extends React.Component {
                   <button
                     type='button'
                     className='table-row-button branch-users-view-button'
-                    onClick={() => console.log("RECORDS HERE..................",record)}
+                    // onClick={() => console.log("RECORDS HERE..................",record)}
+                    onClick={() => {
+                        setVisibleDevice(true)
+                        setDeviceData(record)
+                    }
+                    }
                     // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
                   >
                     Edit
