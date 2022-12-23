@@ -179,7 +179,7 @@ class AdminBranchesTable extends React.Component {
         ),
       },
       {
-        title: 'My-Branch',
+        title: 'Branch',
         key: 'key',
         dataIndex: 'key',
         render: (_, record) => (

@@ -95,6 +95,8 @@ class AdminOverviewTable extends React.Component {
   render() {
     const data = this.props.overviewListData;
     const loading = this.props.loading;
+    const setvisibleClient = this.props.setvisibleClient
+    const setClientData = this.props.setClientData
 
     const columns = [
       {
@@ -173,6 +175,24 @@ class AdminOverviewTable extends React.Component {
             onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
           >
             View
+          </button>
+        ),
+      },
+      {
+        title: 'Update Clients',
+        key: 'key',
+        dataIndex: 'key',
+        render: (_, record) => (
+          <button
+            type='button'
+            className='table-row-button branch-users-view-button'
+            // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
+            onClick={() => {
+              setvisibleClient(true)
+              setClientData(record)
+            }}
+          >
+            Edit
           </button>
         ),
       },

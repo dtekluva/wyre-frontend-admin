@@ -8,6 +8,8 @@
     justify-content: space-between;
     flex-wrap: wrap;
     padding: 16px;
+    // text-align: center;
+    min-width: none;
   }
 
   .view_branch_top_left {
@@ -21,6 +23,7 @@
     filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.15));
     text-align: center;
     margin-bottom: 1rem;
+    min-width: none;
   }
   
   .branches-total_costs-title {
@@ -30,6 +33,7 @@
     line-height: 22px;
     color: #000000;
     margin-bottom: 1rem;
+    min-width: none;
   }
   
   .branches-total_costs-text {
@@ -39,6 +43,7 @@
     line-height: 20px;
     color: #000000;
     margin-bottom: 0;
+    min-width: none;
   }
 
 
@@ -49,6 +54,7 @@
     line-height: 22px;
     color: #000000;
     margin-bottom: 1rem;
+    width: auto;
   }
   
   .branches-total_costs-text {

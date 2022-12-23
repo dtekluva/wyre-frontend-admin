@@ -127,14 +127,14 @@ function AdminHeader() {
               className='header-nav-list__item header-link-with-dropdown'
               setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
             >
-              <button
+              {/* <button
                 type='button'
                 className='header-link-dropdown-button'
                 onClick={toggleNavLinkDropdown}
               >
                 Manage
                 <ChevronDown className='header-link-dropdown-icon' />
-              </button>
+              </button> */}
 
               <ul
                 className={
