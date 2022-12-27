@@ -18,6 +18,7 @@ const breadCrumbRoutes = [
 
 const UpdateClientForm = (props) => {
   const [form] = Form.useForm();
+  // const client_id = searchParams.get("client_id");
   const clientData = props.clientData
   const initialValues = {
     name: 'MyName',
@@ -34,6 +35,9 @@ const UpdateClientForm = (props) => {
       phone_number: clientData.phone_number,
       email: clientData.email,
       address: clientData.address,
+      id: clientData.client_id
+      
+
       // logo: clientData.logo
     })
   }, [clientData])
@@ -41,7 +45,11 @@ const UpdateClientForm = (props) => {
 
   const onSubmit = async (values) => {
     const { logo, ...others } = values;
-    const request = await props.updateClient(others);
+    const client_id = clientData.client_id;
+    const bodyParams = {...others, client_id}
+    // const {logo, ...bodyParams} = values
+    console.log('OTHERS here>>>>>>>>>>>>>', bodyParams);
+    const request = await props.updateClient(client_id, bodyParams);
     if (request.fulfilled) {
       form.resetFields();
       return notification.info({

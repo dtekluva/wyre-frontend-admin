@@ -75,9 +75,9 @@ export const addAClient = (parameters, file) => async (dispatch) => {
 //   }
 // };
 
-export const updateClient = (values) => async (dispatch) => {
+export const updateClient = (client_id, values) => async (dispatch) => {
   dispatch(editClientLoading(true));
-  const requestUrl = `/cadmin/update_client`;
+  const requestUrl = `/cadmin/update_client/${client_id}`;
   try {
 
     const response = await APIService.patch(requestUrl, values);
