@@ -44,7 +44,6 @@ function UpdateDeviceForm(props) {
         const device_id = props.deviceData.device_id;
         const branch = props.deviceData.branch;
         const branch_id = searchParams.get("branch_id");
-        const client_id = searchParams.get("client_id");
         const { operating_hours_start, operating_hours_end, ...others } = values;
         const formatedOperatingStart = moment(operating_hours_start).format('hh:mm');
         const formatedOperatingEnd = moment(operating_hours_end).format('hh:mm');
