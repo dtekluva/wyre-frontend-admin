@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Spin, Modal } from 'antd';
+import { Row, Col, Spin, Modal, Switch } from 'antd';
 
 import BreadCrumb from '../../../components/BreadCrumb';
 import ExcelIcon from '../../../components/icons/ExcelIcon';
@@ -9,7 +9,7 @@ import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/
 
 import { connect } from 'react-redux';
 
-import { getDevicesOverview } from '../../../redux/actions/devices/device.action';
+import { deactivateDevice, getDevicesOverview } from '../../../redux/actions/devices/device.action';
 import { getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 
@@ -32,6 +32,7 @@ function ViewBranch(props) {
     const [visibleDevice, setVisibleDevice] = useState(false);
     const [userData, setUserData] = useState({});
     const [deviceData, setDeviceData] = useState({});
+    const [deviceState, setDeviceState] = useState(false)
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -41,6 +42,7 @@ function ViewBranch(props) {
 
         props.getABranch(branch_id, startDate, endDate);
         props.getDevicesOverview(branch_id)
+        // props.deactivateDevice(branch_id)
         props.getUsersOverview(branch_id)
 
     }, []);
@@ -141,6 +143,7 @@ function ViewBranch(props) {
 const mapDispatchToProps = {
     getABranch,
     getDevicesOverview,
+    deactivateDevice,
     getUsersOverview,
     updateUser
   }

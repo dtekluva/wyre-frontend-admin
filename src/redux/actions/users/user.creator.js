@@ -38,6 +38,16 @@ export const editUserSuccess = (payload = true) => ({
     type: userTypes.EDIT_USER_SUCCESS,
     payload,
   });
+  
+export const deactivateUserLoading = (payload = true) => ({
+    type: userTypes.DEACTIVATE_USER_LOADING,
+    payload,
+  });
+  
+export const deactivateUserSuccess = (payload = true) => ({
+    type: userTypes.DEACTIVATE_USER_SUCCESS,
+    payload,
+  });
 
 
     
