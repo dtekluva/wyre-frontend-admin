@@ -19,7 +19,6 @@ function UpdateBranchForm(props) {
   }
 
   useEffect(() => {
-    console.log("Testing the BRANCHDATA>>>>>>>>>", props.branchData);
     form.setFieldsValue({
       name: props.branchData.name,
       address: props.branchData.organisation

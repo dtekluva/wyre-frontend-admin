@@ -120,24 +120,6 @@ const AdminOverviewTable = (props) => {
 
         ),
       },
-      // {
-      //   title: 'Update Clients',
-      //   key: 'key',
-      //   dataIndex: 'key',
-      //   render: (_, record) => (
-      //     <button
-      //       type='button'
-      //       className='table-row-button branch-users-view-button'
-      //       // onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
-      //       onClick={() => {
-      //         setvisibleClient(true)
-      //         setClientData(record)
-      //       }}
-      //     >
-      //       Edit
-      //     </button>
-      //   ),
-      // },
     ];
   }
 
@@ -148,7 +130,6 @@ const AdminOverviewTable = (props) => {
     dataIndex: 'options',
     render: (_, record) => {
       const items = itemData(record);
-      console.log('this is the record and here we are record', record);
       return (
         <Dropdown
           trigger={['click']}

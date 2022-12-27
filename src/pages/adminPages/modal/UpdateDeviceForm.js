@@ -20,9 +20,6 @@ function UpdateDeviceForm(props) {
     }
     const { Option } = Select;
     const [form] = Form.useForm(); 
-    // const deviceData = props.deviceData
-    // console.log("Testing DEVICEDATA>>>>>>>>>>>", deviceData);
-    console.log("FetchedDevceType here...............", props.devices.fetchedDeviceType);
 
     useEffect(() => {
         if (!props.devices?.fetchedDeviceType) {
