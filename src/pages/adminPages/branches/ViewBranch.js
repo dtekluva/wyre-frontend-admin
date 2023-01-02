@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Spin, Modal, Switch } from 'antd';
+import { Row, Col, Spin, Modal, Switch, notification, message } from 'antd';
 
 import BreadCrumb from '../../../components/BreadCrumb';
 import ExcelIcon from '../../../components/icons/ExcelIcon';
@@ -9,8 +9,8 @@ import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/
 
 import { connect } from 'react-redux';
 
-import { deactivateDevice, getDevicesOverview } from '../../../redux/actions/devices/device.action';
-import { getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
+import { disableDevice, getDevicesOverview } from '../../../redux/actions/devices/device.action';
+import { disableUser, getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
@@ -32,7 +32,44 @@ function ViewBranch(props) {
     const [visibleDevice, setVisibleDevice] = useState(false);
     const [userData, setUserData] = useState({});
     const [deviceData, setDeviceData] = useState({});
-    const [deviceState, setDeviceState] = useState(false)
+    const [deviceSwitch, setDeviceSwitch] = useState(false)
+    const [userSwitch, setUserSwitch] = useState(false)
+    const [chechedStatus, setCheckedStatus] = useState(null)
+    const handleOkDevice = async () => {
+            const bodyParams = {
+              is_active: chechedStatus
+            }
+            const device_id = deviceData.id;
+            const request = await props.disableDevice(device_id, bodyParams);
+            if (request.fulfilled) {
+              props.deviceModal(false);
+              notification.info({
+                message: 'successful',
+                description: request.message,
+              });
+            //   return props.getBranches(device_id);
+            }
+            return notification.error({
+              message: 'failed',
+              description: request.message,
+            });
+    }
+
+    const handleOkUser = async () => {
+        const userId = userData.id
+        const request = await props.disableUser(userId)
+        if (request.fulfilled) {
+            props.userModal(false)
+            return notification.info({
+                message:"Success",
+                description: request.message
+            })
+        }
+        return notification.error({
+            message:'Failed',
+            description: request.message
+        })
+    }
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -102,7 +139,9 @@ function ViewBranch(props) {
                       loading= {props.devices?.fetchDeviceOverviewLoading}
                       listOfDevicesData={props.devices?.fetchedDeviceOverview} 
                       setVisibleDevice={setVisibleDevice}  
-                      setDeviceData={setDeviceData}                   
+                      setDeviceData={setDeviceData}  
+                      setDeviceSwitch={setDeviceSwitch} 
+                      setCheckedStatus={setCheckedStatus}                
                     />
                     <Modal open={visibleDevice}
                         onOk={() => setVisibleDevice(false)}
@@ -111,6 +150,16 @@ function ViewBranch(props) {
                           setModal={setVisibleDevice}
                           deviceData={deviceData}
                         />
+                    </Modal>
+
+                    <Modal 
+                       open={deviceSwitch} 
+                       onOk={handleOkDevice}
+                       onCancel={() => setDeviceSwitch(false)}
+                       deviceModal={setDeviceSwitch}
+                    >
+                        <h1>Are Sure You Want To Disable this Device?</h1>
+                       {deviceSwitch}
                     </Modal>
                 </div>
                 <div className='h-overflow-auto'>
@@ -124,6 +173,7 @@ function ViewBranch(props) {
                       listOfBranchUsersViewData={props.user?.fetchedUserOverview}
                       showUserModal={setVisibleUser}
                       setUserData={setUserData}
+                      setUserSwitch={setUserSwitch}
                     />
                     <Modal open={visibleUser}
                         onOk={() => setVisibleUser(false)}
@@ -132,6 +182,15 @@ function ViewBranch(props) {
                           setModal={setVisibleUser}
                           userData={userData}
                         />
+                    </Modal>
+                    <Modal 
+                       open={userSwitch}
+                       onOk={handleOkUser}
+                       onCancel={() => setUserSwitch(false)}
+                       userModal={setUserSwitch}
+                    >
+                        <h1>Are You Sure You Want To Disable this User?</h1>
+                        {userSwitch}
                     </Modal>
                 </div>
             </article>
@@ -143,9 +202,10 @@ function ViewBranch(props) {
 const mapDispatchToProps = {
     getABranch,
     getDevicesOverview,
-    deactivateDevice,
+    disableDevice,
     getUsersOverview,
-    updateUser
+    disableUser,
+    updateUser,
   }
   
   const mapStateToProps = (state) => ({

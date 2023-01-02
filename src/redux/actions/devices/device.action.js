@@ -83,7 +83,7 @@ export const updateDevice = (id, values) => async (dispatch) => {
   const requestUrl = `/cadmin/device/${id}`;
   try {
 
-    const response = await APIService.post(requestUrl, values);
+    const response = await APIService.patch(requestUrl, values);
 
     dispatch(editDeviceSuccess(response.data));
     dispatch(editDeviceLoading(false))
@@ -94,9 +94,9 @@ export const updateDevice = (id, values) => async (dispatch) => {
   }
 };
 
-export const deactivateDevice = (id, values) => async (dispatch) => {
+export const disableDevice = (id, values) => async (dispatch) => {
   dispatch(deactivateDeviceLoading(true));
-  const requestUrl = `cadmin/device_state/${id}`;
+  const requestUrl = `cadmin/device_state/${id}/`;
   try {
 
     const response = await APIService.post(requestUrl, values);

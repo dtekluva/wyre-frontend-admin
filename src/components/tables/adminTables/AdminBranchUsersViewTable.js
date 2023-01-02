@@ -1,14 +1,15 @@
-import React from 'react';
-import { Table, Dropdown } from 'antd';
+import React, { useState } from 'react';
+import { Table, Dropdown, Switch } from 'antd';
 
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
 
 const AdminBranchUsersViewTable = (props) => {
-
+    // const [toggle, setToggle] = useState(false)
     const data = props.listOfBranchUsersViewData;
     const loading = props.loading;
     const showUserModal = props.showUserModal;
     const setUserData = props.setUserData;
+    const setUserSwitch = props.setUserSwitch;
 
     const itemData = (record) => {
         return [
@@ -60,7 +61,23 @@ const AdminBranchUsersViewTable = (props) => {
 
     });
 
-
+    const isActive = () => ({
+        key: 'Status',
+        title: 'Status',
+        width: '10%',
+        dataIndex: 'status',
+        render: (_, record) => {
+          return (
+            <Switch onClick={() => {
+                setUserSwitch(true)
+                setUserData(record)
+            }} />
+          )
+    
+        },
+    
+    
+    });
 
     const columns = [
         {
@@ -124,7 +141,8 @@ const AdminBranchUsersViewTable = (props) => {
             sorter: (a, b) => a.date_joined - b.date_joined,
             sortDirections: ['descend', 'ascend'],
         },
-        optionsColumn()
+        optionsColumn(),
+        isActive()
     ];
 
     return (

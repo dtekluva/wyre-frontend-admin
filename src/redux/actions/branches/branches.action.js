@@ -86,7 +86,7 @@ export const updateBranch = (branch_id, bodyParams) => async (dispatch) => {
   const requestUrl = `/cadmin/branch/${branch_id}`;
   try {
 
-    const response = await APIService.post(requestUrl, bodyParams);
+    const response = await APIService.patch(requestUrl, bodyParams);
 
     dispatch(editBranchSuccess(response.data));
     dispatch(editBranchLoading(false))

@@ -1,6 +1,6 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { editUserLoading, editUserSuccess, getUserLoading, 
+import { deactivateUserLoading, deactivateUserSuccess, editUserLoading, editUserSuccess, getUserLoading, 
   getUserOverviewLoading, getUserOverviewSuccess, 
   getUserSuccess } from "./user.creator";
 
@@ -46,13 +46,29 @@ export const updateUser = (userId, values) => async (dispatch) => {
   const requestUrl = `/api/v1/user/${userId}`;
   try {
 
-    const response = await APIService.post(requestUrl, values);
+    const response = await APIService.patch(requestUrl, values);
 
     dispatch(editUserSuccess(response.data));
     dispatch(editUserLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(editUserLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const disableUser = (userId) => async (dispatch) => {
+  dispatch(deactivateUserLoading(true));
+  const requestUrl = `cadmin/user_state/${userId}`;
+  try {
+
+    const response = await APIService.delete(requestUrl);
+
+    dispatch(deactivateUserSuccess(response.data));
+    dispatch(deactivateUserLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(deactivateUserLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

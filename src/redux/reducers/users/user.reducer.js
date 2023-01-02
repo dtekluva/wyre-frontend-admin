@@ -83,21 +83,21 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
             };
 
-        case userTypes.EDIT_USER_SUCCESS:
+        case userTypes.DEACTIVATE_USER_SUCCESS:
 
             return {
 
                 ...state,
-                updatedUser: action.payload,
+                deactivatedUser: action.payload,
 
             };
 
-        case userTypes.EDIT_USER_LOADING:
+        case userTypes.DEACTIVATE_USER_LOADING:
 
             return {
 
                 ...state,
-                updateUserLoading: action.payload,
+                deactivateUserLoading: action.payload,
 
             };
 
