@@ -37,75 +37,55 @@ function ViewBranch(props) {
     const [chechedStatus, setCheckedStatus] = useState(null)
     const [userchechedStatus, setUserCheckedStatus] = useState(null)
     const handleOkDevice = async () => {
-            const bodyParams = {
-              is_active: chechedStatus
-            }
-            const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
-            const device_id = deviceData.id;
-            const request = await props.disableDevice(device_id, bodyParams);
-            if (request.fulfilled) {
-                setDeviceSwitch(false);
-              notification.info({
+        const bodyParams = {
+            is_active: chechedStatus
+        }
+        const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
+        const device_id = deviceData.id;
+        const request = await props.disableDevice(device_id, bodyParams);
+        if (request.fulfilled) {
+            setDeviceSwitch(false);
+            notification.info({
                 message: 'successful',
                 description: request.message,
-              });
-              return props.getDevicesOverview(branch_id)
-            }
-            return notification.error({
-              message: 'failed',
-              description: request.message,
             });
+            return props.getDevicesOverview(branch_id)
+        }
+        return notification.error({
+            message: 'failed',
+            description: request.message,
+        });
     }
 
     const handleOkUser = async () => {
-        // const userId = userData.id
-        // const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
-        // const request = await props.removeUser(userId)
-        // if (request.fulfilled) {
-        //     setUserSwitch(false)
-        //     notification.info({
-        //         message:"Success",
-        //         description: request.message
-        //     });
-        //     return props.getDevicesOverview(branch_id)
-        // }
-        // return notification.error({
-        //     message:'Failed',
-        //     description: request.message
-        // })
-
         const bodyParams = {
-            // is_active: chechedStatus
-            branch: searchParams.get("branch_id") || props.auth.deviceData.branch_id
-            // branch_id
+            branch: searchParams.get("branch_id")
         };
-        //   const device_id = deviceData.id;
-          const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
-          const userId = userData.id;
-          const request = await props.removeUser(userId, bodyParams);
-          if (request.fulfilled) {
-              setUserSwitch(false);
+        const branch_id = searchParams.get("branch_id")
+        const userId = userData.id;
+        const request = await props.removeUser(userId, bodyParams);
+        if (request.fulfilled) {
+            setUserSwitch(false);
             notification.info({
-              message: 'successful',
-              description: request.message,
+                message: 'successful',
+                description: request.message,
             });
             return props.getUsersOverview(branch_id)
-          }
-          return notification.error({
+        }
+        return notification.error({
             message: 'failed',
             description: request.message,
-          });
+        });
     }
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
         const endDate = moment().format('DD-MM-YYYY HH:MM');
 
-        const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
+        const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 
         props.getABranch(branch_id, startDate, endDate);
         props.getDevicesOverview(branch_id)
-        // props.deactivateDevice(branch_id)
         props.getUsersOverview(branch_id)
 
     }, []);
@@ -135,87 +115,85 @@ function ViewBranch(props) {
                     </button>
                 </div>
                 <Spin spinning={props.branches?.fetchBranchLoading}>
-                <div className="view_branch_top">
-                    <Row>
-                        <Col md={8}>
-                            <div>
-                                <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
-                            </div>
-                        </Col>
-                        <Col md={8}>
-                            <div>
-                                <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
-                                <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
-                            </div>
-                        </Col>
-                    </Row>
+                    <div className="view_branch_top">
+                        <Row>
+                            <Col md={8}>
+                                <div>
+                                    <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
+                                </div>
+                            </Col>
+                            <Col md={8}>
+                                <div>
+                                    <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
+                                </div>
+                            </Col>
+                        </Row>
 
 
-                </div>
+                    </div>
                 </Spin>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Devices</h3>
                     </div>
                     {/* <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} /> */}
-                    <AdminBranchDevicesViewTable 
-                      loading= {props.devices?.fetchDeviceOverviewLoading}
-                      listOfDevicesData={props.devices?.fetchedDeviceOverview} 
-                      setVisibleDevice={setVisibleDevice}  
-                      setDeviceData={setDeviceData}  
-                      setDeviceSwitch={setDeviceSwitch} 
-                      setCheckedStatus={setCheckedStatus}                
+                    <AdminBranchDevicesViewTable
+                        loading={props.devices?.fetchDeviceOverviewLoading}
+                        listOfDevicesData={props.devices?.fetchedDeviceOverview}
+                        setVisibleDevice={setVisibleDevice}
+                        setDeviceData={setDeviceData}
+                        setDeviceSwitch={setDeviceSwitch}
+                        setCheckedStatus={setCheckedStatus}
                     />
                     <Modal open={visibleDevice}
                         onOk={() => setVisibleDevice(false)}
                         onCancel={() => setVisibleDevice(false)} width={1000} footer={null} >
-                        <UpdateDeviceForm 
-                          setModal={setVisibleDevice}
-                          deviceData={deviceData}
+                        <UpdateDeviceForm
+                            setModal={setVisibleDevice}
+                            deviceData={deviceData}
                         />
                     </Modal>
 
-                    <Modal 
-                       open={deviceSwitch} 
-                       onOk={handleOkDevice}
-                       onCancel={() => setDeviceSwitch(false)}
-                       deviceModal={setDeviceSwitch}
+                    <Modal
+                        open={deviceSwitch}
+                        onOk={handleOkDevice}
+                        onCancel={() => setDeviceSwitch(false)}
                     >
-                        <h1>Are Sure You Want To {deviceSwitch? 'Enable': 'Disable'} this Device?</h1>
-                       {deviceSwitch}
+                        <h1>Are Sure You Want To {deviceSwitch ? 'Enable' : 'Disable'} this Device?</h1>
+                        {deviceSwitch}
                     </Modal>
                 </div>
                 <div className='h-overflow-auto'>
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Users</h3>
-                    </div> 
-    
+                    </div>
+
                     <AdminBranchUsersViewTable
-                      loading= {props.user?.fetchUserOverviewLoading}
-                      branchName={props.branches?.fetchedBranch[0]?.name}
-                      listOfBranchUsersViewData={props.user?.fetchedUserOverview}
-                      showUserModal={setVisibleUser}
-                      setUserData={setUserData}
-                      setUserSwitch={setUserSwitch}
+                        loading={props.user?.fetchUserOverviewLoading}
+                        branchName={props.branches?.fetchedBranch[0]?.name}
+                        listOfBranchUsersViewData={props.user?.fetchedUserOverview}
+                        showUserModal={setVisibleUser}
+                        setUserData={setUserData}
+                        setUserSwitch={setUserSwitch}
                     />
                     <Modal open={visibleUser}
                         onOk={() => setVisibleUser(false)}
                         onCancel={() => setVisibleUser(false)} width={1000} footer={null} >
-                        <UpdateUserForm 
-                          setModal={setVisibleUser}
-                          userData={userData}
+                        <UpdateUserForm
+                            setModal={setVisibleUser}
+                            userData={userData}
                         />
                     </Modal>
-                    <Modal 
-                       open={userSwitch}
-                       onOk={handleOkUser}
-                       onCancel={() => setUserSwitch(false)}
-                       userModal={setUserSwitch}
+                    <Modal
+                        open={userSwitch}
+                        onOk={handleOkUser}
+                        onCancel={() => setUserSwitch(false)}
                     >
-                        <h1>Are You Sure You Want To {userSwitch? 'Enable': 'Disable'} this User?</h1>
+                        <h1>Are You Sure You Want To Disable this User?</h1>
                         {userSwitch}
                     </Modal>
                 </div>
@@ -233,13 +211,13 @@ const mapDispatchToProps = {
     removeUser,
     // disableUser,
     updateUser,
-  }
-  
-  const mapStateToProps = (state) => ({
+}
+
+const mapStateToProps = (state) => ({
     branches: state.branches,
     auth: state.auth,
     devices: state.devices,
     user: state.user
-  });
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewBranch)

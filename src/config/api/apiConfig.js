@@ -26,7 +26,7 @@ export const instanceNoAuth = axios.create({
 
 
 const useConfig = async (config) => {
- 
+
     // if access token has expire call refresh token
     // if (tokenIsExpired()) {
     //     // call refresh right here
@@ -58,7 +58,7 @@ export const APIService = {
         return config ? instance.get(endpoint, config) : instance.get(endpoint);
     },
 
-    post(endpoint, data, config={}) {
+    post(endpoint, data, config = {}) {
         return instance.post(endpoint, data, config);
     },
 
@@ -67,14 +67,14 @@ export const APIService = {
     },
 
     delete(endpoint, data) {
-        return instance.delete(endpoint, data);
+        return instance.delete(endpoint, { data });
     },
 
     put(endpoint, data) {
         return instance.put(endpoint, data);
     },
-    
-    postMultipart(endpoint, data, config={}) {
+
+    postMultipart(endpoint, data, config = {}) {
         return instance.post(endpoint, data, config);
     },
 

@@ -4,7 +4,7 @@ import { Table, Dropdown, Switch } from 'antd';
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
 
 const AdminBranchUsersViewTable = (props) => {
-    // const [toggle, setToggle] = useState(false)
+
     const data = props.listOfBranchUsersViewData;
     const loading = props.loading;
     const showUserModal = props.showUserModal;
