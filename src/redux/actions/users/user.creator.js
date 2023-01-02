@@ -49,5 +49,12 @@ export const deactivateUserSuccess = (payload = true) => ({
     payload,
   });
 
-
-    
+export const removeUserLoading = (payload = true) => ({
+    type: userTypes.REMOVE_USER_LOADING,
+    payload,
+  });
+  
+export const removeUserSuccess = (payload = true) => ({
+    type: userTypes.REMOVE_USER_SUCCESS,
+    payload,
+  });    

@@ -11,6 +11,8 @@ const INITIAL_STATE = {
     updatedUser: false,
     deactivateUserLoading: false,
     deactivatedUser: false,
+    removeUserLoading: false,
+    removedUser: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -98,6 +100,23 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 deactivateUserLoading: action.payload,
+
+            };
+        case userTypes.REMOVE_USER_SUCCESS:
+
+            return {
+
+                ...state,
+                removedUser: action.payload,
+
+            };
+
+        case userTypes.REMOVE_USER_LOADING:
+
+            return {
+
+                ...state,
+                removeUserLoading: action.payload,
 
             };
 

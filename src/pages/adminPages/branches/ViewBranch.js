@@ -10,7 +10,7 @@ import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/
 import { connect } from 'react-redux';
 
 import { disableDevice, getDevicesOverview } from '../../../redux/actions/devices/device.action';
-import { disableUser, getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
+import { disableUser, getUsersOverview, removeUser, updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
@@ -35,6 +35,7 @@ function ViewBranch(props) {
     const [deviceSwitch, setDeviceSwitch] = useState(false)
     const [userSwitch, setUserSwitch] = useState(false)
     const [chechedStatus, setCheckedStatus] = useState(null)
+    const [userchechedStatus, setUserCheckedStatus] = useState(null)
     const handleOkDevice = async () => {
             const bodyParams = {
               is_active: chechedStatus
@@ -57,19 +58,43 @@ function ViewBranch(props) {
     }
 
     const handleOkUser = async () => {
-        const userId = userData.id
-        const request = await props.disableUser(userId)
-        if (request.fulfilled) {
-            setUserSwitch(false)
-            return notification.info({
-                message:"Success",
-                description: request.message
-            })
-        }
-        return notification.error({
-            message:'Failed',
-            description: request.message
-        })
+        // const userId = userData.id
+        // const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
+        // const request = await props.removeUser(userId)
+        // if (request.fulfilled) {
+        //     setUserSwitch(false)
+        //     notification.info({
+        //         message:"Success",
+        //         description: request.message
+        //     });
+        //     return props.getDevicesOverview(branch_id)
+        // }
+        // return notification.error({
+        //     message:'Failed',
+        //     description: request.message
+        // })
+
+        const bodyParams = {
+            // is_active: chechedStatus
+            branch: searchParams.get("branch_id") || props.auth.deviceData.branch_id
+            // branch_id
+        };
+        //   const device_id = deviceData.id;
+          const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
+          const userId = userData.id;
+          const request = await props.removeUser(userId, bodyParams);
+          if (request.fulfilled) {
+              setUserSwitch(false);
+            notification.info({
+              message: 'successful',
+              description: request.message,
+            });
+            return props.getUsersOverview(branch_id)
+          }
+          return notification.error({
+            message: 'failed',
+            description: request.message,
+          });
     }
 
     useEffect(() => {
@@ -205,7 +230,8 @@ const mapDispatchToProps = {
     getDevicesOverview,
     disableDevice,
     getUsersOverview,
-    disableUser,
+    removeUser,
+    // disableUser,
     updateUser,
   }
   

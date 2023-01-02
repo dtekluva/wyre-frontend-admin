@@ -10,6 +10,7 @@ const AdminBranchUsersViewTable = (props) => {
     const showUserModal = props.showUserModal;
     const setUserData = props.setUserData;
     const setUserSwitch = props.setUserSwitch;
+    const setUserCheckedStatus = props.setUserCheckedStatus;
 
     const itemData = (record) => {
         return [
