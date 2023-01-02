@@ -39,15 +39,16 @@ function ViewBranch(props) {
             const bodyParams = {
               is_active: chechedStatus
             }
+            const branch_id =searchParams.get("branch_id") || props.auth.deviceData.branch_id;
             const device_id = deviceData.id;
             const request = await props.disableDevice(device_id, bodyParams);
             if (request.fulfilled) {
-              props.deviceModal(false);
+                setDeviceSwitch(false);
               notification.info({
                 message: 'successful',
                 description: request.message,
               });
-            //   return props.getBranches(device_id);
+              return props.getDevicesOverview(branch_id)
             }
             return notification.error({
               message: 'failed',
@@ -59,7 +60,7 @@ function ViewBranch(props) {
         const userId = userData.id
         const request = await props.disableUser(userId)
         if (request.fulfilled) {
-            props.userModal(false)
+            setUserSwitch(false)
             return notification.info({
                 message:"Success",
                 description: request.message
@@ -158,7 +159,7 @@ function ViewBranch(props) {
                        onCancel={() => setDeviceSwitch(false)}
                        deviceModal={setDeviceSwitch}
                     >
-                        <h1>Are Sure You Want To Disable this Device?</h1>
+                        <h1>Are Sure You Want To {deviceSwitch? 'Enable': 'Disable'} this Device?</h1>
                        {deviceSwitch}
                     </Modal>
                 </div>
@@ -189,7 +190,7 @@ function ViewBranch(props) {
                        onCancel={() => setUserSwitch(false)}
                        userModal={setUserSwitch}
                     >
-                        <h1>Are You Sure You Want To Disable this User?</h1>
+                        <h1>Are You Sure You Want To {userSwitch? 'Enable': 'Disable'} this User?</h1>
                         {userSwitch}
                     </Modal>
                 </div>

@@ -68,7 +68,7 @@ const AdminBranchUsersViewTable = (props) => {
         dataIndex: 'status',
         render: (_, record) => {
           return (
-            <Switch onClick={() => {
+            <Switch defaultChecked onClick={() => {
                 setUserSwitch(true)
                 setUserData(record)
             }} />

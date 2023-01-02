@@ -96,6 +96,7 @@ export const updateDevice = (id, values) => async (dispatch) => {
 
 export const disableDevice = (id, values) => async (dispatch) => {
   dispatch(deactivateDeviceLoading(true));
+
   const requestUrl = `cadmin/device_state/${id}/`;
   try {
 
