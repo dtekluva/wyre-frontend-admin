@@ -5,8 +5,12 @@ const INITIAL_STATE = {
     fetchedUser: false,
     fetchUserOverviewLoading: false,
     fetchedUserOverview: false,
+    fetchClientUserLoading: false,
+    fetchedClientUser: false,
     newUserLoading: false,
     newUser: false,
+    newUserBranchLoading: false,
+    newUserBranch: false,
     updateUserLoading: false,
     updatedUser: false,
     deactivateUserLoading: false,
@@ -35,6 +39,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 fetchedUser: action.payload,
 
             };
+
         case userTypes.GET_USER_OVERVIEW_LOADING:
 
             return {
@@ -50,6 +55,24 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 fetchedUserOverview: action.payload,
 
             };
+
+        case userTypes.GET_CLIENT_USERS_LOADING:
+
+            return {
+
+                ...state,
+                fetchClientUserLoading: action.payload,
+
+            };
+        case userTypes.GET_CLIENT_USERS_SUCCESS:
+
+            return {
+
+                ...state,
+                fetchedClientUser: action.payload,
+
+            };
+
         case userTypes.ADD_USER_SUCCESS:
 
             return {
@@ -64,6 +87,23 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 newUserLoading: action.payload,
+
+            };
+
+        case userTypes.ADD_USER_BRANCH_SUCCESS:
+
+            return {
+
+                ...state,
+                newUserBranch: action.payload,
+
+            };
+        case userTypes.ADD_USER_BRANCH_LOADING:
+
+            return {
+
+                ...state,
+                newUserBranchLoading: action.payload,
 
             };
 

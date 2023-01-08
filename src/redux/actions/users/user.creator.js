@@ -10,6 +10,7 @@ export const getUserSuccess = (payload = true) => ({
     type: userTypes.GET_USER_SUCCESS,
     payload,
   });
+
 export const getUserOverviewLoading = (payload = true) => ({
     type: userTypes.GET_USER_OVERVIEW_LOADING,
     payload,
@@ -19,6 +20,17 @@ export const getUserOverviewSuccess = (payload = true) => ({
     type: userTypes.GET_USER_OVERVIEW_SUCCESS,
     payload,
   });
+
+export const getClientUsersLoading = (payload = true) => ({
+    type: userTypes.GET_CLIENT_USERS_LOADING,
+    payload,
+  });
+  
+export const getClientUsersSuccess = (payload = true) => ({
+    type: userTypes.GET_CLIENT_USERS_SUCCESS,
+    payload,
+  });
+
 export const addUserLoading = (payload = true) => ({
     type: userTypes.ADD_USER_LOADING,
     payload,
@@ -26,6 +38,15 @@ export const addUserLoading = (payload = true) => ({
   
 export const addUserSuccess = (payload = true) => ({
     type: userTypes.ADD_USER_SUCCESS,
+    payload,
+  });
+
+export const addUserBranchLoading = (payload = true) => ({
+    type: userTypes.ADD_USER_BRANCH_LOADING,
+    payload,
+  });  
+export const addUserBranchSuccess = (payload = true) => ({
+    type: userTypes.ADD_USER_BRANCH_SUCCESS,
     payload,
   });
   

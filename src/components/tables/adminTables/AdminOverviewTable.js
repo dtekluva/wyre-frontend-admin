@@ -194,7 +194,7 @@ const AdminOverviewTable = (props) => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Diesel (kW)',
+      title: 'Diesel (ltr)',
       dataIndex: 'diesel',
       key: 'diesel',
       ...getColumnSearchProps('dieseldiesel'),

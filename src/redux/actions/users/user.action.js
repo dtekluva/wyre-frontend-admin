@@ -1,6 +1,6 @@
 import { APIService } from "../../../config/api/apiConfig";
 
-import { deactivateUserLoading, deactivateUserSuccess, editUserLoading, editUserSuccess, getUserLoading, 
+import { deactivateUserLoading, deactivateUserSuccess, editUserLoading, editUserSuccess, getClientUsersLoading, getClientUsersSuccess, getUserLoading, 
   getUserOverviewLoading, getUserOverviewSuccess, 
   getUserSuccess, 
   removeUserLoading,
@@ -25,6 +25,7 @@ export const getUsers = (parameters={}) => async (dispatch) => {
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+
 export const getUsersOverview = (branch_id) => async (dispatch) => {
 
   dispatch(getUserOverviewLoading(true));
@@ -38,6 +39,23 @@ export const getUsersOverview = (branch_id) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getUserOverviewLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const getClientUsersList = (client_id) => async (dispatch) => {
+
+  dispatch(getClientUsersLoading(true));
+
+  const requestUrl = `cadmin/users/${client_id}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getClientUsersSuccess(response.data));
+    dispatch(getClientUsersLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getClientUsersLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
@@ -77,7 +95,6 @@ export const disableUser = (userId) => async (dispatch) => {
 
 export const removeUser = (userId, values) => async (dispatch) => {
   dispatch(removeUserLoading(true));
-  console.log("checking the actions>>>>", userId, values);
   const requestUrl = `cadmin/add_user/${userId}`;
   try {
 

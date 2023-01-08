@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import AddDeviceForm from '../../pages/adminPages/modal/AddDeviceForm';
 import AddBranchForm from '../../pages/adminPages/modal/AddBranchForm';
 import AddUserForm from '../../pages/adminPages/modal/AddUserForm';
+import AddUserToBranchForm from '../../pages/adminPages/modal/AddUserToBranchForm';
 
 import { getAllRoles } from '../../redux/actions/auth/auth.action';
 const isSidebarOpen = false;
@@ -14,11 +15,13 @@ function AdminTopBar(props) {
   // modal functions for add user form and add device form starts 
   const [visible, setVisible] = useState(false);
   const [visibleUser, setVisibleUser] = useState(false);
+  const [visibleUserBranch, setVisibleUserBranch] = useState(false);
   const [visibleBranch, setVisibleBranch] = useState(false);
   const [isTopBarAdminDeviceRightDisplayedDevice, setIsTopBarAdminDeviceRightDisplayedDevice] = useState(false);
   const [isTopBarAdminDeviceLeftDisplayed, setIsTopBarAdminDeviceLeftDisplayed] = useState(false);
   const [isTopBarAdminDeviceRightDisplayedUser, setIsTopBarAdminDeviceRightDisplayedUser] = useState(false);
   const [isTopBarAdminOrganisationRightDisplayed, setIsTopBarAdminOrganisationRightDisplayed] = useState(false);
+  const [isTopBarAdminUserBranchRightDisplayed, setIsTopBarAdminUserBranchRightDisplayed] = useState(false);
   const location = useLocation();
 
 
@@ -29,8 +32,9 @@ function AdminTopBar(props) {
     const locationPathName = location.pathname;
     setIsTopBarAdminDeviceRightDisplayedDevice(locationPathName === ('/view-branch'));
     setIsTopBarAdminOrganisationRightDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
+    setIsTopBarAdminUserBranchRightDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
     setIsTopBarAdminDeviceLeftDisplayed(locationPathName.includes('view-branches'));
-    setIsTopBarAdminDeviceRightDisplayedUser(props.auth.userData.role_text === 'SUPERADMIN');
+    setIsTopBarAdminDeviceRightDisplayedUser(props.auth.userData.role_text === 'SUPERADMIN' || props.auth.userData.role_text === 'CLIENT_ADMIN');
   }, [location.pathname])
 
   const isTopBarDisplayed = !location.pathname.includes('hide-top-bar');
@@ -103,6 +107,17 @@ function AdminTopBar(props) {
           >
             Add User
           </Link>
+          {isTopBarAdminUserBranchRightDisplayed && <Link
+            className='top-bar-right__button h-extra-padding'
+            // to='/add-devices'
+            onClick={(e) => {
+              e.preventDefault()
+              setVisibleUserBranch(true)
+            }}
+          >
+            Add User To Branch
+          </Link>
+          }
           {/* <Link
             className='top-bar-right__button h-extra-padding'
             onClick={() => setVisible(true)}
@@ -131,6 +146,13 @@ function AdminTopBar(props) {
         onOk={() => setVisibleUser(false)}
         onCancel={() => setVisibleUser(false)} width={1000} footer={null} >
         <AddUserForm setVisibleBranch={setVisibleUser} />
+      </Modal>
+
+      {/* Add User To Branch Form modal  */}
+      <Modal open={visibleUserBranch}
+        onOk={() => setVisibleUserBranch(false)}
+        onCancel={() => setVisibleUserBranch(false)} width={1000} footer={null} >
+        <AddUserToBranchForm setVisibleUserBranch={setVisibleUserBranch} />
       </Modal>
     </div>
   );

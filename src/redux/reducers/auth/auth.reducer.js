@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedRolesLoading: false,
     newUserLoading: false,
     newUsers: false,
+    newUserBranchLoading: false,
+    newUserBranch: false,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -43,6 +45,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 fetchedRoles: action.payload,
             };
+
         case authTypes.ADD_USERS_LOADING:
 
             return {
@@ -56,6 +59,21 @@ const authReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 newUsers: action.payload,
+            };
+
+        case authTypes.ADD_USER_BRANCH_LOADING:
+
+            return {
+
+                ...state,
+                newUserBranchLoading: action.payload,
+
+            };
+        case authTypes.ADD_USER_BRANCH_SUCCESS:
+
+            return {
+                ...state,
+                newUserBranch: action.payload,
             };
 
         case authTypes.EDIT_USER_SUCCESS:

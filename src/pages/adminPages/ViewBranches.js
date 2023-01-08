@@ -49,20 +49,20 @@ function ViewBranches(props) {
             {/* <button type='button' className='table-header__left-button'>
               PDF
             </button> */}
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               CSV
-            </button>
+            </button> */}
           </div>
 
           <h3 className='table-header__heading'>Branches</h3>
 
-          <button
+          {/* <button
             type='button'
             className='table-header__right-button h-hidden-medium-down'
           >
             <ExcelIcon />
             <span>Download in Excel</span>
-          </button>
+          </button> */}
         </div>
         <Spin spinning={props.branches?.fetchViewBranchesTopLoading} >
         <div className='branches-total_costs'>
@@ -94,7 +94,7 @@ function ViewBranches(props) {
              listOfBranchesData={props.branches?.fetchedViewBranches}
              setVisibleBranch={setVisibleBranch}
              setBranchData= {setBranchData}
-             />
+          />
           <Modal
             open={visibleBranch}
             onOk={() => setVisibleBranch(false)}

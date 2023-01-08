@@ -17,6 +17,7 @@ import TopBar from '../components/header/AdminTopBar';
 import AddBranches from '../pages/adminPages/AddBranches';
 // import AddClients from '../adminPages/AddClients';
 import ViewBranch from '../pages/adminPages/branches/ViewBranch';
+import ViewClientUsers from '../pages/adminPages/branches/ViewClientUsers';
 
 function ClientAdminPages() {
   return (
@@ -31,6 +32,7 @@ function ClientAdminPages() {
             <Routes>
               <Route path='/' element={<ViewBranches />} />
               <Route path='/view-branch' element={<ViewBranch />} />
+              <Route path='/view-client-users' element={<ViewClientUsers />} />
               {/* <Route path='/add-branches' element={<AddBranches />} /> */}
               {/* <Route exact path='/overview' element={<Overview />} />
               <Route path='/view-client' element={<ViewOrganisation />} /> */}

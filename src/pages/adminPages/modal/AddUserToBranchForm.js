@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import { Form, Select, Input, notification, Spin } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getAllRoles, addUsers } from '../../../redux/actions/auth/auth.action';
+import { getAllRoles, addUserToBranch } from '../../../redux/actions/auth/auth.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
-import { updateUser } from '../../../redux/actions/users/user.action';
+// import { updateUser } from '../../../redux/actions/users/user.action';
+import { getABranch } from '../../../redux/actions/branches/branches.action';
+import { useSearchParams } from 'react-router-dom';
 
-function AddUserForm(props) {
+function AddUserToBranchForm(props) {
+    const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
-
     useEffect(() => {
         if (!props.auth?.fetchedRoles) {
             props.getAllRoles();
@@ -16,18 +18,26 @@ function AddUserForm(props) {
         if (!props.client?.fetchedClient && props.auth.userData.role_text !== "CLIENT_ADMIN") {
             props.getClients();
         }
+
+        const branchId = searchParams.get("branch_id");
+
+        if (!props.branches?.fetchedBranch) {
+            props.getABranch(branchId)
+        }
     }, [])
     // modal form 
     const { Option } = Select;
 
 
     const onUserFormSubmit = async (values) => {
-        // if userRole is clientadmin, add clientid of the user to values
-        if (props.auth.userData.role_text === "CLIENT_ADMIN") {
-            values.client = props.auth.userData.client_id;
+        // if userRole is SUPER-ADMIN, add branchId of the user to values      
+        if (props.auth.userData.role_text === "SUPERADMIN") {
+            values.branch = searchParams.get("branch_id");
         }
-        const request = await props.addUsers(values);
-        
+
+        const branch_id = searchParams.get("branch_id")
+        const request = await props.addUserToBranch(branch_id, values);
+
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);
@@ -40,7 +50,7 @@ function AddUserForm(props) {
             message: 'failed',
             description: request.message,
         });
-        
+
     }
     const roleSelector = (
         <Select
@@ -79,7 +89,7 @@ function AddUserForm(props) {
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.newUserLoading}>
-            <h1 className='center-main-heading'>User Form</h1>
+            <h1 className='center-main-heading'>Branch User Form</h1>
 
             <section className='cost-tracker-form-section'>
                 <Form
@@ -173,7 +183,7 @@ function AddUserForm(props) {
                                 {roleSelector}
                             </Form.Item>
                         </div>
-                        <div className='add-client-input-container'>
+                        {/* <div className='add-client-input-container'>
                             {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
                                 <Form.Item
                                     labelCol={{ span: 24 }}
@@ -185,7 +195,7 @@ function AddUserForm(props) {
                                 {clientSelector}
                             </Form.Item>
                             )} 
-                        </div>
+                        </div> */}
                         <div className='add-client-input-container'>
                             {/* <Form.Item
                                 labelCol={{ span: 24 }}
@@ -211,15 +221,17 @@ function AddUserForm(props) {
 }
 
 const mapDispatchToProps = {
+    getABranch,
+    addUserToBranch,
     getAllRoles,
     getClients,
-    addUsers,
-    updateUser,
+    // updateUser,
 }
 const mapStateToProps = (state) => ({
     auth: state.auth,
     client: state.client,
-    user: state.user
+    user: state.user,
+    branches: state.branches
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddUserToBranchForm);
