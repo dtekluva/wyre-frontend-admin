@@ -32,7 +32,7 @@ function AdminTopBar(props) {
     const locationPathName = location.pathname;
     setIsTopBarAdminDeviceRightDisplayedDevice(locationPathName === ('/view-branch'));
     setIsTopBarAdminOrganisationRightDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
-    setIsTopBarAdminUserBranchRightDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
+    setIsTopBarAdminUserBranchRightDisplayed(locationPathName === ('/view-branch'));
     setIsTopBarAdminDeviceLeftDisplayed(locationPathName.includes('view-branches'));
     setIsTopBarAdminDeviceRightDisplayedUser(props.auth.userData.role_text === 'SUPERADMIN' || props.auth.userData.role_text === 'CLIENT_ADMIN');
   }, [location.pathname])

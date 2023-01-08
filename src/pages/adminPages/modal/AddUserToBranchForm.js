@@ -20,6 +20,7 @@ function AddUserToBranchForm(props) {
         }
 
         const branchId = searchParams.get("branch_id");
+        console.log("branch-id>>>>>>>>>", branchId);
 
         if (!props.branches?.fetchedBranch) {
             props.getABranch(branchId)
@@ -36,6 +37,7 @@ function AddUserToBranchForm(props) {
         }
 
         const branch_id = searchParams.get("branch_id")
+        console.log("values++++++++++++", values.branch);
         const request = await props.addUserToBranch(branch_id, values);
 
         if (request.fulfilled) {
