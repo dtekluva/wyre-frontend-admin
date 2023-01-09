@@ -21,6 +21,7 @@ function AdminTopBar(props) {
   const [isTopBarAdminDeviceLeftDisplayed, setIsTopBarAdminDeviceLeftDisplayed] = useState(false);
   const [isTopBarAdminDeviceRightDisplayedUser, setIsTopBarAdminDeviceRightDisplayedUser] = useState(false);
   const [isTopBarAdminOrganisationRightDisplayed, setIsTopBarAdminOrganisationRightDisplayed] = useState(false);
+  const [isTopBarAdminClientUsersLeftDisplayed, setIsTopBarAdminClientUsersLeftDisplayed] = useState(false);
   const [isTopBarAdminUserBranchRightDisplayed, setIsTopBarAdminUserBranchRightDisplayed] = useState(false);
   const location = useLocation();
 
@@ -32,6 +33,7 @@ function AdminTopBar(props) {
     const locationPathName = location.pathname;
     setIsTopBarAdminDeviceRightDisplayedDevice(locationPathName === ('/view-branch'));
     setIsTopBarAdminOrganisationRightDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
+    setIsTopBarAdminClientUsersLeftDisplayed(locationPathName === '/' && props.auth.userData.role_text === 'SUPERADMIN');
     setIsTopBarAdminUserBranchRightDisplayed(locationPathName === ('/view-branch'));
     setIsTopBarAdminDeviceLeftDisplayed(locationPathName.includes('view-branches'));
     setIsTopBarAdminDeviceRightDisplayedUser(props.auth.userData.role_text === 'SUPERADMIN' || props.auth.userData.role_text === 'CLIENT_ADMIN');
@@ -45,6 +47,11 @@ function AdminTopBar(props) {
         className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}
       >
         <div className={isTopBarAdminDeviceLeftDisplayed ? '.top-bar__left' : '.top-bar__left h-hide'}>
+          <div className="search_input-wrapper">
+            <Input className='search___input' placeholder="Branches" prefix={<SearchOutlined />} />
+          </div>
+        </div>
+        <div className={isTopBarAdminClientUsersLeftDisplayed ? '.top-bar__left' : '.top-bar__left h-hide'}>
           <div className="search_input-wrapper">
             <Input className='search___input' placeholder="Branches" prefix={<SearchOutlined />} />
           </div>
@@ -77,6 +84,10 @@ function AdminTopBar(props) {
         >
           {isTopBarAdminOrganisationRightDisplayed && <Link className='top-bar-right__button h-extra-padding' to='/add-clients' >
                 Add Client
+              </Link>
+          }
+          {isTopBarAdminClientUsersLeftDisplayed && <Link className='top-bar-right__button h-extra-padding' to='/view-client-users' >
+                View Client Users
               </Link>
           }
           {isTopBarAdminDeviceLeftDisplayed && <Link
