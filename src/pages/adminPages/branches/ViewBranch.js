@@ -9,7 +9,7 @@ import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/
 
 import { connect } from 'react-redux';
 
-import { disableDevice, getDevicesOverview } from '../../../redux/actions/devices/device.action';
+import { disableDevice, getDevicesOverview, getDeviceTypes } from '../../../redux/actions/devices/device.action';
 import { disableUser, getUsersOverview, removeUser, updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 
@@ -78,14 +78,19 @@ function ViewBranch(props) {
         });
     }
 
+    const userRoletextData = props.auth.userData.role_text
+    console.log("USER ROLE_TEXT>>>>>>>>>>>>>>>", userRoletextData);
+
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
         const endDate = moment().format('DD-MM-YYYY HH:MM');
 
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
-
         props.getABranch(branch_id, startDate, endDate);
         props.getDevicesOverview(branch_id)
+        console.log("Device-DATA>>>>>>>>>>>>>>>", props.devices.fetchedDeviceOverview);
+        props.getDeviceTypes()
+        console.log("Typessssssssssss>>>>>>>>>>>>>>>", props.devices.fetchedDeviceType);
         props.getUsersOverview(branch_id)
 
     }, []);
@@ -98,21 +103,21 @@ function ViewBranch(props) {
 
             <article className='table-with-header-container h-no-mt'>
                 <div className='table-header h-border-bottom'>
-                    <div className='h-hidden-medium-down'>
+                    {/* <div className='h-hidden-medium-down'>
                         <button type='button' className='table-header__left-button'>
                             CSV
                         </button>
-                    </div>
+                    </div> */}
 
                     <h3 className='table-header__heading'>{props.branches?.fetchedBranch[0]?.name}</h3>
 
-                    <button
+                    {/* <button
                         type='button'
                         className='table-header__right-button h-hidden-medium-down'
                     >
                         <ExcelIcon />
                         <span>Download in Excel</span>
-                    </button>
+                    </button> */}
                 </div>
                 <Spin spinning={props.branches?.fetchBranchLoading}>
                     <div className="view_branch_top">
@@ -148,6 +153,7 @@ function ViewBranch(props) {
                         setDeviceData={setDeviceData}
                         setDeviceSwitch={setDeviceSwitch}
                         setCheckedStatus={setCheckedStatus}
+                        userRoletextData={userRoletextData}
                     />
                     <Modal open={visibleDevice}
                         onOk={() => setVisibleDevice(false)}
@@ -179,6 +185,7 @@ function ViewBranch(props) {
                         showUserModal={setVisibleUser}
                         setUserData={setUserData}
                         setUserSwitch={setUserSwitch}
+                        userRoletextData={userRoletextData}
                     />
                     <Modal open={visibleUser}
                         onOk={() => setVisibleUser(false)}
@@ -193,7 +200,7 @@ function ViewBranch(props) {
                         onOk={handleOkUser}
                         onCancel={() => setUserSwitch(false)}
                     >
-                        <h1>Are You Sure You Want To Disable this User?</h1>
+                        <h1>Are You Sure You Want To {userSwitch ? 'Enable' : 'Disable'} this User?</h1>
                         {userSwitch}
                     </Modal>
                 </div>
@@ -206,6 +213,7 @@ function ViewBranch(props) {
 const mapDispatchToProps = {
     getABranch,
     getDevicesOverview,
+    getDeviceTypes,
     disableDevice,
     getUsersOverview,
     removeUser,

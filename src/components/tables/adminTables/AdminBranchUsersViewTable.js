@@ -9,6 +9,7 @@ const AdminBranchUsersViewTable = (props) => {
     const loading = props.loading;
     const showUserModal = props.showUserModal;
     const setUserData = props.setUserData;
+    const userRoletextData = props.userRoletextData
     const setUserSwitch = props.setUserSwitch;
     const setUserCheckedStatus = props.setUserCheckedStatus;
 
@@ -18,14 +19,18 @@ const AdminBranchUsersViewTable = (props) => {
                 key: '1',
                 label: (
                     <>
-                        <EditOutlined />
-                        <a target="_blank" onClick={(e) => {
-                            e.preventDefault();
-                            showUserModal(true);
-                            setUserData(record);
-                        }} rel="noopener noreferrer">
-                            Edit User
-                        </a>
+                        {userRoletextData === 'SUPERADMIN' ? 
+                            [
+                                <EditOutlined />,
+                            <a target="_blank" onClick={(e) => {
+                                e.preventDefault();
+                                showUserModal(true);
+                                setUserData(record);
+                            }} rel="noopener noreferrer">
+                                Edit User
+                            </a> 
+                            ] : ''
+                        }
                     </>
 
                 ),
@@ -48,7 +53,7 @@ const AdminBranchUsersViewTable = (props) => {
                     menu={{
                         items
                     }}
-                >
+                    >
                     <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                         More
                         {' '}
@@ -56,12 +61,11 @@ const AdminBranchUsersViewTable = (props) => {
                     </a>
                 </Dropdown>
             )
-
         }
-
-
+        
+        
     });
-
+    
     const isActive = () => ({
         key: 'Status',
         title: 'Status',
@@ -110,9 +114,9 @@ const AdminBranchUsersViewTable = (props) => {
         },
         {
             title: 'Email Address',
-            dataIndex: 'email_address',
-            key: 'email_address',
-            sorter: (a, b) => a.email_address - b.email_address,
+            dataIndex: 'email',
+            key: 'email',
+            sorter: (a, b) => a.email - b.email,
             sortDirections: ['descend', 'ascend'],
         },
         {
@@ -143,7 +147,8 @@ const AdminBranchUsersViewTable = (props) => {
             sortDirections: ['descend', 'ascend'],
         },
         optionsColumn(),
-        isActive()
+        (userRoletextData === 'SUPERADMIN' ? isActive() : {})
+        // isActive()
     ];
 
     return (

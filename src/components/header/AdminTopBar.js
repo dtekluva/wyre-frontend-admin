@@ -86,10 +86,10 @@ function AdminTopBar(props) {
                 Add Client
               </Link>
           }
-          {isTopBarAdminClientUsersLeftDisplayed && <Link className='top-bar-right__button h-extra-padding' to='/view-client-users' >
+          {/* {isTopBarAdminClientUsersLeftDisplayed && <Link className='top-bar-right__button h-extra-padding' to='/view-client-users' >
                 View Client Users
               </Link>
-          }
+          } */}
           {isTopBarAdminDeviceLeftDisplayed && <Link
             className='top-bar-right__button h-extra-padding'
             // to='/add-devices'

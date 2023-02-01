@@ -8,6 +8,7 @@ const AdminBranchDevicesViewTable = (props) => {
     const loading = props.loading;
     const setVisibleDevice = props.setVisibleDevice;
     const setDeviceData = props.setDeviceData;
+    const userRoletextData = props.userRoletextData
     const setDeviceSwitch = props.setDeviceSwitch
     const setCheckedStatus = props.setCheckedStatus
     const itemData = (record) => {
@@ -16,14 +17,18 @@ const AdminBranchDevicesViewTable = (props) => {
             key: '1',
             label: (
               <>
-                <EditOutlined />
-                <a target="_blank" onClick={(e) => {
-                  e.preventDefault();
-                  setVisibleDevice(true);
-                  setDeviceData(record);
-                }} rel="noopener noreferrer">
-                  Edit Device
-                </a>
+                {userRoletextData === 'SUPERADMIN' ? 
+                  [
+                    <EditOutlined />,
+                    <a target="_blank" onClick={(e) => {
+                       e.preventDefault();
+                       setVisibleDevice(true);
+                       setDeviceData(record);
+                     }} rel="noopener noreferrer">
+                     Edit Device
+                    </a>
+                  ] : ''
+                }
               </>
     
             ),
@@ -68,15 +73,15 @@ const AdminBranchDevicesViewTable = (props) => {
         render: (_, record) => {
           return (
             <Switch  
-              onClick={() => {
-                setDeviceSwitch(true)
-                setDeviceData(record)
-              }}
-              onChange={(checked) => {
-                setCheckedStatus(checked)
-              }}
-              checked={record.is_active}
-           />
+                   onClick={() => {
+                     setDeviceSwitch(true)
+                     setDeviceData(record)
+                   }}
+                   onChange={(checked) => {
+                     setCheckedStatus(checked)
+                   }}
+                  checked={record.is_active}
+               />
           )
     
         },
@@ -150,7 +155,8 @@ const AdminBranchDevicesViewTable = (props) => {
             sortDirections: ['descend', 'ascend'],
         },
         optionsColumn(),
-        isActive()
+        (userRoletextData === 'SUPERADMIN' ? isActive() : {})
+        // isActive()
     ];
 
     return (

@@ -122,6 +122,7 @@ function AdminHeader() {
         >
           <ul className='header-nav-list'>
             <HeaderLink onClick={toggleNav} url='/' linkText='Admin Overview' />
+            <HeaderLink onClick={toggleNav} url='/view-client-users' linkText='View Client Users' />
 
             <HeaderLinkWithDropdown
               className='header-nav-list__item header-link-with-dropdown'

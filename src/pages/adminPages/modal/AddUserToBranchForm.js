@@ -4,6 +4,7 @@ import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getAllRoles, addUserToBranch } from '../../../redux/actions/auth/auth.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
+import { getClientUsersList, getUsers, getUsersOverview } from '../../../redux/actions/users/user.action';
 // import { updateUser } from '../../../redux/actions/users/user.action';
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 import { useSearchParams } from 'react-router-dom';
@@ -24,6 +25,12 @@ function AddUserToBranchForm(props) {
         if (!props.branches?.fetchedBranch) {
             props.getABranch(branchId)
         }
+
+        if (!props.user?.fetchedClientUser) {
+            props.getClientUsersList()
+        }
+
+        // props.getClientUsersList();
     }, [])
     // modal form 
     const { Option } = Select;
@@ -73,7 +80,7 @@ function AddUserToBranchForm(props) {
             className='cost-tracker-select h-4-br'
             id='role-state'
             showSearch
-            disabled={true}
+            // disabled={true}
             suffixIcon={<CaretDownFilled />}
         > {
                 props.client?.fetchedClient && props.client?.fetchedClient?.map((client) =>
@@ -84,12 +91,27 @@ function AddUserToBranchForm(props) {
             }
         </Select>
     );
+    
+    const usersSelector =  (
+        <Select
+           className='cost-tracker-select h-4-br'
+           id='role-state'
+           showSearch
+           suffixIcon={<CaretDownFilled />}
+        >
+            {props.user?.fetchedClientUser && props.user?.fetchedClientUser?.map((user) =>
+               <Option key={user.id} className='active-state-option' value={user.id}>
+                    {user.name}
+               </Option>
+            )}
+        </Select>
+    )
 
     // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.newUserLoading}>
-            <h1 className='center-main-heading'>Branch User Form</h1>
+            <h1 className='center-main-heading'>Add User To Branch</h1>
 
             <section className='cost-tracker-form-section'>
                 <Form
@@ -101,75 +123,6 @@ function AddUserToBranchForm(props) {
                     className='cost-tracker-form'
                     onFinish={onUserFormSubmit}
                 >
-                    <div className='add-cclient-form-inputs-wrapper'>
-                        {/* <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="First Name"
-                            name="firstName"
-                            rules={[{ required: true, message: 'Please input your name!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div>
-                    <div className='add-client-input-container'>
-                        <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Last Name"
-                            name="lastName"
-                            rules={[{ required: true, message: 'Please input your name!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item>
-                    </div> */}
-
- 
-                        <div className='add-client-input-container'>
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Username"
-                                name="username"
-                                rules={[{ required: true, message: 'Please input your email address!' }]}
-                            >
-                                <Input size="large" />
-                            </Form.Item>
-                        </div>
-                        <div className='add-client-input-container'>
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Phone Number"
-                                name="phone_number"
-                                rules={[{ required: true, message: 'Please input your phone number!' }]}
-                            >
-                                <Input size="large" />
-                            </Form.Item>
-                        </div>
-                        <div className='add-client-input-container'>
-                            {/* <Form.Item
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            label="Email Address"
-                            name="emailAddress"
-                            rules={[{ required: true, message: 'Please input your email address!' }]}
-                        >
-                            <Input size="large" />
-                        </Form.Item> */}
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Password"
-                                name="password"
-                                rules={[{ required: true, message: 'Please input your email address!' }]}
-                            >
-                                <Input type='password' size="large" />
-                            </Form.Item>
-                        </div>
-                    </div>
-
                     <div className='add-cclient-form-inputs-wrapper'>
 
                         <div className='add-client-input-container'>
@@ -183,30 +136,33 @@ function AddUserToBranchForm(props) {
                                 {roleSelector}
                             </Form.Item>
                         </div>
-                        {/* <div className='add-client-input-container'>
+                        <div className='add-client-input-container'>
                             {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
                                 <Form.Item
                                     labelCol={{ span: 24 }}
                                     wrapperCol={{ span: 24 }}
                                     label="Client"
                                     name="client"
-                                    rules={[{ required: true, message: 'Please select a value!' }]}
+                                    rules={[{ required: true, message: 'Please select a user!' }]}
                                 >
                                 {clientSelector}
                             </Form.Item>
                             )} 
-                        </div> */}
-                        <div className='add-client-input-container'>
-                            {/* <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Pass word"
-                                name="password"
-                                rules={[{ required: true, message: 'Please input your email address!' }]}
-                            >
-                                <Input type='password' size="large" />
-                            </Form.Item> */}
                         </div>
+                        <div className='add-client-input-container'>
+                            {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
+                                <Form.Item
+                                    labelCol={{ span: 24 }}
+                                    wrapperCol={{ span: 24 }}
+                                    label="User"
+                                    name="user"
+                                    rules={[{ required: true, message: 'Please select a user!' }]}
+                                >
+                                {usersSelector}
+                            </Form.Item>
+                            )} 
+                        </div>
+                        
                     </div>
 
                     <div className='add_user_form_btn_align'>
@@ -225,6 +181,8 @@ const mapDispatchToProps = {
     addUserToBranch,
     getAllRoles,
     getClients,
+    getClientUsersList,
+    getUsersOverview
     // updateUser,
 }
 const mapStateToProps = (state) => ({

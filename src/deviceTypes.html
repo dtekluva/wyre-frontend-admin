@@ -1,0 +1,39 @@
+<script>
+    const bbb = [
+    {
+        "id": 1,
+        "choice_name": "GENERATOR"
+    },
+    {
+        "id": 2,
+        "choice_name": "UTILITY"
+    },
+    {
+        "id": 3,
+        "choice_name": "IPP"
+    },
+    {
+        "id": 4,
+        "choice_name": "LOAD"
+    },
+    {
+        "id": 5,
+        "choice_name": "IPP"
+    },
+    {
+        "id": 6,
+        "choice_name": "Water Area"
+    },
+    {
+        "id": 7,
+        "choice_name": "Swimming Pool"
+    }
+]
+
+const getValue = bbb.filter((vvalue) => 
+   {if (vvalue.id) {
+    return vvalue.choice_name
+   }}
+)
+console.log(getValue);
+</script>

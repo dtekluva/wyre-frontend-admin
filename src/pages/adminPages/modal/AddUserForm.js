@@ -63,7 +63,6 @@ function AddUserForm(props) {
             className='cost-tracker-select h-4-br'
             id='role-state'
             showSearch
-            disabled={true}
             suffixIcon={<CaretDownFilled />}
         > {
                 props.client?.fetchedClient && props.client?.fetchedClient?.map((client) =>
@@ -122,6 +121,17 @@ function AddUserForm(props) {
                                 wrapperCol={{ span: 24 }}
                                 label="Username"
                                 name="username"
+                                rules={[{ required: true, message: 'Please input your Username!' }]}
+                            >
+                                <Input size="large" />
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Email Address"
+                                name="email"
                                 rules={[{ required: true, message: 'Please input your email address!' }]}
                             >
                                 <Input size="large" />

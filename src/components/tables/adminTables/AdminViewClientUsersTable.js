@@ -75,7 +75,7 @@ const AdminViewClientUsersTable = (props) => {
             }} />
           )
     
-        },
+        }
     
     
     });
@@ -89,19 +89,6 @@ const AdminViewClientUsersTable = (props) => {
             sortDirections: ['descend', 'ascend'],
         },
         {
-            title: 'Name',
-            dataIndex: 'first_name',
-            key: 'first_name',
-            sorter: (a, b) => a.first_name.localeCompare(b.first_name),
-            sortDirections: ['descend', 'ascend'],
-            render: (_, record) => (
-                <p>
-                    {`${record.first_name}  ${record.last_name}`}
-                </p>
-
-            )
-        },
-        {
             title: 'Phone Number',
             dataIndex: 'phone_number',
             key: 'phone_number',
@@ -110,27 +97,14 @@ const AdminViewClientUsersTable = (props) => {
         },
         {
             title: 'Email Address',
-            dataIndex: 'email_address',
-            key: 'email_address',
-            sorter: (a, b) => a.email_address - b.email_address,
+            dataIndex: 'email',
+            key: 'email',
+            sorter: (a, b) => a.email - b.email,
             sortDirections: ['descend', 'ascend'],
         },
-        {
-            title: 'Last Login',
-            dataIndex: 'last_login',
-            key: 'last_login',
-            sorter: (a, b) => a.last_login - b.last_login,
-            sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: 'Date Added',
-            dataIndex: 'date_joined',
-            key: 'date_joined',
-            sorter: (a, b) => a.date_joined - b.date_joined,
-            sortDirections: ['descend', 'ascend'],
-        },
+        
         optionsColumn(),
-        isActive()
+        // isActive()
     ];
 
     return (

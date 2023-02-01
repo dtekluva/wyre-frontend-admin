@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Space, Dropdown, Menu } from 'antd';
+import { Table, Input, Button, Space, Dropdown, Menu, Switch } from 'antd';
 import Highlighter from 'react-highlight-words';
 
 import {
@@ -15,8 +15,9 @@ const AdminOverviewTable = (props) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
 
-  const setvisibleClient = props.setvisibleClient
-  const setClientData = props.setClientData
+  const setvisibleClient = props.setvisibleClient;
+  const setClientData = props.setClientData;
+  const setSwitchClient = props.setSwitchClient;
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -153,6 +154,19 @@ const AdminOverviewTable = (props) => {
 
   });
 
+  const clientSwitch = () => ({
+    key: 'Active',
+    title: 'Active',
+    width: '10%',
+    dataIndex: 'Active',
+    render: (_, record) => {
+      return <Switch 
+                onClick={() =>
+                  setSwitchClient(true)
+                }
+             />
+    }
+  });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -201,7 +215,8 @@ const AdminOverviewTable = (props) => {
       // sorter: (a, b) => a.max_demand - b.max_demand,
       sortDirections: ['descend', 'ascend'],
     },
-    optionsColumn()
+    optionsColumn(),
+    // clientSwitch()
   ];
 
 

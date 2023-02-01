@@ -6,7 +6,7 @@ import { getAllRoles } from '../../../redux/actions/auth/auth.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
 import { updateUser } from '../../../redux/actions/users/user.action';
 
-function UpdateUserForm(props) {
+function UpdateBranchUserForm(props) {
     const [form] = Form.useForm();
     // const userData= props.userData;
     const initialValues = {
@@ -47,7 +47,6 @@ function UpdateUserForm(props) {
     useEffect(() => {
         form.setFieldsValue({
             username: props.userData.username,
-            email: props.userData.email,
             phone_number: props.userData.phone_number,
             roles: props.userData.roles
             // password: props.userData.password
@@ -108,17 +107,6 @@ function UpdateUserForm(props) {
                                 wrapperCol={{ span: 24 }}
                                 label="Username"
                                 name="username"
-                                rules={[{ required: true, message: 'Please input your Username!' }]}
-                            >
-                                <Input size="large" />
-                            </Form.Item>
-                        </div>
-                        <div className='add-client-input-container'>
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Email"
-                                name="email"
                                 rules={[{ required: true, message: 'Please input your email address!' }]}
                             >
                                 <Input size="large" />
@@ -184,4 +172,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateBranchUserForm);

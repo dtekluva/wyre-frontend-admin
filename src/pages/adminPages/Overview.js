@@ -27,6 +27,7 @@ function Overview(props) {
   // const { setCurrentUrl } = useContext(CompleteDataContext);
   const [adminOverviewData, setadminOverviewData] = useState([]);
   const [visibleClient, setvisibleClient] = useState(false)
+  const [switchClient, setSwitchClient] = useState(false)
   const [clientData, setClientData] = useState({})
 
 
@@ -69,10 +70,12 @@ function Overview(props) {
         </div>
 
         <div className='h-overflow-auto'>
-          <AdminOverviewTable loading={props.client.fetchClientOverviewLoading} 
-          overviewListData={props.client?.fetchedClientOverview}
-          setvisibleClient={setvisibleClient}
-          setClientData={setClientData}
+          <AdminOverviewTable 
+            loading={props.client.fetchClientOverviewLoading} 
+            overviewListData={props.client?.fetchedClientOverview}
+            setvisibleClient={setvisibleClient}
+            setClientData={setClientData}
+            setSwitchClient={setSwitchClient}
           />
           <Modal
             open={visibleClient}
@@ -85,6 +88,14 @@ function Overview(props) {
                setModal={setvisibleClient}
                clientData={clientData}
             />
+          </Modal>
+          <Modal
+            open={switchClient}
+            onOk={''}
+            onCancel={() => setSwitchClient(false)}
+          >
+            <h1>Are You Sure You Want to Disable This Client</h1>
+            {switchClient}
           </Modal>
         </div>
       </article>

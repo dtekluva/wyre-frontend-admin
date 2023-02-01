@@ -117,7 +117,7 @@ function ViewClientUsers(props) {
                         onOk={handleOkUser}
                         onCancel={() => setUserSwitch(false)}
                     >
-                        <h1>Are You Sure You Want To Disable this User?</h1>
+                        <h1>Are You Sure You Want To {userSwitch ? 'Disable' : 'Enable'} this User?</h1>
                         {userSwitch}
                     </Modal>
                 </div>
