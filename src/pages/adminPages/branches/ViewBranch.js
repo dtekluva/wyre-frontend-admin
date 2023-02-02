@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Spin, Modal, Switch, notification, message } from 'antd';
+import { Row, Col, Spin, Modal, notification } from 'antd';
 
 import BreadCrumb from '../../../components/BreadCrumb';
-import ExcelIcon from '../../../components/icons/ExcelIcon';
 
 import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
@@ -35,7 +34,6 @@ function ViewBranch(props) {
     const [deviceSwitch, setDeviceSwitch] = useState(false)
     const [userSwitch, setUserSwitch] = useState(false)
     const [chechedStatus, setCheckedStatus] = useState(null)
-    const [userchechedStatus, setUserCheckedStatus] = useState(null)
     const handleOkDevice = async () => {
         const bodyParams = {
             is_active: chechedStatus
@@ -49,7 +47,7 @@ function ViewBranch(props) {
                 message: 'successful',
                 description: request.message,
             });
-            return props.getDevicesOverview(branch_id)
+            return props.getDevicesOverview(branch_id);
         }
         return notification.error({
             message: 'failed',
@@ -61,7 +59,7 @@ function ViewBranch(props) {
         const bodyParams = {
             branch: searchParams.get("branch_id")
         };
-        const branch_id = searchParams.get("branch_id")
+        const branch_id = searchParams.get("branch_id");
         const userId = userData.id;
         const request = await props.removeUser(userId, bodyParams);
         if (request.fulfilled) {
@@ -70,7 +68,7 @@ function ViewBranch(props) {
                 message: 'successful',
                 description: request.message,
             });
-            return props.getUsersOverview(branch_id)
+            return props.getUsersOverview(branch_id);
         }
         return notification.error({
             message: 'failed',
@@ -78,8 +76,7 @@ function ViewBranch(props) {
         });
     }
 
-    const userRoletextData = props.auth.userData.role_text
-    console.log("USER ROLE_TEXT>>>>>>>>>>>>>>>", userRoletextData);
+    const userRoletextData = props.auth.userData.role_text;
 
     useEffect(() => {
         const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -87,11 +84,9 @@ function ViewBranch(props) {
 
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
         props.getABranch(branch_id, startDate, endDate);
-        props.getDevicesOverview(branch_id)
-        console.log("Device-DATA>>>>>>>>>>>>>>>", props.devices.fetchedDeviceOverview);
-        props.getDeviceTypes()
-        console.log("Typessssssssssss>>>>>>>>>>>>>>>", props.devices.fetchedDeviceType);
-        props.getUsersOverview(branch_id)
+        props.getDevicesOverview(branch_id);
+        props.getDeviceTypes();
+        props.getUsersOverview(branch_id);
 
     }, []);
 

@@ -162,7 +162,7 @@ function AdminTopBar(props) {
       {/* Add User To Branch Form modal  */}
       <Modal open={visibleUserBranch}
         onOk={() => setVisibleUserBranch(false)}
-        onCancel={() => setVisibleUserBranch(false)} width={1000} footer={null} >
+        onCancel={() => setVisibleUserBranch(false)} width={700} footer={null} >
         <AddUserToBranchForm setVisibleUserBranch={setVisibleUserBranch} />
       </Modal>
     </div>

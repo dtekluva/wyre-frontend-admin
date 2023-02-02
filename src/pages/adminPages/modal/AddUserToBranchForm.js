@@ -1,57 +1,47 @@
 import React, { useEffect } from 'react';
-import { Form, Select, Input, notification, Spin } from 'antd';
+import { Form, Select, notification, Spin } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getAllRoles, addUserToBranch } from '../../../redux/actions/auth/auth.action';
-import { getClients } from '../../../redux/actions/clients/client.action';
-import { getClientUsersList, getUsers, getUsersOverview } from '../../../redux/actions/users/user.action';
-// import { updateUser } from '../../../redux/actions/users/user.action';
+import { addUserToBranch } from '../../../redux/actions/auth/auth.action';
+import { getClientUsersList } from '../../../redux/actions/users/user.action';
+
 import { getABranch } from '../../../redux/actions/branches/branches.action';
 import { useSearchParams } from 'react-router-dom';
 
 function AddUserToBranchForm(props) {
     const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
-    useEffect(() => {
-        if (!props.auth?.fetchedRoles) {
-            props.getAllRoles();
-        }
-        if (!props.client?.fetchedClient && props.auth.userData.role_text !== "CLIENT_ADMIN") {
-            props.getClients();
-        }
 
+    useEffect(() => {
         const branchId = searchParams.get("branch_id");
+        const clientId = searchParams.get("client_id");
 
         if (!props.branches?.fetchedBranch) {
-            props.getABranch(branchId)
+            props.getABranch(branchId);
         }
 
         if (!props.user?.fetchedClientUser) {
-            props.getClientUsersList()
+            props.getClientUsersList(clientId);
         }
 
-        // props.getClientUsersList();
     }, [])
-    // modal form 
+
     const { Option } = Select;
 
 
     const onUserFormSubmit = async (values) => {
-        // if userRole is SUPER-ADMIN, add branchId of the user to values      
-        if (props.auth.userData.role_text === "SUPERADMIN") {
-            values.branch = searchParams.get("branch_id");
-        }
 
         const branch_id = searchParams.get("branch_id")
-        const request = await props.addUserToBranch(branch_id, values);
+        const userValues = { branch: branch_id };
+        const request = await props.addUserToBranch(values.userId, userValues);
 
         if (request.fulfilled) {
-            form.resetFields();
-            props.setModal(false);
             notification.info({
                 message: 'successful',
                 description: request.message,
             });
+            form.resetFields();
+            return props.setVisibleUserBranch(false);
         }
         return notification.error({
             message: 'failed',
@@ -59,50 +49,18 @@ function AddUserToBranchForm(props) {
         });
 
     }
-    const roleSelector = (
-        <Select
-            className='cost-tracker-select h-4-br'
-            id='role-state'
-            suffixIcon={<CaretDownFilled />}
-        > {
-                props.auth?.fetchedRoles && Object.entries(props.auth?.fetchedRoles).map(([roleName, roleValue]) =>
-                // IF USER IS CLIENT_ADMIN && ROLENAME NOT INCLUDE [SUPERADMIN, ADMIN] && <Option key= .....
-                ((props.auth.userData.role_text === "CLIENT_ADMIN" && (roleName !== "SUPERADMIN" && roleName !== "ADMIN")) || (props.auth.userData.role_text !== "CLIENT_ADMIN")) &&
-                    <Option key={roleValue} className='active-state-option' value={roleValue}>
-                        {roleName}
-                    </Option>
-                )
-            }
-        </Select>
-    );
-    const clientSelector = (
+
+    const usersSelector = (
         <Select
             className='cost-tracker-select h-4-br'
             id='role-state'
             showSearch
-            // disabled={true}
             suffixIcon={<CaretDownFilled />}
-        > {
-                props.client?.fetchedClient && props.client?.fetchedClient?.map((client) =>
-                    <Option key={client.id} className='active-state-option' value={client.id}>
-                        {client.name}
-                    </Option>
-                )
-            }
-        </Select>
-    );
-    
-    const usersSelector =  (
-        <Select
-           className='cost-tracker-select h-4-br'
-           id='role-state'
-           showSearch
-           suffixIcon={<CaretDownFilled />}
         >
             {props.user?.fetchedClientUser && props.user?.fetchedClientUser?.map((user) =>
-               <Option key={user.id} className='active-state-option' value={user.id}>
-                    {user.name}
-               </Option>
+                <Option key={user.id} className='active-state-option' value={user.id}>
+                    {user.username}
+                </Option>
             )}
         </Select>
     )
@@ -110,7 +68,7 @@ function AddUserToBranchForm(props) {
     // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
-        <Spin spinning={props.auth.newUserLoading}>
+        <Spin spinning={props.auth.newUserBranchLoading}>
             <h1 className='center-main-heading'>Add User To Branch</h1>
 
             <section className='cost-tracker-form-section'>
@@ -125,44 +83,20 @@ function AddUserToBranchForm(props) {
                 >
                     <div className='add-cclient-form-inputs-wrapper'>
 
-                        <div className='add-client-input-container'>
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Roles"
-                                name="roles"
-                                rules={[{ required: true, message: 'Please select a value!' }]}
-                            >
-                                {roleSelector}
-                            </Form.Item>
-                        </div>
-                        <div className='add-client-input-container'>
-                            {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
-                                <Form.Item
-                                    labelCol={{ span: 24 }}
-                                    wrapperCol={{ span: 24 }}
-                                    label="Client"
-                                    name="client"
-                                    rules={[{ required: true, message: 'Please select a user!' }]}
-                                >
-                                {clientSelector}
-                            </Form.Item>
-                            )} 
-                        </div>
-                        <div className='add-client-input-container'>
-                            {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
+                        <div className='add-client-input-container-half'>
+                            {
                                 <Form.Item
                                     labelCol={{ span: 24 }}
                                     wrapperCol={{ span: 24 }}
                                     label="User"
-                                    name="user"
+                                    name="userId"
                                     rules={[{ required: true, message: 'Please select a user!' }]}
                                 >
-                                {usersSelector}
-                            </Form.Item>
-                            )} 
+                                    {usersSelector}
+                                </Form.Item>
+                            }
                         </div>
-                        
+
                     </div>
 
                     <div className='add_user_form_btn_align'>
@@ -179,15 +113,10 @@ function AddUserToBranchForm(props) {
 const mapDispatchToProps = {
     getABranch,
     addUserToBranch,
-    getAllRoles,
-    getClients,
     getClientUsersList,
-    getUsersOverview
-    // updateUser,
 }
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    client: state.client,
     user: state.user,
     branches: state.branches
 });

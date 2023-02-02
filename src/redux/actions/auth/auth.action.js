@@ -66,9 +66,9 @@ export const addUsers = (parameters) => async (dispatch) => {
   }
 };
 
-export const addUserToBranch = (branch_id, values) => async (dispatch) => {
+export const addUserToBranch = (userId, values) => async (dispatch) => {
   dispatch(addUserBranchLoading(true));
-  const requestUrl = `/cadmin/add_user/${branch_id}`;
+  const requestUrl = `/cadmin/add_user/${userId}`;
   try {
     const response = await APIService.post(requestUrl, values);
 
