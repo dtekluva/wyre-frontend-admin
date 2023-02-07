@@ -49,9 +49,6 @@ function AddDevices(props) {
     </Select>
   );
 
-  // const onSubmit = ({ deviceCode, deviceType, activeState, dateAdded }) => {
-  //   console.log(deviceCode, deviceType, activeState, dateAdded);
-  // };
   
   const deviceTypes= ["Dell", "Asus", "Toshiba", "Samsung"]
   const actives= ["Active", "Inactive"]
@@ -59,7 +56,6 @@ function AddDevices(props) {
   const opertHours= ["6Hrs", "12Hrs", "18Hrs", "24Hrs"]
   const onSubmit = async (values) => {
     const request = await props.addADevice();
-    console.log('this is the values ==========>>>>>>>>>>>>>>>>>>>>>>>>>', request)
   };
 
   return (

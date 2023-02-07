@@ -1,15 +1,25 @@
-import React from 'react';
-import { Table, Input, Button, Space } from 'antd';
+import React, { useState } from 'react';
+import { Table, Input, Button, Space, Dropdown, Menu, Switch } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
 
-class AdminOverviewTable extends React.Component {
-  state = {
-    searchText: '',
-    searchedColumn: '',
-  };
+import {
+  SearchOutlined, InfoCircleOutlined,
+  EditOutlined, DownOutlined
+} from '@ant-design/icons';
 
-  getColumnSearchProps = (dataIndex) => ({
+export const aElemStyle = { color: 'rgba(0, 0, 0, 0.65)' };
+
+
+const AdminOverviewTable = (props) => {
+
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+
+  const setvisibleClient = props.setvisibleClient;
+  const setClientData = props.setClientData;
+  const setSwitchClient = props.setSwitchClient;
+
+  const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -27,14 +37,14 @@ class AdminOverviewTable extends React.Component {
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
+            handleSearch(selectedKeys, confirm, dataIndex)
           }
           style={{ width: 188, marginBottom: 8, display: 'block' }}
         />
         <Space>
           <Button
             type='primary'
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
             size='small'
             style={{ width: 90 }}
@@ -42,7 +52,7 @@ class AdminOverviewTable extends React.Component {
             Search
           </Button>
           <Button
-            onClick={() => this.handleReset(clearFilters)}
+            onClick={() => handleReset(clearFilters)}
             size='small'
             style={{ width: 90 }}
           >
@@ -57,9 +67,9 @@ class AdminOverviewTable extends React.Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : '',
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -67,10 +77,10 @@ class AdminOverviewTable extends React.Component {
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
+      searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
+          searchWords={[searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ''}
         />
@@ -79,120 +89,152 @@ class AdminOverviewTable extends React.Component {
       ),
   });
 
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
 
-  handleReset = (clearFilters) => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
+  const itemData = (record) => {
+    return [
+      {
+        key: '1',
+        label: (<>
+          <InfoCircleOutlined /> <a rel="noopener noreferrer" 
+          href={`/view-branches?client_id=${record.client_id}`} >
+            View Client
+          </a>
+        </>
 
-  render() {
-    const data = this.props.overviewListData;
-    const loading = this.props.loading;
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <>
+            <EditOutlined />
+            <a target="_blank" onClick={(e) => {
+              e.preventDefault();
+                setvisibleClient(true)
+                setClientData(record)
+              // setVisibleBranch(true);
+              // setBranchData(record);
+            }} rel="noopener noreferrer">
+              Edit Client
+            </a>
+          </>
 
-    const columns = [
-      {
-        title: 'Company Name',
-        dataIndex: 'name',
-        key: 'name',
-        ...this.getColumnSearchProps('name'),
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Total Energy (kWh)',
-        dataIndex: 'total_energy',
-        key: 'total_energy',
-        ...this.getColumnSearchProps('total_energy'),
-        sorter: (a, b) => a.total_energy - b.total_energy,
-        sortDirections: ['descend', 'ascend'],
-      },
-      // {
-      //   title: 'Maximum Demand (kW)',
-      //   dataIndex: 'max_demand',
-      //   key: 'max_demand',
-      //   ...this.getColumnSearchProps('max_demand'),
-      //   sorter: (a, b) => a.max_demand - b.max_demand,
-      //   sortDirections: ['descend', 'ascend'],
-      // },
-      // {
-      //   title: 'Minimum Demand (kW)',
-      //   dataIndex: 'min_demand',
-      //   key: 'min_demand',
-      //   ...this.getColumnSearchProps('min_demand'),
-      //   sorter: (a, b) => a.min_demand - b.min_demand,
-      //   sortDirections: ['descend', 'ascend'],
-      // },
-      // {
-      //   title: 'Average Demand (kW)',
-      //   dataIndex: 'avg_demand',
-      //   key: 'avg_demand',
-      //   ...this.getColumnSearchProps('avg_demand'),
-      //   sorter: (a, b) => a.avg_demand - b.avg_demand,
-      //   sortDirections: ['descend', 'ascend'],
-      // },
-      // {
-      //   title: 'Score (%)',
-      //   dataIndex: 'score',
-      //   key: 'score',
-      //   ...this.getColumnSearchProps('score'),
-      //   sorter: (a, b) => a.score - b.score,
-      //   sortDirections: ['descend', 'ascend'],
-      // },
-      {
-        title: 'Utility (kW)',
-        dataIndex: 'utility',
-        key: 'utility',
-        ...this.getColumnSearchProps('utility'),
-        // sorter: (a, b) => a.max_demand - b.max_demand,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Diesel (kW)',
-        dataIndex: 'diesel',
-        key: 'diesel',
-        ...this.getColumnSearchProps('dieseldiesel'),
-        // sorter: (a, b) => a.max_demand - b.max_demand,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Action',
-        key: 'key',
-        dataIndex: 'key',
-        render: (_, record) => (
-          <button
-            type='button'
-            className='table-row-button branch-users-view-button'
-            // onClick={() => console.log(record)}
-            onClick={() => window.location.href = `/view-branches?client_id=${record.client_id}`}
-          >
-            View
-          </button>
         ),
       },
     ];
-
-    return (
-      <>
-        <Table
-          className='table-striped-rows'
-          size='large'
-          loading={loading}
-          columns={columns}
-          dataSource={data}
-          rowKey={(record) => record.id}
-          pagination={true}
-          footer={() => ``}
-        />
-      </>
-    );
   }
+
+  const optionsColumn = () => ({
+    key: 'options',
+    title: 'Options',
+    width: '10%',
+    dataIndex: 'options',
+    render: (_, record) => {
+      const items = itemData(record);
+      return (
+        <Dropdown
+          trigger={['click']}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          // placement="topLeft"
+          menu={{
+            items
+          }}
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More
+            {' '}
+            <DownOutlined />
+          </a>
+          {/* <Button>topRight</Button> */}
+        </Dropdown>
+      )
+
+    }
+
+
+  });
+
+  const clientSwitch = () => ({
+    key: 'Active',
+    title: 'Active',
+    width: '10%',
+    dataIndex: 'Active',
+    render: (_, record) => {
+      return <Switch 
+                onClick={() =>
+                  setSwitchClient(true)
+                }
+             />
+    }
+  });
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0])
+    setSearchedColumn(dataIndex)
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('')
+  };
+
+  const data = props.overviewListData;
+  const loading = props.loading;
+
+  const columns = [
+    {
+      title: 'Company Name',
+      dataIndex: 'name',
+      key: 'name',
+      ...getColumnSearchProps('name'),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Total Energy (kWh)',
+      dataIndex: 'total_energy',
+      key: 'total_energy',
+      ...getColumnSearchProps('total_energy'),
+      sorter: (a, b) => a.total_energy - b.total_energy,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Utility (kW)',
+      dataIndex: 'utility',
+      key: 'utility',
+      ...getColumnSearchProps('utility'),
+      // sorter: (a, b) => a.max_demand - b.max_demand,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Diesel (ltr)',
+      dataIndex: 'diesel',
+      key: 'diesel',
+      ...getColumnSearchProps('dieseldiesel'),
+      // sorter: (a, b) => a.max_demand - b.max_demand,
+      sortDirections: ['descend', 'ascend'],
+    },
+    optionsColumn(),
+    // clientSwitch()
+  ];
+
+
+
+  return (
+    <>
+      <Table
+        className='table-striped-rows'
+        size='large'
+        loading={loading}
+        columns={columns}
+        dataSource={data}
+        rowKey={(record) => record.id}
+        pagination={true}
+        footer={() => ``}
+      />
+    </>
+  );
 }
 
 export default AdminOverviewTable;

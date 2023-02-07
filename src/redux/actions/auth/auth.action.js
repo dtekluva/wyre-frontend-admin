@@ -1,6 +1,6 @@
 
 import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
-import { addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
+import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
 
 
@@ -35,7 +35,6 @@ export const loginAUser = (parameters) => async (dispatch) => {
   }
 };
 
-
 export const getAllRoles = () => async (dispatch) => {
 
   dispatch(getRolesLoading(true));
@@ -51,6 +50,7 @@ export const getAllRoles = () => async (dispatch) => {
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+
 export const addUsers = (parameters) => async (dispatch) => {
   dispatch(addUsersLoading(true));
   const requestUrl = `/cadmin/users/`;
@@ -62,6 +62,21 @@ export const addUsers = (parameters) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(addUsersLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const addUserToBranch = (userId, values) => async (dispatch) => {
+  dispatch(addUserBranchLoading(true));
+  const requestUrl = `/cadmin/add_user/${userId}`;
+  try {
+    const response = await APIService.post(requestUrl, values);
+
+    dispatch(addUserBranchSuccess(response.data.authenticatedData));
+    dispatch(addUserBranchLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(addUserBranchLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

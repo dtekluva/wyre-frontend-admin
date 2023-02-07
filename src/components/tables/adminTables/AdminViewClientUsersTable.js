@@ -3,13 +3,12 @@ import { Table, Dropdown, Switch } from 'antd';
 
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
 
-const AdminBranchUsersViewTable = (props) => {
+const AdminViewClientUsersTable = (props) => {
 
-    const data = props.listOfBranchUsersViewData;
+    const data = props.listOfClientUsersData; 
     const loading = props.loading;
     const showUserModal = props.showUserModal;
     const setUserData = props.setUserData;
-    const userRoletextData = props.userRoletextData
     const setUserSwitch = props.setUserSwitch;
     const setUserCheckedStatus = props.setUserCheckedStatus;
 
@@ -19,18 +18,14 @@ const AdminBranchUsersViewTable = (props) => {
                 key: '1',
                 label: (
                     <>
-                        {userRoletextData === 'SUPERADMIN' ? 
-                            [
-                                <EditOutlined />,
-                            <a target="_blank" onClick={(e) => {
-                                e.preventDefault();
-                                showUserModal(true);
-                                setUserData(record);
-                            }} rel="noopener noreferrer">
-                                Edit User
-                            </a> 
-                            ] : ''
-                        }
+                        <EditOutlined />
+                        <a target="_blank" onClick={(e) => {
+                            e.preventDefault();
+                            showUserModal(true);
+                            setUserData(record);
+                        }} rel="noopener noreferrer">
+                            Edit User
+                        </a>
                     </>
 
                 ),
@@ -53,7 +48,7 @@ const AdminBranchUsersViewTable = (props) => {
                     menu={{
                         items
                     }}
-                    >
+                >
                     <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                         More
                         {' '}
@@ -61,11 +56,12 @@ const AdminBranchUsersViewTable = (props) => {
                     </a>
                 </Dropdown>
             )
+
         }
-        
-        
+
+
     });
-    
+
     const isActive = () => ({
         key: 'Status',
         title: 'Status',
@@ -79,7 +75,7 @@ const AdminBranchUsersViewTable = (props) => {
             }} />
           )
     
-        },
+        }
     
     
     });
@@ -91,19 +87,6 @@ const AdminBranchUsersViewTable = (props) => {
             key: 'username',
             sorter: (a, b) => a.username.localeCompare(b.username),
             sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: 'Name',
-            dataIndex: 'first_name',
-            key: 'first_name',
-            sorter: (a, b) => a.first_name.localeCompare(b.first_name),
-            sortDirections: ['descend', 'ascend'],
-            render: (_, record) => (
-                <p>
-                    {`${record.first_name}  ${record.last_name}`}
-                </p>
-
-            )
         },
         {
             title: 'Phone Number',
@@ -119,35 +102,8 @@ const AdminBranchUsersViewTable = (props) => {
             sorter: (a, b) => a.email - b.email,
             sortDirections: ['descend', 'ascend'],
         },
-        {
-            title: 'Branch',
-            dataIndex: 'branch',
-            key: 'branch',
-            sorter: (a, b) => a.branch - b.branch,
-            sortDirections: ['descend', 'ascend'],
-            render: (_, record) => (
-                <p>
-                    {props.branchName}
-                </p>
-
-            )
-        },
-        {
-            title: 'Last Login',
-            dataIndex: 'last_login',
-            key: 'last_login',
-            sorter: (a, b) => a.last_login - b.last_login,
-            sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: 'Date Added',
-            dataIndex: 'date_joined',
-            key: 'date_joined',
-            sorter: (a, b) => a.date_joined - b.date_joined,
-            sortDirections: ['descend', 'ascend'],
-        },
+        
         optionsColumn(),
-        (userRoletextData === 'SUPERADMIN' ? isActive() : {})
         // isActive()
     ];
 
@@ -166,4 +122,4 @@ const AdminBranchUsersViewTable = (props) => {
     );
 }
 
-export default AdminBranchUsersViewTable;
+export default AdminViewClientUsersTable;

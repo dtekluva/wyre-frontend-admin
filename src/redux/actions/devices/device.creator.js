@@ -45,4 +45,12 @@ export const addDeviceSuccess = (payload = true) => ({
     type: deviceTypes.EDIT_DEVICE_SUCCESS,
     payload,
   });
+  export const deactivateDeviceLoading = (payload = true) => ({
+    type: deviceTypes.DEACTIVATE_DEVICE_LOADING,
+    payload,
+  }); 
+  export const deactivateDeviceSuccess = (payload = true) => ({
+    type: deviceTypes.DEACTIVATE_DEVICE_SUCCESS,
+    payload,
+  });
     

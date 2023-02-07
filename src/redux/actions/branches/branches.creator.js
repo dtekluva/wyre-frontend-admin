@@ -30,6 +30,16 @@ export const addViewBranchesSuccess = (payload = true) => ({
     type: branchTypes.ADD_VIEWBRANCHES_SUCCESS,
     payload,
   });
+  
+export const addUserBranchesLoading = (payload = true) => ({
+    type: branchTypes.ADD_USER_BRANCHES_LOADING,
+    payload,
+  });
+  
+export const addUserBranchesSuccess = (payload = true) => ({
+    type: branchTypes.ADD_USER_BRANCHES_SUCCESS,
+    payload,
+  });
 
   export const getBranchLoading = (payload = true) => ({
     type: branchTypes.GET_BRANCH_LOADING,

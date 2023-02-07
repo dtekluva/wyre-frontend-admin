@@ -19,7 +19,6 @@ function UpdateBranchForm(props) {
   }
 
   useEffect(() => {
-    console.log("Testing the BRANCHDATA>>>>>>>>>", props.branchData);
     form.setFieldsValue({
       name: props.branchData.name,
       address: props.branchData.organisation
@@ -33,7 +32,7 @@ function UpdateBranchForm(props) {
     const bodyParams = {
       ...values,
       client: client_id
-  }
+    }
 
     const request = await props.updateBranch(branch_id, bodyParams);
     if (request.fulfilled) {
@@ -46,7 +45,7 @@ function UpdateBranchForm(props) {
 
       const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
       const endDate = moment().format('DD-MM-YYYY HH:MM');
-      props.getBranches(client_id, startDate, endDate);
+      return props.getBranches(client_id, startDate, endDate);
     }
     return notification.error({
       message: 'failed',

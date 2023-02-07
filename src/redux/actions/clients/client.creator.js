@@ -29,5 +29,12 @@ export const addClientSuccess = (payload = true) => ({
     payload,
   });
 
-
-    
+export const editClientLoading = (payload = true) => ({
+    type: clientTypes.EDIT_CLIENT_LOADING,
+    payload,
+  });
+  
+export const editClientSuccess = (payload = true) => ({
+    type: clientTypes.EDIT_CLIENT_SUCCESS,
+    payload,
+  });

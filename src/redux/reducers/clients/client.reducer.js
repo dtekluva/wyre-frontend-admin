@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedClientOverview: false,
     newClientLoading: false,
     newClient: false,
+    updateClientLoading: false,
+    updatedClient: false,
 };
 
 const clientReducer = (state = INITIAL_STATE, action) => {
@@ -58,6 +60,24 @@ const clientReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 newClientLoading: action.payload,
+
+            };
+
+        case clientTypes.EDIT_CLIENT_SUCCESS:
+
+            return {
+
+                ...state,
+                updatedClient: action.payload,
+
+            };
+
+        case clientTypes.EDIT_CLIENT_LOADING:
+
+            return {
+
+                ...state,
+                updateClientLoading: action.payload,
 
             };
 

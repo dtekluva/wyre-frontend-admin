@@ -1,6 +1,8 @@
 import { APIService } from "../../../config/api/apiConfig";
 
 import {
+  addUserBranchesLoading,
+  addUserBranchesSuccess,
   addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchLoading,
   getBranchSuccess, getViewBranchesLoading,
   getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
@@ -61,6 +63,23 @@ export const addABranch = (parameters = {}) => async (dispatch) => {
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+export const addUserToBranch = (parameters = {}) => async (dispatch) => {
+
+  dispatch(addUserBranchesLoading(true));
+
+  const requestUrl = `/cadmin/add_user/33`;
+  try {
+    const response = await APIService.post(requestUrl, parameters);
+
+    dispatch(addUserBranchesSuccess(response.data));
+
+    dispatch(addUserBranchesLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(addUserBranchesLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
 
 
 export const getABranch = (branch_id, startDate, endDate) => async (dispatch) => {
@@ -86,7 +105,7 @@ export const updateBranch = (branch_id, bodyParams) => async (dispatch) => {
   const requestUrl = `/cadmin/branch/${branch_id}`;
   try {
 
-    const response = await APIService.post(requestUrl, bodyParams);
+    const response = await APIService.patch(requestUrl, bodyParams);
 
     dispatch(editBranchSuccess(response.data));
     dispatch(editBranchLoading(false))

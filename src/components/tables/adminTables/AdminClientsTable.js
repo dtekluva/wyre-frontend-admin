@@ -1,7 +1,10 @@
 import React from 'react';
-import { Table, Input, Button, Space } from 'antd';
+import { Table, Input, Button, Space, Dropdown, Menu } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, InfoCircleOutlined, 
+  EditOutlined, DownOutlined } from '@ant-design/icons';
+
+export const aElemStyle = { color: 'rgba(0, 0, 0, 0.65)' };
 
 class AdminClientsTable extends React.Component {
   state = {
@@ -160,6 +163,7 @@ class AdminClientsTable extends React.Component {
           </div>
         ),
       },
+      
     ];
 
     return (

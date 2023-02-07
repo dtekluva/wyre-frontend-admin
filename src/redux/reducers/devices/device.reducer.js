@@ -11,6 +11,8 @@ const INITIAL_STATE = {
     fetchedDeviceType: false,
     updateDeviceLoading: false,
     updatedDevice: false,
+    deactivateDeviceLoading: false,
+    deactivatedDevice: false,
 };
 
 const deviceReducer = (state = INITIAL_STATE, action) => {
@@ -94,6 +96,24 @@ const deviceReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 updateDeviceLoading: action.payload,
+
+            };
+
+        case deviceTypes.DEACTIVATE_DEVICE_SUCCESS:
+
+            return {
+
+                ...state,
+                deactivatedDevice: action.payload,
+
+            };
+
+        case deviceTypes.DEACTIVATE_DEVICE_LOADING:
+
+            return {
+
+                ...state,
+                deactivateDeviceLoading: action.payload,
 
             };
         default: return state;
