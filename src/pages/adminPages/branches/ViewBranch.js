@@ -6,7 +6,7 @@ import BreadCrumb from '../../../components/BreadCrumb';
 import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
 
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { disableDevice, getDevicesOverview, getDeviceTypes } from '../../../redux/actions/devices/device.action';
 import { disableUser, getUsersOverview, removeUser, updateUser } from '../../../redux/actions/users/user.action';
@@ -31,9 +31,13 @@ function ViewBranch(props) {
     const [visibleDevice, setVisibleDevice] = useState(false);
     const [userData, setUserData] = useState({});
     const [deviceData, setDeviceData] = useState({});
-    const [deviceSwitch, setDeviceSwitch] = useState(false)
-    const [userSwitch, setUserSwitch] = useState(false)
-    const [chechedStatus, setCheckedStatus] = useState(null)
+    const [deviceSwitch, setDeviceSwitch] = useState(false);
+    const [userSwitch, setUserSwitch] = useState(false);
+    const [chechedStatus, setCheckedStatus] = useState(null);
+    const [dateChange, setDateChange] = useState(false);
+
+    const headers = useSelector((state) => state.headers);
+
     const handleOkDevice = async () => {
         const bodyParams = {
             is_active: chechedStatus
@@ -79,13 +83,24 @@ function ViewBranch(props) {
     const userRoletextData = props.auth.userData.role_text;
 
     useEffect(() => {
-        const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-        const endDate = moment().format('DD-MM-YYYY HH:MM');
+        // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+        // const endDate = moment().format('DD-MM-YYYY HH:MM');
+
+        const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
 
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
-        props.getABranch(branch_id, startDate, endDate);
+
+        if (dateChange !== headers.selectedDate) {
+            setDateChange(headers.selectedDate);
+            props.getABranch(branch_id, startDate, endDate);
+        }
+
+        if (!props.devices.fetchedDeviceType) {
+            props.getDeviceTypes();
+        }
         props.getDevicesOverview(branch_id);
-        props.getDeviceTypes();
         props.getUsersOverview(branch_id);
 
     }, []);

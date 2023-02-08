@@ -10,6 +10,7 @@ import AddUserForm from '../../pages/adminPages/modal/AddUserForm';
 import AddUserToBranchForm from '../../pages/adminPages/modal/AddUserToBranchForm';
 
 import { getAllRoles } from '../../redux/actions/auth/auth.action';
+import SwitchablePicker from './SwitchablePicker';
 const isSidebarOpen = false;
 function AdminTopBar(props) {
   // modal functions for add user form and add device form starts 
@@ -46,7 +47,7 @@ function AdminTopBar(props) {
       <div
         className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}
       >
-        <div className={isTopBarAdminDeviceLeftDisplayed ? '.top-bar__left' : '.top-bar__left h-hide'}>
+        {/* <div className={isTopBarAdminDeviceLeftDisplayed ? '.top-bar__left' : '.top-bar__left h-hide'}>
           <div className="search_input-wrapper">
             <Input className='search___input' placeholder="Branches" prefix={<SearchOutlined />} />
           </div>
@@ -55,8 +56,11 @@ function AdminTopBar(props) {
           <div className="search_input-wrapper">
             <Input className='search___input' placeholder="Branches" prefix={<SearchOutlined />} />
           </div>
+        </div> */}
+        <div>
+
+          <SwitchablePicker />
         </div>
-        <div></div>
 
         {/* <div
           className={

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
 import moment from 'moment';
 
@@ -25,17 +25,30 @@ function ViewBranches(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [visibleBranch, setVisibleBranch] = useState(false)
   const [branchData, setBranchData] = useState({})
+  const [dateChange, setDateChange] = useState(false);
+
+  const headers = useSelector((state) => state.headers);
   
 
   useEffect(() => {
-    const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-    const endDate = moment().format('DD-MM-YYYY HH:MM');
+    // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+    // const endDate = moment().format('DD-MM-YYYY HH:MM');
 
-    const client_id =searchParams.get("client_id") || props.auth.userData.client_id;
+    const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
+    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+
+    const client_id = searchParams.get("client_id") || props.auth.userData.client_id;
     setClientId(client_id);
-    props.getBranches(client_id, startDate, endDate);
-    props.getBranchesTop(client_id, startDate, endDate)
-  }, []);
+
+    if(dateChange !== headers.selectedDate){
+      setDateChange(headers.selectedDate);
+      props.getBranches(client_id, startDate, endDate);
+      props.getBranchesTop(client_id, startDate, endDate)
+    }
+
+
+  }, [headers.selectedDate]);
 
   return (
     <>
