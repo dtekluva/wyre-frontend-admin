@@ -1,18 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-// import CompleteDataContext from '../Context';
 
-// import adminHttpServices from '../services/admin';
-
-// import BreadCrumb from '../components/BreadCrumb';
 import AdminOverviewTable from '../../components/tables/adminTables/AdminOverviewTable';
 import UpdateClientForm from './UpdateClientForm';
 
 
-import ExcelIcon from '../../components/icons/ExcelIcon';
 import BreadCrumb from '../../components/BreadCrumb';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { getClientsOverview } from '../../redux/actions/clients/client.action';
 import { Modal } from 'antd';
 
@@ -24,22 +19,33 @@ const breadCrumbRoutes = [
 
 
 function Overview(props) {
-  // const { setCurrentUrl } = useContext(CompleteDataContext);
-  const [adminOverviewData, setadminOverviewData] = useState([]);
+  
   const [visibleClient, setvisibleClient] = useState(false)
   const [switchClient, setSwitchClient] = useState(false)
+  const [dateChange, setDateChange] = useState(false);
   const [clientData, setClientData] = useState({})
+
+  const headers = useSelector((state) => state.headers);
 
 
   useEffect(() => {
-    const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-    const endDate = moment().format('DD-MM-YYYY HH:MM');
-    // const endDate = [moment().startOf('month').startOf('day'), moment()]
-    if(!props.client?.fetchedClientOverview){
+    
+    const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
+    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+
+    // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
+    // const endDate = moment().format('DD-MM-YYYY HH:MM');
+
+    // if(!props.client?.fetchedClientOverview){
+    //   props.getClientsOverview(startDate, endDate);
+    // }
+    if(dateChange !== headers.selectedDate){
+      setDateChange(headers.selectedDate);
       props.getClientsOverview(startDate, endDate);
     }
     
-  }, []);
+  }, [headers.selectedDate]);
 
   return (
     <>
