@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Dropdown, Switch } from 'antd';
 
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const AdminBranchUsersViewTable = (props) => {
 
@@ -138,6 +139,11 @@ const AdminBranchUsersViewTable = (props) => {
             key: 'last_login',
             sorter: (a, b) => a.last_login - b.last_login,
             sortDirections: ['descend', 'ascend'],
+            render: (dateInfo, record) => {
+                return (
+                    moment(dateInfo).format('lll')
+                )
+            }
         },
         {
             title: 'Date Added',
@@ -145,6 +151,11 @@ const AdminBranchUsersViewTable = (props) => {
             key: 'date_joined',
             sorter: (a, b) => a.date_joined - b.date_joined,
             sortDirections: ['descend', 'ascend'],
+            render: (dateInfo, record) => {
+                return (
+                    moment(dateInfo).format('lll')
+                )
+            }
         },
         optionsColumn(),
         (userRoletextData === 'SUPERADMIN' ? isActive() : {})
