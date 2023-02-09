@@ -18,11 +18,7 @@ import { useSearchParams } from 'react-router-dom';
 import UpdateUserForm from '../modal/UpdateUserForm';
 import UpdateDeviceForm from '../modal/UpdateDeviceForm';
 
-const breadCrumbRoutes = [
-    { url: '/', name: 'Home', id: 1 },
-    { url: '#', name: 'Manage', id: 2 },
-    { url: '#', name: 'View Organisation', id: 3 },
-];
+
 
 function ViewBranch(props) {
 
@@ -35,6 +31,12 @@ function ViewBranch(props) {
     const [userSwitch, setUserSwitch] = useState(false);
     const [chechedStatus, setCheckedStatus] = useState(null);
     const [dateChange, setDateChange] = useState(false);
+
+    const branch_id_ = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
+    const breadCrumbRoutes = [
+        { url: '/', name: 'Home', id: 1 },
+        { url: '#', name: 'View Branch', id: 2 },
+    ];
 
     const headers = useSelector((state) => state.headers);
 
