@@ -21,7 +21,7 @@ import UpdateUserForm from '../modal/UpdateUserForm';
 const breadCrumbRoutes = [
     { url: '/', name: 'Home', id: 1 },
     { url: '#', name: 'Manage', id: 2 },
-    { url: '#', name: 'View Organisation', id: 3 },
+    { url: '#', name: 'View Client Users', id: 3 },
 ];
 
 function ViewClientUsers(props) {
