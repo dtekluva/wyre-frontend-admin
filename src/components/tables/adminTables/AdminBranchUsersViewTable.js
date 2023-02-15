@@ -157,7 +157,7 @@ const AdminBranchUsersViewTable = (props) => {
                 )
             }
         },
-        optionsColumn(),
+        (userRoletextData === 'SUPERADMIN' ? optionsColumn() : {}),
         (userRoletextData === 'SUPERADMIN' ? isActive() : {})
         // isActive()
     ];
