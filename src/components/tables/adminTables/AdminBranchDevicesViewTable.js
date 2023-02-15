@@ -154,7 +154,7 @@ const AdminBranchDevicesViewTable = (props) => {
             sorter: (a, b) => a.operating_hours_end - b.operating_hours_end,
             sortDirections: ['descend', 'ascend'],
         },
-        optionsColumn(),
+        (userRoletextData === 'SUPERADMIN' ? optionsColumn() : {}),
         (userRoletextData === 'SUPERADMIN' ? isActive() : {})
         // isActive()
     ];

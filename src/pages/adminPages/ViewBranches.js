@@ -89,11 +89,11 @@ function ViewBranches(props) {
             <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_cost?.toFixed(2)
 }</p>
           </div>
-          <div className='branches-total_costs-card'>
+          {/* <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Baseline Average</p>
             <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.baseline_avg?.toFixed(2)
 }</p>
-          </div>
+          </div> */}
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>CO2</p>
             <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.co2_total?.toFixed(2)}</p>

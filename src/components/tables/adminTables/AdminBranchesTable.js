@@ -192,14 +192,14 @@ const AdminBranchesTable = (props) => {
       sorter: (a, b) => a.total_energy - b.total_energy,
       sortDirections: ['descend', 'ascend'],
     },
-    {
-      title: 'Baseline Score',
-      dataIndex: 'baseline',
-      key: 'baseline',
-      ...getColumnSearchProps('baseline'),
-      sorter: (a, b) => a.baseline - b.baseline,
-      sortDirections: ['descend', 'ascend'],
-    },
+    // {
+    //   title: 'Baseline Score',
+    //   dataIndex: 'baseline',
+    //   key: 'baseline',
+    //   ...getColumnSearchProps('baseline'),
+    //   sorter: (a, b) => a.baseline - b.baseline,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     {
       title: 'Cost Of Energy',
       dataIndex: 'energy_cost',
