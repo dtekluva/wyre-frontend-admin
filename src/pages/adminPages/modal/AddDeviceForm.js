@@ -27,16 +27,19 @@ function AddDeviceForm(props) {
 
         const branch_id = searchParams.get("branch_id");
         const client_id = searchParams.get("client_id");
-        const { operating_hours_start, operating_hours_end, ...others } = values;
+        // const device_id = 1234;
+        const { operating_hours_start, operating_hours_end, device_id, ...others } = values;
         const formatedOperatingStart = moment(operating_hours_start).format('hh:mm');
         const formatedOperatingEnd = moment(operating_hours_end).format('hh:mm');
+        console.log("Othersssssssssss>>>>>>>>", others);
 
         const request = await props.addADevice({
             ...others,
             operating_hours_start: formatedOperatingStart,
             operating_hours_end: formatedOperatingEnd,
             branch: branch_id,
-            client: client_id
+            client: client_id,
+            device_id: device_id
         });
         if (request.fulfilled) {
             form.resetFields();
@@ -91,6 +94,17 @@ function AddDeviceForm(props) {
                                 label="Device Name"
                                 name="name"
                                 rules={[{ required: true, message: 'Please input your device name!' }]}
+                            >
+                                <Input size="large" />
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Device Id"
+                                name="device_id"
+                                rules={[{ required: true, message: 'Please input your device Id!' }]}
                             >
                                 <Input size="large" />
                             </Form.Item>

@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 import { multipartFormBuilder } from "../../../helpers/GeneralHelper";
 
-import { addClientLoading, addClientSuccess, getClientLoading, getClientOverviewLoading, getClientOverviewSuccess, getClientSuccess } from "./client.creator";
+import { addClientLoading, addClientSuccess, editClientLoading, editClientSuccess, getClientLoading, getClientOverviewLoading, getClientOverviewSuccess, getClientSuccess } from "./client.creator";
 
 
 
@@ -53,6 +53,40 @@ export const addAClient = (parameters, file) => async (dispatch) => {
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(addClientLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+// export const updateClient = (parameters, file) => async (dispatch) => {
+//   dispatch(editClientLoading(true));
+//   const requestUrl = `/cadmin/update_client`;
+//   try {
+//     const formData = multipartFormBuilder(parameters);
+//     formData.set('file', file);
+
+//     const response = await APIService.patch(requestUrl, formData);
+
+//     dispatch(editClientSuccess(response.data));
+//     dispatch(editClientLoading(false))
+//     return { fulfilled: true, message: 'successful' }
+//   } catch (error) {
+//     dispatch(editClientLoading(false));
+//     return { fulfilled: false, message: error.response.data.detail }
+//   }
+// };
+
+export const updateClient = (client_id, values) => async (dispatch) => {
+  dispatch(editClientLoading(true));
+  const requestUrl = `/cadmin/update_client/${client_id}`;
+  try {
+
+    const response = await APIService.patch(requestUrl, values);
+
+    dispatch(editClientSuccess(response.data));
+    dispatch(editClientLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(editClientLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

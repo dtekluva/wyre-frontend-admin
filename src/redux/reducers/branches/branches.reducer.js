@@ -7,6 +7,8 @@ const INITIAL_STATE = {
     fetchedViewBranchesTop: false,
     newViewBranchesLoading: false,
     newViewBranches: false,
+    newUserBranchesLoading: false,
+    newUserBranches: false,
     fetchBranchLoading: false,
     fetchedBranch: false,
     updateBranchLoading: false,
@@ -33,6 +35,7 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
                 fetchedViewBranches: action.payload,
 
             };
+
         case viewBranchesTypes.GET_VIEWBRANCHES_TOP_LOADING:
 
             return {
@@ -49,6 +52,7 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
                 fetchedViewBranchesTop: action.payload,
 
             };
+
         case viewBranchesTypes.ADD_VIEWBRANCHES_SUCCESS:
 
             return {
@@ -65,6 +69,24 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
                 newViewBranchesLoading: action.payload,
 
             };
+
+        case viewBranchesTypes.ADD_USER_BRANCHES_SUCCESS:
+
+            return {
+
+                ...state,
+                newUserBranches: action.payload,
+
+            };
+        case viewBranchesTypes.ADD_USER_BRANCHES_LOADING:
+
+            return {
+
+                ...state,
+                newUserBranchesLoading: action.payload,
+
+            };
+
         case viewBranchesTypes.GET_BRANCH_SUCCESS:
 
             return {
@@ -90,7 +112,6 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
                 updatedBranch: action.payload,
 
             };
-
         case viewBranchesTypes.EDIT_BRANCH_LOADING:
 
             return {

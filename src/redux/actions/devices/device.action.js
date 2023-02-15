@@ -1,7 +1,7 @@
 import { APIService } from "../../../config/api/apiConfig";
 
 import {
-  addDeviceLoading, addDeviceSuccess, editDeviceLoading, editDeviceSuccess, getDeviceLoading,
+  addDeviceLoading, addDeviceSuccess, deactivateDeviceLoading, deactivateDeviceSuccess, editDeviceLoading, editDeviceSuccess, getDeviceLoading,
   getDeviceOverviewLoading, getDeviceOverviewSuccess, getDeviceSuccess,
   getDeviceTypeLoading, getDeviceTypeSuccess
 } from "./device.creator";
@@ -83,13 +83,30 @@ export const updateDevice = (id, values) => async (dispatch) => {
   const requestUrl = `/cadmin/device/${id}`;
   try {
 
-    const response = await APIService.post(requestUrl, values);
+    const response = await APIService.patch(requestUrl, values);
 
     dispatch(editDeviceSuccess(response.data));
     dispatch(editDeviceLoading(false))
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(editDeviceLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const disableDevice = (id, values) => async (dispatch) => {
+  dispatch(deactivateDeviceLoading(true));
+
+  const requestUrl = `cadmin/device_state/${id}/`;
+  try {
+
+    const response = await APIService.post(requestUrl, values);
+
+    dispatch(deactivateDeviceSuccess(response.data));
+    dispatch(deactivateDeviceLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(deactivateDeviceLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

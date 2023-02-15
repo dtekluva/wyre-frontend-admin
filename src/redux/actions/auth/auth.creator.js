@@ -27,6 +27,7 @@ export const getRolesSuccess = (payload = true) => ({
   type: authTypes.GET_ROLES_SUCCESS,
   payload,
 });
+
 export const addUsersLoading = (payload = true) => ({
   type: authTypes.ADD_USERS_LOADING,
   payload,
@@ -36,6 +37,16 @@ export const addUsersSuccess = (payload = true) => ({
   type: authTypes.ADD_USER_SUCCESS,
   payload,
 });
+export const addUserBranchLoading = (payload = true) => ({
+  type: authTypes.ADD_USER_BRANCH_LOADING,
+  payload,
+});
+
+export const addUserBranchSuccess = (payload = true) => ({
+  type: authTypes.ADD_USER_BRANCH_SUCCESS,
+  payload,
+});
+
 export const editUserLoading = (payload = true) => ({
   type: authTypes.EDIT_USER_LOADING,
   payload,

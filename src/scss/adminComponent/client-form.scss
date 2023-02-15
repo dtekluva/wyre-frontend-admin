@@ -135,6 +135,20 @@
   }
 }
 
+.add-client-input-container-half {
+  margin-right: 20px;
+  width: 100%;
+
+  @include media('>large') {
+    margin-top: 0;
+    width: 50%;
+    margin-right: 20px;
+
+    .cost-tracker-input-container:last-of-type {
+      margin-right: 0;
+    }
+  }
+}
 
 .add-client-button-wrapper {
   display: flex;

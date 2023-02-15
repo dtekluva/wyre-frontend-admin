@@ -13,7 +13,7 @@ function AddUserForm(props) {
         if (!props.auth?.fetchedRoles) {
             props.getAllRoles();
         }
-        if (!props.client?.fetchedClient) {
+        if (!props.client?.fetchedClient && props.auth.userData.role_text !== "CLIENT_ADMIN") {
             props.getClients();
         }
     }, [])
@@ -22,8 +22,12 @@ function AddUserForm(props) {
 
 
     const onUserFormSubmit = async (values) => {
+        // if userRole is clientadmin, add clientid of the user to values
+        if (props.auth.userData.role_text === "CLIENT_ADMIN") {
+            values.client = props.auth.userData.client_id;
+        }
         const request = await props.addUsers(values);
-
+        
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);
@@ -36,9 +40,8 @@ function AddUserForm(props) {
             message: 'failed',
             description: request.message,
         });
-
+        
     }
-
     const roleSelector = (
         <Select
             className='cost-tracker-select h-4-br'
@@ -46,6 +49,8 @@ function AddUserForm(props) {
             suffixIcon={<CaretDownFilled />}
         > {
                 props.auth?.fetchedRoles && Object.entries(props.auth?.fetchedRoles).map(([roleName, roleValue]) =>
+                // IF USER IS CLIENT_ADMIN && ROLENAME NOT INCLUDE [SUPERADMIN, ADMIN] && <Option key= .....
+                ((props.auth.userData.role_text === "CLIENT_ADMIN" && (roleName !== "SUPERADMIN" && roleName !== "ADMIN")) || (props.auth.userData.role_text !== "CLIENT_ADMIN")) &&
                     <Option key={roleValue} className='active-state-option' value={roleValue}>
                         {roleName}
                     </Option>
@@ -116,6 +121,17 @@ function AddUserForm(props) {
                                 wrapperCol={{ span: 24 }}
                                 label="Username"
                                 name="username"
+                                rules={[{ required: true, message: 'Please input your Username!' }]}
+                            >
+                                <Input size="large" />
+                            </Form.Item>
+                        </div>
+                        <div className='add-client-input-container'>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                                label="Email Address"
+                                name="email"
                                 rules={[{ required: true, message: 'Please input your email address!' }]}
                             >
                                 <Input size="large" />
@@ -168,15 +184,17 @@ function AddUserForm(props) {
                             </Form.Item>
                         </div>
                         <div className='add-client-input-container'>
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                wrapperCol={{ span: 24 }}
-                                label="Client"
-                                name="client"
-                                rules={[{ required: true, message: 'Please select a value!' }]}
-                            >
+                            {props.auth.userData.role_text !== "CLIENT_ADMIN" && (
+                                <Form.Item
+                                    labelCol={{ span: 24 }}
+                                    wrapperCol={{ span: 24 }}
+                                    label="Client"
+                                    name="client"
+                                    rules={[{ required: true, message: 'Please select a value!' }]}
+                                >
                                 {clientSelector}
                             </Form.Item>
+                            )} 
                         </div>
                         <div className='add-client-input-container'>
                             {/* <Form.Item

@@ -15,7 +15,9 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AdminHeader from '../components/header/AdminHeader';
 import TopBar from '../components/header/AdminTopBar';
 // import AddClients from '../adminPages/AddClients';
+import AddClients from '../pages/adminPages/AddClients';
 // import ViewBranch from '../adminPages/branches/ViewBranch';
+import ViewBranch from '../pages/adminPages/branches/ViewBranch';
 
 function WyreAdminPages() {
   return (
@@ -28,8 +30,9 @@ function WyreAdminPages() {
         {/* <ScrollToTop> */}
           <div className='page-content'>
             <Routes>
+              <Route exact path='/' element={<Overview />} />
               <Route path='/view-branches' element={<ViewBranches />} />
-              {/* <Route exact path='/overview' element={<Overview />} />
+              {/* 
               <Route path='/view-client' element={<ViewOrganisation />} /> */}
               {/* <Route path='/add-devices' element={<AddDevices />} />
               <Route path='/add-clients' element={<AddClients />} />

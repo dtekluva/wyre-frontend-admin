@@ -18,6 +18,7 @@ import AddClients from '../pages/adminPages/AddClients';
 import ViewBranches from '../pages/adminPages/ViewBranches';
 import AddBranches from '../pages/adminPages/AddBranches';
 import ViewBranch from '../pages/adminPages/branches/ViewBranch';
+import ViewClientUsers from '../pages/adminPages/branches/ViewClientUsers';
 
 function AdminPages() {
   return (
@@ -37,6 +38,7 @@ function AdminPages() {
               <Route path='/add-clients' element={<AddClients />} />
               <Route path='/add-devices' element={<AddDevices />} />
               <Route path='/view-branch' element={<ViewBranch />} />
+              <Route path='/view-client-users' element={<ViewClientUsers />} />
               {/* 
               <Route path='/view-branches' element={<ViewBranches />} />
               <Route path='/add-clients' element={<AddClients />} />
