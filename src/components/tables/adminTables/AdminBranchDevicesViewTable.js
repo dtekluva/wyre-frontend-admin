@@ -104,6 +104,12 @@ const AdminBranchDevicesViewTable = (props) => {
             key: 'type',
             sorter: (a, b) => a.type.localeCompare(b.type),
             sortDirections: ['descend', 'ascend'],
+            render: (_, record) => (
+              <p>
+                  {props.deviceType}
+              </p>
+
+          )
         },
         {
             title: 'Device Identity',
@@ -158,6 +164,7 @@ const AdminBranchDevicesViewTable = (props) => {
         (userRoletextData === 'SUPERADMIN' ? isActive() : {})
         // isActive()
     ];
+    console.log('deviceType here.......', props.deviceType);
 
     return (
         <>
