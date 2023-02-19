@@ -103,7 +103,6 @@ function ViewBranch(props) {
         if (!props.devices.fetchedDeviceType) {
             props.getDeviceTypes(branch_id);
         }
-        console.log("DEVICE-Types>>>>>>>", props.devices.fetchedDeviceType);
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
 
@@ -163,7 +162,7 @@ function ViewBranch(props) {
                     <AdminBranchDevicesViewTable
                         loading={props.devices?.fetchDeviceOverviewLoading}
                         listOfDevicesData={props.devices?.fetchedDeviceOverview}
-                        deviceType={props.devices?.fetchedDeviceType[0]?.choice_name}
+                        deviceType={props.devices?.fetchedDeviceType}
                         setVisibleDevice={setVisibleDevice}
                         setDeviceData={setDeviceData}
                         setDeviceSwitch={setDeviceSwitch}
