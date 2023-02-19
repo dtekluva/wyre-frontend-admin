@@ -104,6 +104,14 @@ const AdminBranchDevicesViewTable = (props) => {
             key: 'type',
             sorter: (a, b) => a.type.localeCompare(b.type),
             sortDirections: ['descend', 'ascend'],
+            render: (type) => (
+              <p>
+                  {props.deviceType.find((listOfDevice) => {
+                    return listOfDevice.id === type
+                  }).choice_name} 
+              </p>
+
+          )
         },
         {
             title: 'Device Identity',
