@@ -200,6 +200,22 @@ const AdminBranchesTable = (props) => {
     //   sorter: (a, b) => a.baseline - b.baseline,
     //   sortDirections: ['descend', 'ascend'],
     // },
+    // {
+    //   title: 'Accurate Usage Diesel',
+    //   dataIndex: 'dieselUsage',
+    //   key: 'dieselUsage',
+    //   ...getColumnSearchProps('dieselUsage'),
+    //   sorter: (a, b) => a.dieselUsage - b.dieselUsage,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
+    // {
+    //   title: 'Accurate Usage Utility',
+    //   dataIndex: 'utilityUsage',
+    //   key: 'utilityUsage',
+    //   ...getColumnSearchProps('utilityUsage'),
+    //   sorter: (a, b) => a.utilityUsage - b.utilityUsage,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     {
       title: 'Cost Of Energy',
       dataIndex: 'energy_cost',

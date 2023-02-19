@@ -39,6 +39,7 @@ function ViewBranch(props) {
     ];
 
     const headers = useSelector((state) => state.headers);
+// const typeOfDevice = props.devices.fetchedDeviceType.map((element) => element.choice_name)
 
     const handleOkDevice = async () => {
         const bodyParams = {
@@ -100,7 +101,7 @@ function ViewBranch(props) {
         }
 
         if (!props.devices.fetchedDeviceType) {
-            props.getDeviceTypes();
+            props.getDeviceTypes(branch_id);
         }
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
@@ -161,6 +162,7 @@ function ViewBranch(props) {
                     <AdminBranchDevicesViewTable
                         loading={props.devices?.fetchDeviceOverviewLoading}
                         listOfDevicesData={props.devices?.fetchedDeviceOverview}
+                        deviceType={props.devices?.fetchedDeviceType}
                         setVisibleDevice={setVisibleDevice}
                         setDeviceData={setDeviceData}
                         setDeviceSwitch={setDeviceSwitch}
