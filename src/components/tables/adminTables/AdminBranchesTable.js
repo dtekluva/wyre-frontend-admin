@@ -176,14 +176,14 @@ const AdminBranchesTable = (props) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['descend', 'ascend'],
     },
-    {
-      title: 'Organisation',
-      dataIndex: 'organisation',
-      key: 'organisation',
-      ...getColumnSearchProps('organisation'),
-      sorter: (a, b) => a.organisation.localeCompare(b.organisation),
-      sortDirections: ['descend', 'ascend'],
-    },
+    // {
+    //   title: 'Organisation',
+    //   dataIndex: 'organisation',
+    //   key: 'organisation',
+    //   ...getColumnSearchProps('organisation'),
+    //   sorter: (a, b) => a.organisation.localeCompare(b.organisation),
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     {
       title: 'Total Energy [kwh]',
       dataIndex: 'total_energy',
