@@ -9,6 +9,8 @@ const INITIAL_STATE = {
     newViewBranches: false,
     newUserBranchesLoading: false,
     newUserBranches: false,
+    fetchBranchEnergyStatsLoading: false,
+    fetchedBranchEnergyStats: false,
     fetchBranchLoading: false,
     fetchedBranch: false,
     updateBranchLoading: false,
@@ -84,6 +86,23 @@ const branchesReducer = (state = INITIAL_STATE, action) => {
 
                 ...state,
                 newUserBranchesLoading: action.payload,
+
+            };
+
+        case viewBranchesTypes.GET_BRANCH_ENERGY_STATS_SUCCESS:
+
+            return {
+
+                ...state,
+                fetchedBranchEnergyStats: action.payload,
+
+            };
+        case viewBranchesTypes.GET_BRANCH_ENERGY_STATS_LOADING:
+
+            return {
+
+                ...state,
+                fetchBranchEnergyStatsLoading: action.payload,
 
             };
 

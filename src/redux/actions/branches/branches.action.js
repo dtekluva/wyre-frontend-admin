@@ -3,7 +3,7 @@ import { APIService } from "../../../config/api/apiConfig";
 import {
   addUserBranchesLoading,
   addUserBranchesSuccess,
-  addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchLoading,
+  addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchEnergyStatsLoading, getBranchEnergyStatsSuccess, getBranchLoading,
   getBranchSuccess, getViewBranchesLoading,
   getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
 } from "./branches.creator";
@@ -63,6 +63,7 @@ export const addABranch = (parameters = {}) => async (dispatch) => {
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+
 export const addUserToBranch = (parameters = {}) => async (dispatch) => {
 
   dispatch(addUserBranchesLoading(true));
@@ -81,12 +82,23 @@ export const addUserToBranch = (parameters = {}) => async (dispatch) => {
   }
 };
 
+export const getABranchEnergyStats = (branch_id, startDate, endDate) => async (dispatch) => {
+  dispatch(getBranchEnergyStatsLoading(true));
+  const requestUrl = `/cadmin/branch_energy_stats/${branch_id}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getBranchEnergyStatsSuccess(response.data.authenticatedData));
+    dispatch(getBranchEnergyStatsLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getBranchEnergyStatsLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
 
 export const getABranch = (branch_id, startDate, endDate) => async (dispatch) => {
-
-
   dispatch(getBranchLoading(true));
-
   const requestUrl = `/cadmin/branch/${branch_id}/${startDate}/${endDate}`;
   try {
     const response = await APIService.get(requestUrl);

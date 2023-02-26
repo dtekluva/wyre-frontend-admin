@@ -41,7 +41,17 @@ export const addUserBranchesSuccess = (payload = true) => ({
     payload,
   });
 
-  export const getBranchLoading = (payload = true) => ({
+export const getBranchEnergyStatsLoading = (payload = true) => ({
+    type: branchTypes.GET_BRANCH_ENERGY_STATS_LOADING,
+    payload,
+  });
+  
+export const getBranchEnergyStatsSuccess = (payload = true) => ({
+    type: branchTypes.GET_BRANCH_ENERGY_STATS_SUCCESS,
+    payload,
+  });
+
+export const getBranchLoading = (payload = true) => ({
     type: branchTypes.GET_BRANCH_LOADING,
     payload,
   });
