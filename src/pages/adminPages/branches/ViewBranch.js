@@ -5,12 +5,13 @@ import BreadCrumb from '../../../components/BreadCrumb';
 
 import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
+import AdminBranchEnergyStatsViewTable from '../../../components/tables/adminTables/AdminBranchEnergyStatsViewTable';
 
 import { connect, useSelector } from 'react-redux';
 
 import { disableDevice, getDevicesOverview, getDeviceTypes } from '../../../redux/actions/devices/device.action';
 import { disableUser, getUsersOverview, removeUser, updateUser } from '../../../redux/actions/users/user.action';
-import { getABranch } from '../../../redux/actions/branches/branches.action';
+import { getABranch, getABranchEnergyStats } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
@@ -105,8 +106,12 @@ function ViewBranch(props) {
         }
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
+        // props.getABranchEnergyStats(branch_id, startDate, endDate);
+        props.getABranchEnergyStats(branch_id, startDate, endDate);
 
     }, []);
+    // console.log('DeviceType Reducers>>>>>>>>', props.devices.fetchedDeviceType);
+    // console.log('Energy-Stats Reducers>>>>>>>>', props.branches.fetchedBranchEnergyStats);
 
     return (
         <>
@@ -218,6 +223,19 @@ function ViewBranch(props) {
                         {userSwitch}
                     </Modal>
                 </div>
+                <div className='h-overflow-auto'>
+                    <div className='text-center'>
+                        <h3 className='table-header__heading'>Energy Stats</h3>
+                    </div>
+
+                    <AdminBranchEnergyStatsViewTable
+                        loading={props.branches?.fetchBranchEnergyStatsLoading}
+                        // branchName={props.branches?.fetchedBranch[0]?.name}
+                        listOfBranchEnergyStatsViewData={props.branches?.fetchedBranchEnergyStats}
+                    />
+                    
+                    
+                </div>
             </article>
 
         </>
@@ -226,6 +244,7 @@ function ViewBranch(props) {
 
 const mapDispatchToProps = {
     getABranch,
+    getABranchEnergyStats,
     getDevicesOverview,
     getDeviceTypes,
     disableDevice,
