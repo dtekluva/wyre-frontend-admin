@@ -230,7 +230,6 @@ function ViewBranch(props) {
 
                     <AdminBranchEnergyStatsViewTable
                         loading={props.branches?.fetchBranchEnergyStatsLoading}
-                        // branchName={props.branches?.fetchedBranch[0]?.name}
                         listOfBranchEnergyStatsViewData={props.branches?.fetchedBranchEnergyStats}
                     />
                     
