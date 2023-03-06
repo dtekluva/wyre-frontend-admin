@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
