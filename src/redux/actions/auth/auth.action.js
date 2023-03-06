@@ -1,4 +1,5 @@
 
+import moment from "moment";
 import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
 import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getAllDevicesLoading, getAllDevicesSuccess, getDeviceReadingsLoading, getDeviceReadingsSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
@@ -55,7 +56,8 @@ export const getDownloadAllDevices = (password) => async (dispatch) => {
 
   dispatch(getAllDevicesLoading(true));
   // const requestUrl = `/get_all_devices/${password}/`;
-  const requestUrl = `/api/v1/get_all_devices/%3Cpassword%3E/`;
+  // const requestUrl = `/api/v1/get_all_devices/%3Cpassword%3E/`;
+  const requestUrl = `/api/v1/get_all_devices/${password}/`;
   try {
     const response = await APIService.get(requestUrl);
 
@@ -68,11 +70,11 @@ export const getDownloadAllDevices = (password) => async (dispatch) => {
   }
 };
 
-export const getDownloadDeviceReadings = (password, device, startDate, endDate) => async (dispatch) => {
+export const getDownloadDeviceReadings = (password, deviceId, userDateRange) => async (dispatch) => {
 
   dispatch(getDeviceReadingsLoading(true));
-  const requestUrl = `/get_device_readings/${password}/${device}/${startDate}/${endDate}/`;
-  // const requestUrl = `/get_device_readings/<password>/<device>/<start_date>/<end_date>/`;
+  // const requestUrl = `/get_device_readings/${password}/${device}/${startDate}/${endDate}/`;
+  const requestUrl = `/api/v1/get_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/`;
   try {
     const response = await APIService.get(requestUrl);
 
