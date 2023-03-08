@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import CompleteDataContext from '../Context';
-// import { useNavigation } from 'react-router';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import HeaderLink from './HeaderLink';
 import HeaderIcon from '../icons/HeaderIcon';
@@ -15,7 +14,6 @@ import MessageIcon from '../icons/MessageIcon';
 import NotificationIcon from '../icons/NotificationIcon';
 import ChevronDown from '../icons/ChevronDown';
 
-import avatar from '../../images/avatar.png';
 
 import HeaderLinkWithDropdown from '../groups/HeaderLinkWithDropdown';
 import HeaderMobileAvatarWithDropdown from '../groups/HeaderMobileAvatarWithDropdown';
@@ -36,6 +34,7 @@ function AdminHeader() {
   //   organization
   // } = useContext(CompleteDataContext);
 
+  const userData = useSelector((state) => state.auth.userData);
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
@@ -250,7 +249,8 @@ function AdminHeader() {
             onClick={toggleDesktopAvatarMenu}
             className='header-avatar'
           >
-            <img src={avatar} alt='' />
+            {/* <img src={avatar} alt='' /> */}
+            <img src={process.env.REACT_APP_API_URL + '/' + userData.client_image} alt='' />
           </button>
 
           <ul
