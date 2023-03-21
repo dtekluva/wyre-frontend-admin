@@ -3,8 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import Overview from '../pages/adminPages/Overview';
-import AddDevices from '../pages/adminPages/AddDevices';
-// import ViewBranches from '../pages/adminPages/ViewBranches';
+// import AddDevices from '../pages/adminPages/AddDevices';
+import ViewResellerBranches from '../pages/adminPages/ViewResellerBranches';
 // import ViewDevices from '../pages/adminPages/ViewDevices';
 import ViewOrganisation from '../pages/adminPages/ViewOrganisation';
 // import Messages from '../pages/adminPages/Messages';
@@ -14,14 +14,12 @@ import ScrollToTop from '../helpers/ScrollToTop';
 
 import AdminHeader from '../components/header/AdminHeader';
 import TopBar from '../components/header/AdminTopBar';
-import AddClients from '../pages/adminPages/AddClients';
-import ViewBranches from '../pages/adminPages/ViewBranches';
-import ViewResellerBranches from '../pages/adminPages/ViewResellerBranches';
 import AddBranches from '../pages/adminPages/AddBranches';
-import ViewBranch from '../pages/adminPages/branches/ViewBranch';
+// import AddClients from '../adminPages/AddClients';
+import ViewResellerBranch from '../pages/adminPages/branches/ViewResellerBranch';
 import ViewClientUsers from '../pages/adminPages/branches/ViewClientUsers';
 
-function AdminPages() {
+function ResellerClientAdminPages() {
   return (
     <div>
       <AdminHeader />
@@ -32,17 +30,13 @@ function AdminPages() {
         {/* <ScrollToTop> */}
           <div className='page-content'>
             <Routes>
-              <Route exact path='/' element={<Overview />} />
-              <Route path='/view-client' element={<ViewOrganisation />} />
-              <Route path='/add-branches' element={<AddBranches />} />
-              <Route path='/view-branches' element={<ViewBranches />} />
-              <Route path='/view-reseller-branches' element={<ViewResellerBranches />} />
-              <Route path='/add-clients' element={<AddClients />} />
-              <Route path='/add-devices' element={<AddDevices />} />
-              <Route path='/view-branch' element={<ViewBranch />} />
+              <Route path='/' element={<ViewResellerBranches />} />
+              <Route path='/view-branch' element={<ViewResellerBranch />} />
               <Route path='/view-client-users' element={<ViewClientUsers />} />
-              {/* 
-              <Route path='/view-branches' element={<ViewBranches />} />
+              {/* <Route path='/add-branches' element={<AddBranches />} /> */}
+              {/* <Route exact path='/overview' element={<Overview />} />
+              <Route path='/view-client' element={<ViewOrganisation />} /> */}
+              {/* <Route path='/add-devices' element={<AddDevices />} />
               <Route path='/add-clients' element={<AddClients />} />
               <Route path='/view-devices' element={<ViewDevices />} />
               <Route path='/view-client' element={<ViewOrganisation />} />
@@ -57,4 +51,4 @@ function AdminPages() {
   );
 }
 
-export default AdminPages;
+export default ResellerClientAdminPages;

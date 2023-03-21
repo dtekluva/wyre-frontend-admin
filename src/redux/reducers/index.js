@@ -5,6 +5,7 @@ import deviceReducer from "./devices/device.reducer"
 import branchesReducer from "./branches/branches.reducer"
 import userReducer from "./users/user.reducer"
 import headersReducers from "./headers/headers.reducers"
+import tariffsReducer from "./tariffs/tariffs.reducer"
 
 const rootReducers = combineReducers({
   auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducers = combineReducers({
   branches: branchesReducer,
   devices: deviceReducer,
   user: userReducer,
-  headers: headersReducers
+  headers: headersReducers,
+  tariffs: tariffsReducer
 })
 
 export default rootReducers

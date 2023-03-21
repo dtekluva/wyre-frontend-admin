@@ -3,12 +3,13 @@ import { DownOutlined, EditOutlined } from '@ant-design/icons';
 
 const AdminBranchEnergyStatsViewTable = (props) => {
 
-    const data = props.listOfBranchEnergyStatsViewData;
+    const data = props.listOfResellerBranchEnergyStatsViewData;
     const loading = props.loading;
     const setTariffModal = props.setTariffModal
     const deviceType = props.deviceType
     const setDeviceData = props.setDeviceData
     const userRoletextData = props.userRoletextData
+    console.log("Energy-stats Data>>>>>>>", data);
 
     const itemData = (record) => {
         return [
@@ -31,14 +32,30 @@ const AdminBranchEnergyStatsViewTable = (props) => {
 
                 ),
             },
+            {
+                key: '2',
+                label: (
+                  <>
+                    <EditOutlined />
+                    <a target="_blank" onClick={(e) => {
+                      e.preventDefault();
+                    //   setVisibleBranch(true);
+                    //   setBranchData(record);
+                    }} rel="noopener noreferrer">
+                      Edit Tariff
+                    </a>
+                  </>
+        
+                ),
+            },
         ];
     }
 
     const optionsColumn = () => ({
-        key: 'options',
-        title: 'Options',
+        key: 'set_tariff',
+        title: 'Set Tarrif',
         width: '10%',
-        dataIndex: 'options',
+        dataIndex: 'set_tariff',
         render: (_, record) => {
             const items = itemData(record);
             return (
@@ -68,6 +85,13 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             dataIndex: 'device_name',
             key: 'device_name',
             sorter: (a, b) => a.device_name.localeCompare(b.device_name),
+            sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Tariff',
+            dataIndex: 'tariff',
+            key: 'tariff',
+            sorter: (a, b) => a.tariff.localeCompare(b.tariff),
             sortDirections: ['descend', 'ascend'],
         },
         {
