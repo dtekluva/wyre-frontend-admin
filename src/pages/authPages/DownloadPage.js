@@ -1,24 +1,29 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import moment from 'moment';
+import React, { useState } from 'react';
 
 import { getDownloadAllDevices, getDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
-import { Spin, Form, notification, Select, DatePicker, Button } from 'antd';
-import { CaretDownFilled, DownloadOutlined } from '@ant-design/icons';
+import { Spin, Form, notification, Select, DatePicker } from 'antd';
+import { CaretDownFilled } from '@ant-design/icons';
 import { Input } from 'antd';
+import { downloadFile } from '../../helpers/GeneralHelper';
+import moment from 'moment';
+
+const { convertArrayToCSV } = require('convert-array-to-csv');
 
 
 function DownloadPage(props) {
     const [form] = Form.useForm();
     const [formTwo] = Form.useForm();
-    const [size, setSize] = useState('large');
     const [pPassword, setPPassword] = useState(null);
+    const [deviceName, setDeviceName] = useState(null);
 
     const { RangePicker } = DatePicker
 
+    const onDeviceSelection = (selected, _) => {
+        setDeviceName(_.children);
+    }
 
     const { Option } = Select;
 
@@ -28,6 +33,7 @@ function DownloadPage(props) {
             id='role-state'
             showSearch
             suffixIcon={<CaretDownFilled />}
+            onSelect={onDeviceSelection}
         >
             {props.auth?.allDevicesfetched && props.auth?.allDevicesfetched?.map((device) =>
                 <Option key={device.device_id} className='active-state-option' value={device.device_id}>
@@ -57,10 +63,15 @@ function DownloadPage(props) {
     }
     const onSelectFormSubmit = async (values) => {
         const { dateRange, deviceId } = values;
-        console.log('this is the data that is coming in the values ====================>>>>>>>>>>.', values);
         const request = await props.getDownloadDeviceReadings(pPassword, deviceId, dateRange);
 
         if (request.fulfilled) {
+
+            const abc = convertArrayToCSV(request.data);
+
+            const downloadName = `${deviceName}.csv`;
+            downloadFile(abc, downloadName)
+
             form.resetFields();
             return notification.info({
                 message: 'successful',
@@ -74,8 +85,8 @@ function DownloadPage(props) {
 
     }
 
-    return <div className='cost-tracker-forms-content-wrapper'>
-        <Spin spinning={props.auth.newUserBranchLoading}>
+    return <div style={{ height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='cost-tracker-forms-content-wrapper'>
+        <Spin spinning={props.auth.allDevicesfetchLoading || props.auth.fetchDeviceReadingsLoading}>
             <h1 className='center-main-heading'>Download CSV File</h1>
             {
                 !props.auth.allDevicesfetched ? (<section className='cost-tracker-form-section'>
@@ -88,25 +99,27 @@ function DownloadPage(props) {
                         className='cost-tracker-form'
                         onFinish={onPasswordFormSubmit}
                     >
+
                         <div className='add-cclient-form-inputs-wrapper'>
 
-                            <Form.Item
-                                name='password'
-                                label='Password'
-                                validateTrigger={['onChange', 'onBlur']}
-                                rules={[
-                                    { required: true, message: 'Please enter password' },
-                                    { max: 60, message: 'username cannot be more than 60 characters' }
-                                ]}
-                            >
-                                <Input.Password size='large' className='signup-login-contact-input outlined-input' type='password' />
-                            </Form.Item>
-
+                            <div className='add-client-input-container-half'>
+                                <Form.Item
+                                    name='password'
+                                    label='Password'
+                                    labelCol={{ span: 24 }}
+                                    validateTrigger={['onChange', 'onBlur']}
+                                    rules={[
+                                        { required: true, message: 'Please enter password' },
+                                        { max: 60, message: 'username cannot be more than 60 characters' }
+                                    ]}
+                                >
+                                    <Input.Password size='large' className=' outlined-input_second' type='password' />
+                                </Form.Item>
+                            </div>
                         </div>
-
                         <div className='add_user_form_btn_align'>
                             <button className='generic-submit-button cost-tracker-form-submit-button'>
-                                submit
+                                Submit
                             </button>
                         </div>
                     </Form>
@@ -147,18 +160,12 @@ function DownloadPage(props) {
                                                 name="dateRange"
                                                 rules={[{ required: true, message: 'Please select a date range!' }]}
                                             >
-                                                <RangePicker />
+                                                <RangePicker disabledDate={(current) => current.isAfter(moment())} size='large' />
                                             </Form.Item>
                                         }
                                     </div>
 
                                 </div>
-
-                                {/* <div className='add_user_form_btn_align'>
-                                    <Button type="submit" shape="round" icon={<DownloadOutlined />} size={size}>
-                                        Download
-                                    </Button>
-                                </div> */}
 
                                 <div className='add_user_form_btn_align'>
                                     <button className='generic-submit-button cost-tracker-form-submit-button'>

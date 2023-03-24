@@ -55,11 +55,9 @@ export const getAllRoles = () => async (dispatch) => {
 export const getDownloadAllDevices = (password) => async (dispatch) => {
 
   dispatch(getAllDevicesLoading(true));
-  // const requestUrl = `/get_all_devices/${password}/`;
-  // const requestUrl = `/api/v1/get_all_devices/%3Cpassword%3E/`;
-  const requestUrl = `/api/v1/get_all_devices/${password}/`;
+  const requestUrl = `/api/v1/get_all_devices/${password}`;
   try {
-    const response = await APIService.get(requestUrl);
+    const response = await APIServiceNoAuth.get(requestUrl);
 
     dispatch(getAllDevicesSuccess(response.data));
     dispatch(getAllDevicesLoading(false))
@@ -73,14 +71,13 @@ export const getDownloadAllDevices = (password) => async (dispatch) => {
 export const getDownloadDeviceReadings = (password, deviceId, userDateRange) => async (dispatch) => {
 
   dispatch(getDeviceReadingsLoading(true));
-  // const requestUrl = `/get_device_readings/${password}/${device}/${startDate}/${endDate}/`;
   const requestUrl = `/api/v1/get_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/`;
   try {
     const response = await APIService.get(requestUrl);
 
     dispatch(getDeviceReadingsSuccess(response.data.authenticatedData));
     dispatch(getDeviceReadingsLoading(false))
-    return { fulfilled: true, message: 'successful' }
+    return { fulfilled: true, message: 'successful', data: response.data }
   } catch (error) {
     dispatch(getDeviceReadingsLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
