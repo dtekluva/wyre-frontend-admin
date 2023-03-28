@@ -6,6 +6,7 @@ import About from '../pages/authPages/About';
 import Contact from '../pages/authPages/Contact';
 import Features from '../pages/authPages/Features';
 import Login from '../pages/authPages/Login';
+import DownloadPage from '../pages/authPages/DownloadPage';
 import SignUp from '../pages/authPages/SignUp';
 import ChangePassword from '../pages/authPages/ChangePassword';
 import ResetPassword from '../pages/authPages/ResetPassword';
@@ -29,6 +30,7 @@ function AuthPages() {
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/reset-password' element={<ResetPassword />} />
+            <Route path='/download-csv' element={<DownloadPage />} />
             {/* <Route path='/about' component={About} />
             <Route path='/features' component={Features} />
             <Route path='/log-in' component={Login} />

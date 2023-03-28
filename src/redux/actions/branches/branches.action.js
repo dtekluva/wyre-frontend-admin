@@ -4,7 +4,7 @@ import {
   addUserBranchesLoading,
   addUserBranchesSuccess,
   addViewBranchesLoading, addViewBranchesSuccess, editBranchLoading, editBranchSuccess, getBranchEnergyStatsLoading, getBranchEnergyStatsSuccess, getBranchLoading,
-  getBranchSuccess, getViewBranchesLoading,
+  getBranchSuccess, getResellerBranchEnergyStatsLoading, getResellerBranchEnergyStatsSuccess, getResellerBranchesLoading, getResellerBranchesSuccess, getResellerBranchesTopLoading, getResellerBranchesTopSuccess, getResellerBranchLoading, getResellerBranchSuccess, getViewBranchesLoading,
   getViewBranchesSuccess, getViewBranchesTopLoading, getViewBranchesTopSuccess
 } from "./branches.creator";
 
@@ -28,6 +28,24 @@ export const getBranches = (clientId, startDate, endDate) => async (dispatch) =>
   }
 };
 
+export const getResellerViewBranches = (clientId, startDate, endDate) => async (dispatch) => {
+
+
+  dispatch(getResellerBranchesLoading(true));
+
+  const requestUrl = `/cadmin/reseller_branches/${clientId}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getResellerBranchesSuccess(response.data.authenticatedData));
+    dispatch(getResellerBranchesLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getResellerBranchesLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
 export const getBranchesTop = (clientId, startDate, endDate) => async (dispatch) => {
 
 
@@ -42,6 +60,24 @@ export const getBranchesTop = (clientId, startDate, endDate) => async (dispatch)
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getViewBranchesTopLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const getResellerBranchesTop = (clientId, startDate, endDate) => async (dispatch) => {
+
+
+  dispatch(getResellerBranchesTopLoading(true));
+
+  const requestUrl = `/cadmin/reseller-branches-sum/${clientId}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getResellerBranchesTopSuccess(response.data.authenticatedData));
+    dispatch(getResellerBranchesTopLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getResellerBranchesTopLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
@@ -96,6 +132,20 @@ export const getABranchEnergyStats = (branch_id, startDate, endDate) => async (d
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+export const getAResellerBranchEnergyStats = (branch_id, startDate, endDate) => async (dispatch) => {
+  dispatch(getResellerBranchEnergyStatsLoading(true));
+  const requestUrl = `/cadmin/reseller_energy_stats/${branch_id}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getResellerBranchEnergyStatsSuccess(response.data.authenticatedData));
+    dispatch(getResellerBranchEnergyStatsLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getResellerBranchEnergyStatsLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
 
 export const getABranch = (branch_id, startDate, endDate) => async (dispatch) => {
   dispatch(getBranchLoading(true));
@@ -108,6 +158,21 @@ export const getABranch = (branch_id, startDate, endDate) => async (dispatch) =>
     return { fulfilled: true, message: 'successful' }
   } catch (error) {
     dispatch(getBranchLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
+export const getAResellerBranch = (branch_id, startDate, endDate) => async (dispatch) => {
+  dispatch(getResellerBranchLoading(true));
+  const requestUrl = `/cadmin/reseller_branch/${branch_id}/${startDate}/${endDate}`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getResellerBranchSuccess(response.data.authenticatedData));
+    dispatch(getResellerBranchLoading(false))
+    return { fulfilled: true, message: 'successful' }
+  } catch (error) {
+    dispatch(getResellerBranchLoading(false));
     return { fulfilled: false, message: error.response.data.detail }
   }
 };

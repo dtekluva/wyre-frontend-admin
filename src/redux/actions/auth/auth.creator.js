@@ -28,6 +28,26 @@ export const getRolesSuccess = (payload = true) => ({
   payload,
 });
 
+export const getAllDevicesLoading = (payload = true) => ({
+  type: authTypes.GET_ALL_DEVICES_LOADING,
+  payload,
+});
+
+export const getAllDevicesSuccess = (payload = true) => ({
+  type: authTypes.GET_ALL_DEVICES_SUCCESS,
+  payload,
+});
+
+export const getDeviceReadingsLoading = (payload = true) => ({
+  type: authTypes.GET_DEVICE_READINGS_LOADING,
+  payload,
+});
+
+export const getDeviceReadingsSuccess = (payload = true) => ({
+  type: authTypes.GET_DEVICE_READINGS_SUCCESS,
+  payload,
+});
+
 export const addUsersLoading = (payload = true) => ({
   type: authTypes.ADD_USERS_LOADING,
   payload,

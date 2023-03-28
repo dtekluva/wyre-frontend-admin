@@ -11,6 +11,16 @@ export const getViewBranchesSuccess = (payload = true) => ({
     payload,
   });
 
+export const getResellerBranchesLoading = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCHES_LOADING,
+    payload,
+  });
+  
+export const getResellerBranchesSuccess = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCHES_SUCCESS,
+    payload,
+  });
+
 export const getViewBranchesTopLoading = (payload = true) => ({
     type: branchTypes.GET_VIEWBRANCHES_TOP_LOADING,
     payload,
@@ -18,6 +28,16 @@ export const getViewBranchesTopLoading = (payload = true) => ({
   
 export const getViewBranchesTopSuccess = (payload = true) => ({
     type: branchTypes.GET_VIEWBRANCHES_TOP_SUCCESS,
+    payload,
+  });
+
+export const getResellerBranchesTopLoading = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCHES_TOP_LOADING,
+    payload,
+  });
+  
+export const getResellerBranchesTopSuccess = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCHES_TOP_SUCCESS,
     payload,
   });
 
@@ -51,6 +71,16 @@ export const getBranchEnergyStatsSuccess = (payload = true) => ({
     payload,
   });
 
+export const getResellerBranchEnergyStatsLoading = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCH_ENERGY_STATS_LOADING,
+    payload,
+  });
+  
+export const getResellerBranchEnergyStatsSuccess = (payload = true) => ({
+    type: branchTypes.GET_RESELLERBRANCH_ENERGY_STATS_SUCCESS,
+    payload,
+  });
+
 export const getBranchLoading = (payload = true) => ({
     type: branchTypes.GET_BRANCH_LOADING,
     payload,
@@ -58,6 +88,16 @@ export const getBranchLoading = (payload = true) => ({
   
 export const getBranchSuccess = (payload = true) => ({
     type: branchTypes.GET_BRANCH_SUCCESS,
+    payload,
+  });
+
+export const getResellerBranchLoading = (payload = true) => ({
+    type: branchTypes.GET_RESELLER_BRANCH_LOADING,
+    payload,
+  });
+  
+export const getResellerBranchSuccess = (payload = true) => ({
+    type: branchTypes.GET_RESELLER_BRANCH_SUCCESS,
     payload,
   });
 
