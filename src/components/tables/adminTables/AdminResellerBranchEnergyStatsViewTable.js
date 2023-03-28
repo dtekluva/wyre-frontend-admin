@@ -1,15 +1,33 @@
-import { Table, Dropdown } from 'antd';
-import { DownOutlined, EditOutlined } from '@ant-design/icons';
+import { Table, Dropdown, Popconfirm, notification } from 'antd';
+import { DownOutlined, EditOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import { deleteTariff } from '../../../redux/actions/tariffs/tariffs.action';
+import { connect } from 'react-redux';
+import { getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
+import { Icon } from '@iconify/react';
+
 
 const AdminBranchEnergyStatsViewTable = (props) => {
 
     const data = props.listOfResellerBranchEnergyStatsViewData;
     const loading = props.loading;
     const setTariffModal = props.setTariffModal
-    const deviceType = props.deviceType
-    const setDeviceData = props.setDeviceData
+    const setEditTariffModal = props.setEditTariffModal
+    const resellerData = props.resellerData
+    const setResellerData = props.setResellerData
     const userRoletextData = props.userRoletextData
-    console.log("Energy-stats Data>>>>>>>", data);
+
+    const tariffId = resellerData.tariff_id
+
+    const handleDelete = async (tariffId) => {
+        const request = await props.deleteTariff(tariffId)
+
+        if (request.fulfilled) {
+            notification.info({
+                message: 'Deleted',
+                description: request.message,
+            });
+        }
+    };
 
     const itemData = (record) => {
         return [
@@ -17,17 +35,14 @@ const AdminBranchEnergyStatsViewTable = (props) => {
                 key: '1',
                 label: (
                     <>
-                        [
-                                <EditOutlined />,
+                            <AppstoreAddOutlined />,
                             <a target="_blank" onClick={(e) => {
                                 e.preventDefault();
                                 setTariffModal(true);
-                                // setUserData(record);
-                                console.log("Energy-Stats record>>>>>", record);
+                                setResellerData(record);
                             }} rel="noopener noreferrer">
                                 Add Tariff
-                            </a> 
-                            ]
+                            </a>
                     </>
 
                 ),
@@ -39,8 +54,8 @@ const AdminBranchEnergyStatsViewTable = (props) => {
                     <EditOutlined />
                     <a target="_blank" onClick={(e) => {
                       e.preventDefault();
-                    //   setVisibleBranch(true);
-                    //   setBranchData(record);
+                      setEditTariffModal(true);
+                      setResellerData(record);
                     }} rel="noopener noreferrer">
                       Edit Tariff
                     </a>
@@ -48,6 +63,20 @@ const AdminBranchEnergyStatsViewTable = (props) => {
         
                 ),
             },
+            {
+                key: '3',
+                label: (<> {
+                  <>
+                    <Icon icon="ant-design:delete-outlined" />
+                    <Popconfirm title="Sure to delete this tariff?" onConfirm={() => handleDelete(tariffId)}>
+                      <a>Delete Tariff</a>
+                    </Popconfirm>
+                  </>
+                }
+                </>
+        
+                ),
+              }
         ];
     }
 
@@ -101,13 +130,6 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             sorter: (a, b) => a.total_kwh.localeCompare(b.total_kwh),
             sortDirections: ['descend', 'ascend'],
         },
-        // {
-        //     title: 'Blended Cost',
-        //     dataIndex: 'blended_cost',
-        //     key: 'blended_cost',
-        //     sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
-        //     sortDirections: ['descend', 'ascend'],
-        // },
         {
             title: 'Min Energy (kVA)',
             dataIndex: 'min_kva',
@@ -147,4 +169,9 @@ const AdminBranchEnergyStatsViewTable = (props) => {
     );
 }
 
-export default AdminBranchEnergyStatsViewTable;
+const mapDispatchToProps = {
+    deleteTariff,
+    getAResellerBranchEnergyStats
+}
+
+export default connect(null, mapDispatchToProps) (AdminBranchEnergyStatsViewTable);

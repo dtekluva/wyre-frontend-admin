@@ -1,26 +1,20 @@
 import React, { useEffect } from 'react';
-import { Form, notification, Spin, Input } from 'antd';
+import { Form, Input, notification, Spin } from 'antd';
 import { connect } from 'react-redux';
 
-import { getABranch, getAResellerBranch, getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
-import { addATariff } from '../../../redux/actions/tariffs/tariffs.action';
+import { getAResellerBranch, getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
+import { getATariff, updateATariff } from '../../../redux/actions/tariffs/tariffs.action';
 import { useSearchParams } from 'react-router-dom';
-import { getDevicesOverview } from '../../../redux/actions/devices/device.action';
 
-function AddTariffForm(props) {
+function UpadateTariffForm(props) {
     const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
-    const deviceData = props.deviceData
     const setModal = props.setModal
     const resellerData = props.resellerData
 
     useEffect(() => {
         const branchId = searchParams.get("branch_id");
         const clientId = searchParams.get("client_id");
-
-        if (!props.devices?.fetchedDeviceOverview) {
-            props.getDevicesOverview(branchId);
-        }
 
         if (!props.branches?.fetchedResellerBranch) {
             props.getAResellerBranch(branchId);
@@ -33,23 +27,24 @@ function AddTariffForm(props) {
 
     }, [])
 
-    const branch_id = searchParams.get("branch_id")
-    const client_id = searchParams.get("client_id")
-    const deviceId = resellerData.device_id
+    useEffect(() => {
+        form.setFieldsValue({
+            amount: resellerData.tariff
+        })
+    }, [])
 
-    const onTariffInputSubmit = async (values) => {
+    const tariffId = resellerData.tariff_id
+
+    const onUpdateTariffSubmit = async (values) => {
         const tariffParameters = {
-            client: client_id,
-            branch: branch_id,
-            device: deviceId,
             amount: values.amount
         }
         
-        const request = await props.addATariff(tariffParameters);
+        const request = await props.updateATariff(tariffId, tariffParameters);
 
         if (request.fulfilled) {
             notification.info({
-                message: 'successful',
+                message: 'Updated',
                 description: request.message,
             });
             form.resetFields();
@@ -63,14 +58,17 @@ function AddTariffForm(props) {
     }
 
     const inputTariff = (
-        <Input/>
+        <Input
+            className='cost-tracker-select h-4-br'
+            id='role-state'
+        />
     )
 
     // modal functions ends
 
     return <div className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.newUserBranchLoading}>
-            <h1 className='center-main-heading'>Add Tarrif</h1>
+            <h1 className='center-main-heading'>Change Tariff</h1>
 
             <section className='cost-tracker-form-section'>
                 <Form
@@ -80,7 +78,7 @@ function AddTariffForm(props) {
                     wrapperCol={{ span: 16 }}
                     autoComplete="off"
                     className='cost-tracker-form'
-                    onFinish={onTariffInputSubmit}
+                    onFinish={onUpdateTariffSubmit}
                 >
                     <div className='add-cclient-form-inputs-wrapper'>
 
@@ -91,7 +89,7 @@ function AddTariffForm(props) {
                                     wrapperCol={{ span: 24 }}
                                     label="Tariff"
                                     name="amount"
-                                    rules={[{ required: true, message: 'Please enter a tariff!' }]}
+                                    rules={[{ required: true, message: 'Please enter the new tariff!' }]}
                                 >
                                     {inputTariff}
                                 </Form.Item>
@@ -102,7 +100,7 @@ function AddTariffForm(props) {
 
                     <div className='add_user_form_btn_align'>
                         <button className='generic-submit-button cost-tracker-form-submit-button'>
-                            Add
+                            Update
                         </button>
                     </div>
                 </Form>
@@ -112,18 +110,16 @@ function AddTariffForm(props) {
 }
 
 const mapDispatchToProps = {
-    addATariff,
-    getABranch,
+    updateATariff,
+    getATariff,
     getAResellerBranch,
     getAResellerBranchEnergyStats,
-    getDevicesOverview
 }
 const mapStateToProps = (state) => ({
     auth: state.auth,
     user: state.user,
     branches: state.branches,
     tariffs: state.tariffs,
-    devices: state.devices
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTariffForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UpadateTariffForm);

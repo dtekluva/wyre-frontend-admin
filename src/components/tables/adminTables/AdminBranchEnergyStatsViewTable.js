@@ -5,62 +5,6 @@ const AdminBranchEnergyStatsViewTable = (props) => {
 
     const data = props.listOfBranchEnergyStatsViewData;
     const loading = props.loading;
-    const setTariffModal = props.setTariffModal
-    const deviceType = props.deviceType
-    const setDeviceData = props.setDeviceData
-    const userRoletextData = props.userRoletextData
-
-    const itemData = (record) => {
-        return [
-            {
-                key: '1',
-                label: (
-                    <>
-                        [
-                                <EditOutlined />,
-                            <a target="_blank" onClick={(e) => {
-                                e.preventDefault();
-                                setTariffModal(true);
-                                // setUserData(record);
-                                console.log("Energy-Stats record>>>>>", record);
-                            }} rel="noopener noreferrer">
-                                Add Tariff
-                            </a> 
-                            ]
-                    </>
-
-                ),
-            },
-        ];
-    }
-
-    const optionsColumn = () => ({
-        key: 'options',
-        title: 'Options',
-        width: '10%',
-        dataIndex: 'options',
-        render: (_, record) => {
-            const items = itemData(record);
-            return (
-                <Dropdown
-                    trigger={['click']}
-                    getPopupContainer={(trigger) => trigger.parentElement}
-                    placement="bottom"
-                    menu={{
-                        items
-                    }}
-                    >
-                    <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                        More
-                        {' '}
-                        <DownOutlined />
-                    </a>
-                </Dropdown>
-            )
-        }
-        
-        
-    });
 
     const columns = [
         {
@@ -77,13 +21,6 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             sorter: (a, b) => a.total_kwh.localeCompare(b.total_kwh),
             sortDirections: ['descend', 'ascend'],
         },
-        // {
-        //     title: 'Blended Cost',
-        //     dataIndex: 'blended_cost',
-        //     key: 'blended_cost',
-        //     sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
-        //     sortDirections: ['descend', 'ascend'],
-        // },
         {
             title: 'Min Energy (kVA)',
             dataIndex: 'min_kva',
@@ -105,7 +42,6 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             sorter: (a, b) => a.avg_kva - b.avg_kva,
             sortDirections: ['descend', 'ascend'],
         },    
-        optionsColumn()
     ];
 
     return (

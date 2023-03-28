@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     const decodedUser = authHelper();
     setUserData(decodedUser)
-    console.log("this is the UserData>>>>>>>", decodedUser);
   }, [])
   return (
     <>

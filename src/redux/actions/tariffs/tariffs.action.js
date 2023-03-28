@@ -56,13 +56,13 @@ export const getTariffs = (parameters = {}) => async (dispatch) => {
     }
 };
 
-export const updateATariff = (parameters = {}) => async (dispatch) => {
+export const updateATariff = (tariffId, parameters) => async (dispatch) => {
 
     dispatch(editTariffLoading(true));
   
-    const requestUrl = `/cadmin/branches/`;
+    const requestUrl = `/cadmin/tariffs/${tariffId}/update/`;
     try {
-      const response = await APIService.get(requestUrl, parameters);
+      const response = await APIService.patch(requestUrl, parameters);
   
       dispatch(editTariffSuccess(response.data));
   
@@ -74,13 +74,13 @@ export const updateATariff = (parameters = {}) => async (dispatch) => {
     }
 };
 
-export const deleteTariff = (parameters = {}) => async (dispatch) => {
+export const deleteTariff = (tariffId, parameters) => async (dispatch) => {
 
     dispatch(deleteTariffLoading(true));
   
-    const requestUrl = `/cadmin/branches/`;
+    const requestUrl = `/cadmin/tariffs/${tariffId}/delete/`;
     try {
-      const response = await APIService.get(requestUrl, parameters);
+      const response = await APIService.delete(requestUrl, parameters);
   
       dispatch(deleteTariffSuccess(response.data));
   

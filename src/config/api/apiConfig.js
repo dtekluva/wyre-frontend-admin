@@ -66,7 +66,7 @@ export const APIService = {
         return instance.patch(endpoint, data);
     },
 
-    delete(endpoint, data) {
+    delete(endpoint, data ={}) {
         return instance.delete(endpoint, { data });
     },
 

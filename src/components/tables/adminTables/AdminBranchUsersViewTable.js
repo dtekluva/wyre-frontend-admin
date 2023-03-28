@@ -121,19 +121,6 @@ const AdminBranchUsersViewTable = (props) => {
             sortDirections: ['descend', 'ascend'],
         },
         {
-            title: 'Branch',
-            dataIndex: 'branch',
-            key: 'branch',
-            sorter: (a, b) => a.branch - b.branch,
-            sortDirections: ['descend', 'ascend'],
-            render: (_, record) => (
-                <p>
-                    {props.branchName}
-                </p>
-
-            )
-        },
-        {
             title: 'Last Login',
             dataIndex: 'last_login',
             key: 'last_login',

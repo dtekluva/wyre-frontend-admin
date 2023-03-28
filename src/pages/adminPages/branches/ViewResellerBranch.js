@@ -20,6 +20,7 @@ import { useSearchParams } from 'react-router-dom';
 import UpdateUserForm from '../modal/UpdateUserForm';
 import UpdateDeviceForm from '../modal/UpdateDeviceForm';
 import AddTariffForm from '../modal/AddTariffForm';
+import UpadateTariffForm from '../modal/UpadateTariffForm';
 
 
 
@@ -34,7 +35,9 @@ function ViewResellerBranch(props) {
     const [userSwitch, setUserSwitch] = useState(false);
     const [chechedStatus, setCheckedStatus] = useState(null);
     const [dateChange, setDateChange] = useState(false);
+    const [resellerData, setResellerData] = useState({});
     const [tariffModal, setTariffModal] = useState(false);
+    const [editTariffModal, setEditTariffModal] = useState(false);
 
     const branch_id_ = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
     const breadCrumbRoutes = [
@@ -88,6 +91,7 @@ function ViewResellerBranch(props) {
     }
 
     const userRoletextData = props.auth.userData.role_text;
+    const clientType = props.auth.userData.client_type;
 
     useEffect(() => {
         // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -109,12 +113,9 @@ function ViewResellerBranch(props) {
         }
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
-        // props.getABranchEnergyStats(branch_id, startDate, endDate);
         props.getAResellerBranchEnergyStats(branch_id, startDate, endDate);
 
     }, []);
-    console.log('DeviceType Reducers>>>>>>>>', props.devices.fetchedDeviceType);
-    console.log('Reseller-Energy-Stats Reducers>>>>>>>>', props.branches.fetchedResellerBranchEnergyStats);
 
     return (
         <>
@@ -146,14 +147,11 @@ function ViewResellerBranch(props) {
                             <Col md={8}>
                                 <div>
                                     <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedResellerBranch[0]?.total_energy.toFixed(2)}</span></p>
-                                    {/* <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p> */}
                                     <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedResellerBranch[0]?.bill.toFixed(2)}</span></p>
-                                    {/* <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p> */}
                                 </div>
                             </Col>
                             <Col md={8}>
                                 <div>
-                                    {/* <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p> */}
                                     <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedResellerBranch[0]?.papr.toFixed(2)}</span></p>
                                 </div>
                             </Col>
@@ -166,7 +164,6 @@ function ViewResellerBranch(props) {
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Devices</h3>
                     </div>
-                    {/* <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} /> */}
                     <AdminBranchDevicesViewTable
                         loading={props.devices?.fetchDeviceOverviewLoading}
                         listOfDevicesData={props.devices?.fetchedDeviceOverview}
@@ -236,6 +233,9 @@ function ViewResellerBranch(props) {
                         listOfResellerBranchEnergyStatsViewData={props.branches?.fetchedResellerBranchEnergyStats}
                         deviceType={props.devices?.fetchedDeviceType}
                         setTariffModal={setTariffModal}
+                        setEditTariffModal={setEditTariffModal}
+                        setResellerData={setResellerData}
+                        resellerData={resellerData}
                         setDeviceData={setDeviceData}
                         userRoletextData={userRoletextData}
                     />
@@ -247,6 +247,19 @@ function ViewResellerBranch(props) {
                         <AddTariffForm
                           setModal={setTariffModal}
                           deviceData={deviceData} 
+                          resellerData={resellerData}
+                        />
+                    </Modal>
+
+                    <Modal 
+                      open={editTariffModal}
+                      onOk={() => setEditTariffModal(false)}
+                      onCancel={() => setEditTariffModal(false)} width={1000} footer={null}
+                    >
+                        <UpadateTariffForm
+                          setModal={setEditTariffModal}
+                          deviceData={deviceData} 
+                          resellerData={resellerData} 
                         />
                     </Modal>
                     
@@ -267,7 +280,6 @@ const mapDispatchToProps = {
     disableDevice,
     getUsersOverview,
     removeUser,
-    // disableUser,
     updateUser,
 }
 
