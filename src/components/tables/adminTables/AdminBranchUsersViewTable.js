@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table, Dropdown, Switch } from 'antd';
 
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
@@ -12,7 +12,6 @@ const AdminBranchUsersViewTable = (props) => {
     const setUserData = props.setUserData;
     const userRoletextData = props.userRoletextData
     const setUserSwitch = props.setUserSwitch;
-    const setUserCheckedStatus = props.setUserCheckedStatus;
 
     const itemData = (record) => {
         return [

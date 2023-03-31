@@ -13,6 +13,7 @@ import ExcelIcon from '../../components/icons/ExcelIcon';
 import { useSearchParams } from 'react-router-dom';
 import { Modal, Spin } from 'antd';
 import UpdateBranchForm from './modal/UpdateBranchForm';
+import { numberFormatter } from '../../helpers/GeneralHelper';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -81,12 +82,12 @@ function ViewBranches(props) {
         <div className='branches-total_costs'>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total KWh</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedResellerBranchesTop.total_kwh?.toFixed(2)
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.total_kwh?.toFixed(2))
 }</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total Cost</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedResellerBranchesTop.total_bill?.toFixed(2)
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.total_bill?.toFixed(2))
 }</p>
           </div>
           {/* <div className='branches-total_costs-card'>
@@ -96,7 +97,7 @@ function ViewBranches(props) {
           </div> */}
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>CO2</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedResellerBranchesTop.co2_total?.toFixed(2)}</p>
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.co2_total?.toFixed(2))}</p>
           </div>
         </div>
         </Spin>
