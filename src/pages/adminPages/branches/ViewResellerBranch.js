@@ -21,6 +21,7 @@ import UpdateUserForm from '../modal/UpdateUserForm';
 import UpdateDeviceForm from '../modal/UpdateDeviceForm';
 import AddTariffForm from '../modal/AddTariffForm';
 import UpadateTariffForm from '../modal/UpadateTariffForm';
+import { numberFormatter } from '../../../helpers/GeneralHelper';
 
 
 
@@ -146,13 +147,13 @@ function ViewResellerBranch(props) {
                         <Row>
                             <Col md={8}>
                                 <div>
-                                    <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedResellerBranch[0]?.total_energy.toFixed(2)}</span></p>
-                                    <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedResellerBranch[0]?.bill.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>Total Energy: <span>{numberFormatter(props.branches?.fetchedResellerBranch[0]?.total_energy.toFixed(2))}</span></p>
+                                    
                                 </div>
                             </Col>
                             <Col md={8}>
                                 <div>
-                                    <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedResellerBranch[0]?.papr.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Cost of Energy: <span> {numberFormatter(props.branches?.fetchedResellerBranch[0]?.bill.toFixed(2))}</span></p>
                                 </div>
                             </Col>
                         </Row>

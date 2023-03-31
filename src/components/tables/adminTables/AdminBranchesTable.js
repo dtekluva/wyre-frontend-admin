@@ -5,6 +5,7 @@ import {
   SearchOutlined, InfoCircleOutlined,
   EditOutlined, DownOutlined
 } from '@ant-design/icons';
+import { numberFormatter } from '../../../helpers/GeneralHelper';
 
 
 export const aElemStyle = { color: 'rgba(0, 0, 0, 0.65)' };
@@ -176,14 +177,6 @@ const AdminBranchesTable = (props) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['descend', 'ascend'],
     },
-    // {
-    //   title: 'Organisation',
-    //   dataIndex: 'organisation',
-    //   key: 'organisation',
-    //   ...getColumnSearchProps('organisation'),
-    //   sorter: (a, b) => a.organisation.localeCompare(b.organisation),
-    //   sortDirections: ['descend', 'ascend'],
-    // },
     {
       title: 'Total Energy [kwh]',
       dataIndex: 'total_energy',
@@ -191,6 +184,9 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('total_energy'),
       sorter: (a, b) => a.total_energy - b.total_energy,
       sortDirections: ['descend', 'ascend'],
+      render: (total_energy, record) => {
+        return numberFormatter(total_energy)
+      }
     },
     {
       title: 'Blended Cost of Energy',
@@ -199,15 +195,10 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('blendedEnergy'),
       sorter: (a, b) => a.blendedEnergy.localeCompare(b.blendedEnergy),
       sortDirections: ['descend', 'ascend'],
+      render: (blendedEnergy, record) => {
+        return numberFormatter(blendedEnergy)
+      }
     },
-    // {
-    //   title: 'Baseline Score',
-    //   dataIndex: 'baseline',
-    //   key: 'baseline',
-    //   ...getColumnSearchProps('baseline'),
-    //   sorter: (a, b) => a.baseline - b.baseline,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
     {
       title: 'Usage Accuracy Diesel',
       dataIndex: 'diesel_accuracy',
@@ -231,6 +222,9 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('energy_cost'),
       sorter: (a, b) => a.energy_cost - b.energy_cost,
       sortDirections: ['descend', 'ascend'],
+      render: (energy_cost, record) => {
+        return numberFormatter(energy_cost)
+      }
     },
     {
       title: 'PAPR',
