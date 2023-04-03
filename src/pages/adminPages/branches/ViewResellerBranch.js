@@ -99,8 +99,8 @@ function ViewResellerBranch(props) {
         // const endDate = moment().format('DD-MM-YYYY HH:MM');
 
         const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
-        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
-        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
 
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 

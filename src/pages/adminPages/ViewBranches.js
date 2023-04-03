@@ -34,8 +34,8 @@ function ViewBranches(props) {
     // const endDate = moment().format('DD-MM-YYYY HH:MM');
 
     const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
-    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
-    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
 
     const client_id = searchParams.get("client_id") || props.auth.userData.client_id;
     setClientId(client_id);
