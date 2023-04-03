@@ -79,11 +79,7 @@ function AdminHeader() {
 
 
     // Go home
-    // navigate('/');
-
     window.location.href = '/';
-    // Refresh page
-    // history.go(0);
   };
 
   // const { image: orgImage } = organization
