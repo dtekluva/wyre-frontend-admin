@@ -12,6 +12,8 @@ function UpadateTariffForm(props) {
     const setModal = props.setModal
     const resellerData = props.resellerData
 
+    const branchId = searchParams.get("branch_id");
+
     useEffect(() => {
         const branchId = searchParams.get("branch_id");
         const clientId = searchParams.get("client_id");
@@ -48,6 +50,7 @@ function UpadateTariffForm(props) {
                 description: request.message,
             });
             form.resetFields();
+            // return props.getAResellerBranchEnergyStats()
             return setModal(false);
         }
         return notification.error({
