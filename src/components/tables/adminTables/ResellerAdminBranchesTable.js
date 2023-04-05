@@ -5,6 +5,7 @@ import {
   SearchOutlined, InfoCircleOutlined,
   EditOutlined, DownOutlined
 } from '@ant-design/icons';
+import { numberFormatter } from '../../../helpers/GeneralHelper';
 
 
 export const aElemStyle = { color: 'rgba(0, 0, 0, 0.65)' };
@@ -176,14 +177,6 @@ const AdminBranchesTable = (props) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['descend', 'ascend'],
     },
-    // {
-    //   title: 'Organisation',
-    //   dataIndex: 'organisation',
-    //   key: 'organisation',
-    //   ...getColumnSearchProps('organisation'),
-    //   sorter: (a, b) => a.organisation.localeCompare(b.organisation),
-    //   sortDirections: ['descend', 'ascend'],
-    // },
     {
       title: 'Total Energy [kwh]',
       dataIndex: 'total_energy',
@@ -191,39 +184,10 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('total_energy'),
       sorter: (a, b) => a.total_energy - b.total_energy,
       sortDirections: ['descend', 'ascend'],
+      render: (total_energy, record) => {
+        return numberFormatter(total_energy)
+      }
     },
-    // {
-    //   title: 'Blended Cost of Energy',
-    //   dataIndex: 'blendedEnergy',
-    //   key: 'blendedEnergy',
-    //   ...getColumnSearchProps('blendedEnergy'),
-    //   sorter: (a, b) => a.blendedEnergy.localeCompare(b.blendedEnergy),
-    //   sortDirections: ['descend', 'ascend'],
-    // },
-    // {
-    //   title: 'Baseline Score',
-    //   dataIndex: 'baseline',
-    //   key: 'baseline',
-    //   ...getColumnSearchProps('baseline'),
-    //   sorter: (a, b) => a.baseline - b.baseline,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
-    // {
-    //   title: 'Usage Accuracy Diesel',
-    //   dataIndex: 'diesel_accuracy',
-    //   key: 'diesel_accuracy',
-    //   ...getColumnSearchProps('diesel_accuracy'),
-    //   sorter: (a, b) => a.diesel_accuracy - b.diesel_accuracy,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
-    // {
-    //   title: 'Usage Accuracy Utility',
-    //   dataIndex: 'utility_accuracy',
-    //   key: 'utility_accuracy',
-    //   ...getColumnSearchProps('utility_accuracy'),
-    //   sorter: (a, b) => a.utility_accuracy - b.utility_accuracy,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
     {
       title: 'Cost Of Energy',
       dataIndex: 'bill',
@@ -231,14 +195,9 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('energy_cost'),
       sorter: (a, b) => a.energy_cost - b.energy_cost,
       sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'PAPR',
-      dataIndex: 'papr',
-      key: 'papr',
-      ...getColumnSearchProps('papr'),
-      sorter: (a, b) => a.papr - b.papr,
-      sortDirections: ['descend', 'ascend'],
+      render: (energy_cost, record) => {
+        return numberFormatter(energy_cost)
+      }
     },
     {
       title: 'Tariff',
@@ -248,22 +207,6 @@ const AdminBranchesTable = (props) => {
       sorter: (a, b) => a.tariff - b.tariff,
       sortDirections: ['descend', 'ascend'],
     },
-    // {
-    //   title: 'Generator Efficiency',
-    //   dataIndex: 'generator_efficiency',
-    //   key: 'generator_efficiency',
-    //   ...getColumnSearchProps('generator_efficiency'),
-    //   sorter: (a, b) => a.generator_efficiency - b.generator_efficiency,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
-    // {
-    //   title: 'Fuel Efficiency',
-    //   dataIndex: 'fuel_efficiency',
-    //   key: 'fuel_efficiency',
-    //   ...getColumnSearchProps('fuel_efficiency'),
-    //   sorter: (a, b) => a.fuel_efficiency - b.fuel_efficiency,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
     optionsColumn()
 
   ];

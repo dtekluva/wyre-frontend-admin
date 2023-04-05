@@ -31,15 +31,9 @@ function Overview(props) {
   useEffect(() => {
     
     const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
-    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
-    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+    const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+    const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
 
-    // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-    // const endDate = moment().format('DD-MM-YYYY HH:MM');
-
-    // if(!props.client?.fetchedClientOverview){
-    //   props.getClientsOverview(startDate, endDate);
-    // }
     if(dateChange !== headers.selectedDate){
       setDateChange(headers.selectedDate);
       props.getClientsOverview(startDate, endDate);

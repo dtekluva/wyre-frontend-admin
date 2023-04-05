@@ -18,26 +18,61 @@ function DownloadPage(props) {
     const [formTwo] = Form.useForm();
     const [pPassword, setPPassword] = useState(null);
     const [deviceName, setDeviceName] = useState(null);
+    const [deviceId, setDeviceId] = useState(null);
+    const [branchName, setBranchName] = useState(false);
 
     const { RangePicker } = DatePicker
 
     const onDeviceSelection = (selected, _) => {
-        setDeviceName(_.children);
+        console.log(selected, _)
+        setDeviceName(selected);
+        setDeviceId(_.key);
+    }
+    const onBranchSelection = (selected, _) => {
+        form.resetFields(['deviceId'])
+        setBranchName(selected);
     }
 
     const { Option } = Select;
+
+
+    const branches = props.auth?.allDevicesfetched && props.auth?.allDevicesfetched?.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+            t.branch_name === value.branch_name
+        ))
+    )
 
     const devicesSelector = (
         <Select
             className='cost-tracker-select h-4-br'
             id='role-state'
             showSearch
+            size='large'
+            style={{width: '300px'}}
+            disabled={!branchName}
             suffixIcon={<CaretDownFilled />}
             onSelect={onDeviceSelection}
         >
-            {props.auth?.allDevicesfetched && props.auth?.allDevicesfetched?.map((device) =>
-                <Option key={device.device_id} className='active-state-option' value={device.device_id}>
+            {branchName && props.auth?.allDevicesfetched?.map((device) => device.branch_name === branchName
+                &&
+                <Option key={device.device_id} className='active-state-option' value={device.name}>
                     {device.name}
+                </Option>
+            )}
+        </Select>
+    )
+    const branchSelector = (
+        <Select
+            className='cost-tracker-select h-4-br'
+            id='role-state'
+            showSearch
+            style={{width: '300px', outline: 'none'}}
+            suffixIcon={<CaretDownFilled />}
+            onSelect={onBranchSelection}
+        >
+            {props.auth?.allDevicesfetched && branches?.map((device) =>
+                <Option key={device.branch_name} className='active-state-option' value={device.branch_name}>
+                    {device.branch_name}
                 </Option>
             )}
         </Select>
@@ -62,7 +97,7 @@ function DownloadPage(props) {
 
     }
     const onSelectFormSubmit = async (values) => {
-        const { dateRange, deviceId } = values;
+        const { dateRange } = values;
         const request = await props.getDownloadDeviceReadings(pPassword, deviceId, dateRange);
 
         if (request.fulfilled) {
@@ -85,7 +120,8 @@ function DownloadPage(props) {
 
     }
 
-    return <div style={{ height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='cost-tracker-forms-content-wrapper'>
+    return <div style={{ height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.allDevicesfetchLoading || props.auth.fetchDeviceReadingsLoading}>
             <h1 className='center-main-heading'>Download CSV File</h1>
             {
@@ -133,6 +169,7 @@ function DownloadPage(props) {
                                 wrapperCol={{ span: 16 }}
                                 autoComplete="off"
                                 className='cost-tracker-form'
+
                                 onFinish={onSelectFormSubmit}
                             >
                                 <div className='add-cclient-form-inputs-wrapper'>
@@ -142,8 +179,22 @@ function DownloadPage(props) {
                                             <Form.Item
                                                 labelCol={{ span: 24 }}
                                                 wrapperCol={{ span: 24 }}
+                                                label="branch"
+                                                name="branchId"
+                                                rules={[{ required: true, message: 'Please select a branch!' }]}
+                                            >
+                                                {branchSelector}
+                                            </Form.Item>
+                                        }
+                                    </div>
+                                    <div className='add-client-input-container-half'>
+                                        {
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                wrapperCol={{ span: 24 }}
                                                 label="Device"
                                                 name="deviceId"
+                                                disabled={!branchName}
                                                 rules={[{ required: true, message: 'Please select a device!' }]}
                                             >
                                                 {devicesSelector}
@@ -160,7 +211,7 @@ function DownloadPage(props) {
                                                 name="dateRange"
                                                 rules={[{ required: true, message: 'Please select a date range!' }]}
                                             >
-                                                <RangePicker disabledDate={(current) => current.isAfter(moment())} size='large' />
+                                                <RangePicker style={{width: '300px'}} disabledDate={(current) => current.isAfter(moment())} size='large' />
                                             </Form.Item>
                                         }
                                     </div>

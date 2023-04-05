@@ -12,7 +12,7 @@ const PickerWithType = ({ type, onChange, defaultData }) =>{
 
 
 const SwitchablePicker = ()=> {
-  const [type, setType] = useState('month');
+  const [type] = useState('month');
   const dispatch = useDispatch();
 
 
@@ -21,14 +21,8 @@ const SwitchablePicker = ()=> {
   let reportDate = params.get('reportDate') || '';
   const defaultDataValue = reportDate ? moment(reportDate) : moment();
 
-  const onTypeChange = (type) => {
-    setType(type);
-    dispatch(changeSearchDateType(type));
-  }
-
   const onDateSelect = (value) => {
-    dispatch(changeSearchDate(value.format('DD-MM-YYYY')))
-    console.log('this is the report value ', value.format('DD-MM-YYYY'))
+    dispatch(changeSearchDate(value.format('DD-MM-YYYY HH:mm')))
   }
 
   return (

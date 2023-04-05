@@ -91,8 +91,8 @@ function ViewBranch(props) {
         // const endDate = moment().format('DD-MM-YYYY HH:MM');
 
         const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
-        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:MM');
-        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:MM');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
 
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 
@@ -151,7 +151,7 @@ function ViewBranch(props) {
                             <Col md={8}>
                                 <div>
                                     <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
-                                    <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr.toFixed(2)}</span></p>
+                                    <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr?.toFixed(2)}</span></p>
                                 </div>
                             </Col>
                         </Row>
