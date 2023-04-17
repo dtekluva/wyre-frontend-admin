@@ -195,8 +195,8 @@ const AdminBranchesTable = (props) => {
       ...getColumnSearchProps('blended_cost'),
       sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
       sortDirections: ['descend', 'ascend'],
-      render: (blendedEnergy, record) => {
-        return numberFormatter(blendedEnergy)
+      render: (blended_cost, record) => {
+        return numberFormatter(blended_cost)
       }
     },
     {

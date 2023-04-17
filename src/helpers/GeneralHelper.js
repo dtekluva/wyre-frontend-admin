@@ -19,7 +19,7 @@ export const downloadFile = (data, downloadName = 'raw_data.csv') => {
 
 // Formats Numbers which are greater than three digits with necessary commas
 export const numberFormatter = (x) => {
-    if (!x) return;
+    if (!x) return 0;
 
     if (typeof (x) == "number") {
         x = x.toFixed(2)
