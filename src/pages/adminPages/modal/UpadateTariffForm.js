@@ -1,32 +1,25 @@
 import React, { useEffect } from 'react';
 import { Form, Input, notification, Spin } from 'antd';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { getAResellerBranch, getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
 import { getATariff, updateATariff } from '../../../redux/actions/tariffs/tariffs.action';
 import { useSearchParams } from 'react-router-dom';
+import moment from 'moment';
+
 
 function UpadateTariffForm(props) {
     const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
     const setModal = props.setModal
     const resellerData = props.resellerData
-
+    const headers = useSelector((state) => state.headers);
+    
     const branchId = searchParams.get("branch_id");
 
     useEffect(() => {
         const branchId = searchParams.get("branch_id");
         const clientId = searchParams.get("client_id");
-
-        if (!props.branches?.fetchedResellerBranch) {
-            props.getAResellerBranch(branchId);
-        }
-
-        if (!props.branches?.fetchedResellerBranchEnergyStats) {
-            // props.getAResellerBranchEnergyStats(clientId);
-            props.getAResellerBranchEnergyStats();
-        }
-
     }, [])
 
     useEffect(() => {
@@ -43,6 +36,11 @@ function UpadateTariffForm(props) {
         }
         
         const request = await props.updateATariff(tariffId, tariffParameters);
+        const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
+
+        const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 
         if (request.fulfilled) {
             notification.info({
@@ -50,7 +48,7 @@ function UpadateTariffForm(props) {
                 description: request.message,
             });
             form.resetFields();
-            // return props.getAResellerBranchEnergyStats()
+            props.getAResellerBranchEnergyStats(branch_id, startDate, endDate)
             return setModal(false);
         }
         return notification.error({
