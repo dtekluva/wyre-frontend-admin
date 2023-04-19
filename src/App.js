@@ -7,23 +7,22 @@ import AdminPages from './pageswitchers/AdminPages';
 import ClientAdminPages from './pageswitchers/ClientAdminPages';
 import ResellerClientAdminPages from './pageswitchers/ResellerClientAdminPages';
 import WyreAdminPages from './pageswitchers/WyreAdminPages'
-import { useEffect, useState } from 'react';
+
 import authHelper from './helpers/authHelper';
 
+
 function App() {
-  const [userData, setUserData]= useState(false)
-  useEffect(() => {
-    const decodedUser = authHelper();
-    setUserData(decodedUser)
-  }, [])
+
+  const decodedUser = authHelper();
+
   return (
     <>
       {
-       (userData && userData.role_text && userData.client_type === "RESELLER") ? <ResellerClientAdminPages />
-      :(userData && userData.role_text === "SUPERADMIN") ? <AdminPages />
-      : (userData && userData.role_text === "CLIENT_ADMIN") ? <ClientAdminPages />
+       (decodedUser && decodedUser.role_text && decodedUser.client_type === "RESELLER") ? <ResellerClientAdminPages />
+      :(decodedUser && decodedUser.role_text === "SUPERADMIN") ? <AdminPages />
+      : (decodedUser && decodedUser.role_text === "CLIENT_ADMIN") ? <ClientAdminPages />
       // : (userData && userData.role_text === "CLIENT_ADMIN") ? <ResellerClientAdminPages />
-      : (userData && userData.role_text === "ADMIN") ? <WyreAdminPages />
+      : (decodedUser && decodedUser.role_text === "ADMIN") ? <WyreAdminPages />
       :
       <AuthPages />      
       }

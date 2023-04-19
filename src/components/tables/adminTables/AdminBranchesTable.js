@@ -190,13 +190,13 @@ const AdminBranchesTable = (props) => {
     },
     {
       title: 'Blended Cost of Energy',
-      dataIndex: 'blendedEnergy',
-      key: 'blendedEnergy',
-      ...getColumnSearchProps('blendedEnergy'),
-      sorter: (a, b) => a.blendedEnergy.localeCompare(b.blendedEnergy),
+      dataIndex: 'blended_cost',
+      key: 'blended_cost',
+      ...getColumnSearchProps('blended_cost'),
+      sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
       sortDirections: ['descend', 'ascend'],
-      render: (blendedEnergy, record) => {
-        return numberFormatter(blendedEnergy)
+      render: (blended_cost, record) => {
+        return numberFormatter(blended_cost)
       }
     },
     {
