@@ -3,10 +3,11 @@ import { Form, Select, Input, notification, Spin } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getAllRoles } from '../../../redux/actions/auth/auth.action';
-import { getClients } from '../../../redux/actions/clients/client.action';
-import { updateUser } from '../../../redux/actions/users/user.action';
+import { getUsersOverview, updateUser } from '../../../redux/actions/users/user.action';
+import { useSearchParams } from 'react-router-dom';
 
 function UpdateUserForm(props) {
+    const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
     // const userData= props.userData;
     const initialValues = {
@@ -18,9 +19,6 @@ function UpdateUserForm(props) {
         if (!props.auth?.fetchedRoles) {
             props.getAllRoles();
         }
-        if (!props.client?.fetchedClient) {
-            props.getClients();
-        }
     }, [])
     // modal form 
     const { Option } = Select;
@@ -28,14 +26,16 @@ function UpdateUserForm(props) {
 
     const onUserFormSubmit = async (values) => {
         const request = await props.updateUser(props.userData.id, values);
+        const branch_id = searchParams.get("branch_id");
 
         if (request.fulfilled) {
             form.resetFields();
             props.setModal(false);
-            return notification.info({
+            notification.info({
                 message: 'successful',
                 description: request.message,
             });
+            return props.getUsersOverview(branch_id)
         }
         return notification.error({
             message: 'failed',
@@ -175,8 +175,8 @@ function UpdateUserForm(props) {
 
 const mapDispatchToProps = {
     getAllRoles,
-    getClients,
     updateUser,
+    getUsersOverview
 }
 const mapStateToProps = (state) => ({
     client: state.client,

@@ -1,10 +1,12 @@
 import { Table, Dropdown, Popconfirm, notification } from 'antd';
 import { DownOutlined, EditOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import { deleteTariff } from '../../../redux/actions/tariffs/tariffs.action';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
 import { Icon } from '@iconify/react';
 import { numberFormatter } from '../../../helpers/GeneralHelper';
+import moment from 'moment';
+import { useSearchParams } from 'react-router-dom';
 
 
 const AdminBranchEnergyStatsViewTable = (props) => {
@@ -15,17 +17,24 @@ const AdminBranchEnergyStatsViewTable = (props) => {
     const setEditTariffModal = props.setEditTariffModal
     const resellerData = props.resellerData
     const setResellerData = props.setResellerData
+    const [searchParams] = useSearchParams()
+    const headers = useSelector((state) => state.headers);
 
     const tariffId = resellerData.tariff_id
 
     const handleDelete = async (tariffId) => {
         const request = await props.deleteTariff(tariffId)
+        const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
+        const branch_id = searchParams.get("branch_id")
 
         if (request.fulfilled) {
             notification.info({
                 message: 'Deleted',
                 description: request.message,
             });
+            return props.getAResellerBranchEnergyStats(branch_id, startDate, endDate)
         }
     };
 
