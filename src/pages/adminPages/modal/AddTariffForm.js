@@ -1,38 +1,18 @@
 import React, { useEffect } from 'react';
 import { Form, notification, Spin, Input } from 'antd';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
-import { getABranch, getAResellerBranch, getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
+import { getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
 import { addATariff } from '../../../redux/actions/tariffs/tariffs.action';
 import { useSearchParams } from 'react-router-dom';
-import { getDevicesOverview } from '../../../redux/actions/devices/device.action';
+import moment from 'moment';
 
 function AddTariffForm(props) {
     const [searchParams] = useSearchParams()
     const [form] = Form.useForm();
-    const deviceData = props.deviceData
     const setModal = props.setModal
     const resellerData = props.resellerData
-
-    useEffect(() => {
-        const branchId = searchParams.get("branch_id");
-        const clientId = searchParams.get("client_id");
-
-        if (!props.devices?.fetchedDeviceOverview) {
-            props.getDevicesOverview(branchId);
-        }
-
-        if (!props.branches?.fetchedResellerBranch) {
-            props.getAResellerBranch(branchId);
-        }
-
-        if (!props.branches?.fetchedResellerBranchEnergyStats) {
-            // props.getAResellerBranchEnergyStats(clientId);
-            props.getAResellerBranchEnergyStats();
-        }
-
-    }, [])
-
+    const headers = useSelector((state) => state.headers);
     const branch_id = searchParams.get("branch_id")
     const client_id = searchParams.get("client_id")
     const deviceId = resellerData.device_id
@@ -46,6 +26,9 @@ function AddTariffForm(props) {
         }
         
         const request = await props.addATariff(tariffParameters);
+        const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
+        const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
+        const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
 
         if (request.fulfilled) {
             notification.info({
@@ -53,6 +36,7 @@ function AddTariffForm(props) {
                 description: request.message,
             });
             form.resetFields();
+            props.getAResellerBranchEnergyStats(branch_id, startDate, endDate)
             return setModal(false);
         }
         return notification.error({
@@ -113,17 +97,12 @@ function AddTariffForm(props) {
 
 const mapDispatchToProps = {
     addATariff,
-    getABranch,
-    getAResellerBranch,
     getAResellerBranchEnergyStats,
-    getDevicesOverview
 }
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    user: state.user,
     branches: state.branches,
     tariffs: state.tariffs,
-    devices: state.devices
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTariffForm);

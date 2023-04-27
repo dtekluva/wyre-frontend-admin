@@ -14,13 +14,6 @@ function UpadateTariffForm(props) {
     const setModal = props.setModal
     const resellerData = props.resellerData
     const headers = useSelector((state) => state.headers);
-    
-    const branchId = searchParams.get("branch_id");
-
-    useEffect(() => {
-        const branchId = searchParams.get("branch_id");
-        const clientId = searchParams.get("client_id");
-    }, [])
 
     useEffect(() => {
         form.setFieldsValue({
@@ -39,7 +32,6 @@ function UpadateTariffForm(props) {
         const defaultDataValue =  moment(headers.selectedDate, 'DD-MM-YYYY');
         const startDate = defaultDataValue.startOf('month').format('DD-MM-YYYY HH:mm');
         const endDate = defaultDataValue.endOf('month').format('DD-MM-YYYY HH:mm');
-
         const branch_id = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
 
         if (request.fulfilled) {

@@ -3,11 +3,13 @@ import { Form, Select, Input, notification, Spin } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getAllRoles, addUsers } from '../../../redux/actions/auth/auth.action';
+import { getUsersOverview } from '../../../redux/actions/users/user.action';
 import { getClients } from '../../../redux/actions/clients/client.action';
-import { updateUser } from '../../../redux/actions/users/user.action';
+import { useSearchParams } from 'react-router-dom';
 
 function AddUserForm(props) {
     const [form] = Form.useForm();
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
         if (!props.auth?.fetchedRoles) {
@@ -27,6 +29,7 @@ function AddUserForm(props) {
             values.client = props.auth.userData.client_id;
         }
         const request = await props.addUsers(values);
+        const branch_id = searchParams.get("branch_id");
         
         if (request.fulfilled) {
             form.resetFields();
@@ -35,6 +38,7 @@ function AddUserForm(props) {
                 message: 'successful',
                 description: request.message,
             });
+            return props.getUsersOverview(branch_id)
         }
         return notification.error({
             message: 'failed',
@@ -224,7 +228,7 @@ const mapDispatchToProps = {
     getAllRoles,
     getClients,
     addUsers,
-    updateUser,
+    getUsersOverview
 }
 const mapStateToProps = (state) => ({
     auth: state.auth,
