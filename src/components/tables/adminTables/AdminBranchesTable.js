@@ -235,14 +235,6 @@ const AdminBranchesTable = (props) => {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Generator Efficiency',
-      dataIndex: 'generator_efficiency',
-      key: 'generator_efficiency',
-      ...getColumnSearchProps('generator_efficiency'),
-      sorter: (a, b) => a.generator_efficiency - b.generator_efficiency,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
       title: 'Fuel Efficiency',
       dataIndex: 'fuel_efficiency',
       key: 'fuel_efficiency',
