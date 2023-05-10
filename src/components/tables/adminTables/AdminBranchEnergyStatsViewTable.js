@@ -19,7 +19,7 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             dataIndex: 'generator_efficiency',
             key: 'generator_efficiency',
             // ...getColumnSearchProps('generator_efficiency'),
-            sorter: (a, b) => a.generator_efficiency - b.generator_efficiency,
+            sorter: (a, b) => a.generator_efficiency.localeCompare(b.generator_efficiency),
             sortDirections: ['descend', 'ascend'],
           },
         {
