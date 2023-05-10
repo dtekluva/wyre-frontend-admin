@@ -40,7 +40,6 @@ function ViewBranch(props) {
     ];
 
     const headers = useSelector((state) => state.headers);
-// const typeOfDevice = props.devices.fetchedDeviceType.map((element) => element.choice_name)
 
     const handleOkDevice = async () => {
         const bodyParams = {
@@ -106,12 +105,9 @@ function ViewBranch(props) {
         }
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
-        // props.getABranchEnergyStats(branch_id, startDate, endDate);
         props.getABranchEnergyStats(branch_id, startDate, endDate);
 
     }, []);
-    // console.log('DeviceType Reducers>>>>>>>>', props.devices.fetchedDeviceType);
-    // console.log('Energy-Stats Reducers>>>>>>>>', props.branches.fetchedBranchEnergyStats);
 
     return (
         <>
@@ -145,7 +141,7 @@ function ViewBranch(props) {
                                     <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
                                     {/* <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p> */}
                                     <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
-                                    <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p>
+                                    {/* <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p> */}
                                 </div>
                             </Col>
                             <Col md={8}>
@@ -163,7 +159,6 @@ function ViewBranch(props) {
                     <div className='text-center'>
                         <h3 className='table-header__heading'>Devices</h3>
                     </div>
-                    {/* <AdminBranchDevicesViewTable listOfBranchesData={adminBranchDevicesViewData} /> */}
                     <AdminBranchDevicesViewTable
                         loading={props.devices?.fetchDeviceOverviewLoading}
                         listOfDevicesData={props.devices?.fetchedDeviceOverview}
