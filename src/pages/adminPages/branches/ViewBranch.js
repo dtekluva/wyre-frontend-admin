@@ -107,7 +107,7 @@ function ViewBranch(props) {
         props.getUsersOverview(branch_id);
         props.getABranchEnergyStats(branch_id, startDate, endDate);
 
-    }, []);
+    }, [headers.selectedDate]);
 
     return (
         <>
