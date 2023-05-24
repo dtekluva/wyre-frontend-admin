@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Buffer } from 'buffer';
 
 import { getDownloadAllDevices, getDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
@@ -7,24 +8,59 @@ import { connect } from 'react-redux';
 import { Spin, Form, Table } from 'antd';
 
 import { Input } from 'antd';
+import { useSearchParams } from 'react-router-dom';
+import moment from 'moment';
 
 
 
 function FillDieselEntry(props) {
     const [form] = Form.useForm();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [formData, setFormData] = useState();
+    const [branchId, setBranchId] = useState();
+    useEffect(() => {
+        const branch = searchParams.get('branch_id');
+        const branch_info = searchParams.get('branch_info');
 
-    const onFormSubmit = () => {
-        console.log('this is the on submit and here we are ===============>>>>.')
+        console.log('this is the  ==========>>>>>>>>>>>', { branch_id: branchId, branch_info })
+        // console.log('this is branch_info  ==========>>>>>>>>>>>', branch_info)
+
+        // Creating the buffer object with utf8 encoding
+        let branchString = Buffer.from(branch, "base64").toString();
+        // let bufferObjj = Buffer.from(branch_info, "base64");
+        const branchInfoString = Buffer.from(branch_info, "base64").toString();
+        //   return JSON.parse(json);
+
+        if (branchString) {
+            setBranchId(branchString)
+        }
+
+        if (branchInfoString) {
+            // let stringTwo = bufferObjj.toString("utf8");
+            // const d = JSON.parse(stringTwo);
+            console.log('this ios the deviation report', (branchInfoString))
+            const yy = branchInfoString.replace(/'/g, '"');
+
+            const data = JSON.parse(yy)
+
+
+
+            const myData = Object.keys(data).map((key) => {
+                // const keyData
+                return { 'date': [key], diesel_consumed: data[key], day: moment([key], 'YYYY-MM-DD').format('dddd') }
+                // console.log('here is the dydydydyd', dd)
+            }).filter((newData) => !newData.diesel_consumed)
+            setFormData(myData);
+            console.log('this ios the dddddddde', myData)
+        }
+    }, [])
+
+
+    const onFormSubmit = (values) => {
+        console.log('this is the on submit and here we are ===============>>>>.', values);
+
+        // submit the form here
     }
-
-    const data = [
-        { day: 'Monday', 'date': '13-05-2023', 'diesel_consumed': 0 },
-        { day: 'Tuesday', 'date': '14-05-2023', 'diesel_consumed': 0 },
-        { day: 'Wednesday', 'date': '15-05-2023', 'diesel_consumed': 0 },
-        { day: 'Thursday', 'date': '16-05-2023', 'diesel_consumed': 0 },
-        { day: 'Friday', 'date': '17-05-2023', 'diesel_consumed': 0 },
-        { day: 'Saturday', 'date': '18-05-2023', 'diesel_consumed': 0 },
-    ]
 
 
     const columns = [
@@ -49,10 +85,10 @@ function FillDieselEntry(props) {
             key: 'diesel_consumed',
             sorter: (a, b) => a.device_id.localeCompare(b.device_id),
             sortDirections: ['descend', 'ascend'],
-            render: (type) => (
-                <p>
+            render: (_, record) => (
+                <Form.Item name={record.date}>
                     <Input type="text" />
-                </p>
+                </Form.Item>
 
             )
         },
@@ -82,13 +118,13 @@ function FillDieselEntry(props) {
                         <Table
                             className='table-striped-rows'
                             columns={columns}
-                            dataSource={data}
+                            dataSource={formData}
                             // loading={loading}
                             rowKey={(record) => record.id}
                             pagination={false}
                             footer={() => ``}
                         />
-                        <div className='' style={{display: 'flex', 'justifyContent': 'center'}}>
+                        <div className='' style={{ display: 'flex', 'justifyContent': 'center' }}>
                             <button className='generic-submit-button-other cost-tracker-form-submit-button'>
                                 Submit
                             </button>
