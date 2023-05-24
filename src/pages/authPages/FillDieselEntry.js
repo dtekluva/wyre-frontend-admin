@@ -5,11 +5,13 @@ import { Buffer } from 'buffer';
 import { getDownloadAllDevices, getDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
 
-import { Spin, Form, Table } from 'antd';
+import { Spin, Form, Table, notification } from 'antd';
 
 import { Input } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import moment from 'moment';
+import { APIServiceNoAuth } from '../../config/api/apiConfig';
+import EnvData from '../../config/EnvData';
 
 
 
@@ -18,6 +20,16 @@ function FillDieselEntry(props) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [formData, setFormData] = useState();
     const [branchId, setBranchId] = useState();
+    const openNotification = ({ title, description }) => {
+        notification.open({
+            message: 'Notification Title',
+            description:
+                'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+            onClick: () => {
+                console.log('Notification Clicked!');
+            },
+        });
+    };
     useEffect(() => {
         const branch = searchParams.get('branch_id');
         const branch_info = searchParams.get('branch_info');
@@ -47,7 +59,7 @@ function FillDieselEntry(props) {
 
             const myData = Object.keys(data).map((key) => {
                 // const keyData
-                return { 'date': [key], diesel_consumed: data[key], day: moment([key], 'YYYY-MM-DD').format('dddd') }
+                return { 'date': key, diesel_consumed: data[key], day: moment([key], 'YYYY-MM-DD').format('dddd') }
                 // console.log('here is the dydydydyd', dd)
             }).filter((newData) => !newData.diesel_consumed)
             setFormData(myData);
@@ -56,10 +68,23 @@ function FillDieselEntry(props) {
     }, [])
 
 
-    const onFormSubmit = (values) => {
+    const onFormSubmit = async (values) => {
         console.log('this is the on submit and here we are ===============>>>>.', values);
 
         // submit the form here
+        try {
+            const submitForm = await APIServiceNoAuth.post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchId}/`, values);
+            // show success notification here
+        } catch (error) {
+            // Notification.
+            // show error notification here
+            notification.error({
+                message: 'Requiest failed',
+                description:
+                    error.response.data.error,
+            });
+        }
+
     }
 
 
@@ -86,7 +111,15 @@ function FillDieselEntry(props) {
             sorter: (a, b) => a.device_id.localeCompare(b.device_id),
             sortDirections: ['descend', 'ascend'],
             render: (_, record) => (
-                <Form.Item name={record.date}>
+                <Form.Item
+                rules={[
+                    {
+                      required: true,
+                      message: "this field is required and must be numbers only",
+                      pattern: new RegExp(/^[0-9]{1,10}$/)
+                    },
+                  ]}
+                name={record.date}>
                     <Input type="text" />
                 </Form.Item>
 
