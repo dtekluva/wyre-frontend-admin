@@ -5,14 +5,15 @@ import { Buffer } from 'buffer';
 import { getDownloadAllDevices, getDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
 
-import { Spin, Form, Table, notification } from 'antd';
+import { Spin, Form, Table, notification, Modal } from 'antd';
 
 import { Input } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import moment from 'moment';
 import { APIServiceNoAuth } from '../../config/api/apiConfig';
 import EnvData from '../../config/EnvData';
-
+import FailedEmail from './FailedEmail';
+import SuccessEmail from './SuccessEmail';
 
 
 function FillDieselEntry(props) {
@@ -20,6 +21,9 @@ function FillDieselEntry(props) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [formData, setFormData] = useState();
     const [branchId, setBranchId] = useState();
+    const [openSucsModal, setOpenSucsModal] = useState(false);
+    const [openFailModal, setOpenFailModal] = useState(false);
+    const [responseMsg, setResponseMsg] = useState();
     const openNotification = ({ title, description }) => {
         notification.open({
             message: 'Notification Title',
@@ -35,7 +39,6 @@ function FillDieselEntry(props) {
         const branch_info = searchParams.get('branch_info');
 
         console.log('this is the  ==========>>>>>>>>>>>', { branch_id: branchId, branch_info })
-        // console.log('this is branch_info  ==========>>>>>>>>>>>', branch_info)
 
         // Creating the buffer object with utf8 encoding
         let branchString = Buffer.from(branch, "base64").toString();
@@ -60,29 +63,30 @@ function FillDieselEntry(props) {
             const myData = Object.keys(data).map((key) => {
                 // const keyData
                 return { 'date': key, diesel_consumed: data[key], day: moment([key], 'YYYY-MM-DD').format('dddd') }
-                // console.log('here is the dydydydyd', dd)
             }).filter((newData) => !newData.diesel_consumed)
             setFormData(myData);
-            console.log('this ios the dddddddde', myData)
         }
     }, [])
 
 
     const onFormSubmit = async (values) => {
-        console.log('this is the on submit and here we are ===============>>>>.', values);
+        const handleSuccessModal = () =>setOpenSucsModal(true)
+        const handleFailModal = () =>setOpenFailModal(true)
 
-        // submit the form here
         try {
             const submitForm = await APIServiceNoAuth.post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchId}/`, values);
-            // show success notification here
+            // setResponseMsg(fulfill.response.data)
+            handleSuccessModal()
         } catch (error) {
-            // Notification.
-            // show error notification here
-            notification.error({
-                message: 'Requiest failed',
+            setResponseMsg(error.response.data.error)
+            handleFailModal()
+           /* notification.error({
+                message: 'Request failed',
                 description:
                     error.response.data.error,
-            });
+            }); */
+            // openNotification()
+            
         }
 
     }
@@ -129,45 +133,88 @@ function FillDieselEntry(props) {
     ];
 
 
-    return <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-        className='cost-tracker-forms-content-wrapper'>
-        <Spin spinning={props.auth.allDevicesfetchLoading || props.auth.fetchDeviceReadingsLoading}>
-            <h1 className='center-main-heading'>Polaris Bank</h1>
-            <p style={{ display: 'flex', justifyContent: 'center' }}>
-                Please fill in the required data below
-            </p>
-            {
-                (<section className='cost-tracker-form-section'>
-                    <Form
-                        form={form}
-                        name="basic"
-                        labelCol={{ span: 8 }}
-                        wrapperCol={{ span: 16 }}
-                        autoComplete="off"
-                        className='cost-tracker-form'
-                        onFinish={onFormSubmit}
-                    >
-
-                        <Table
-                            className='table-striped-rows'
-                            columns={columns}
-                            dataSource={formData}
-                            // loading={loading}
-                            rowKey={(record) => record.id}
-                            pagination={false}
-                            footer={() => ``}
-                        />
-                        <div className='' style={{ display: 'flex', 'justifyContent': 'center' }}>
-                            <button className='generic-submit-button-other cost-tracker-form-submit-button'>
-                                Submit
-                            </button>
-                        </div>
-                    </Form>
-                </section>)
-            }
-
+    return (
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        className="cost-tracker-forms-content-wrapper"
+      >
+        <Spin
+          spinning={
+            props.auth.allDevicesfetchLoading ||
+            props.auth.fetchDeviceReadingsLoading
+          }
+        >
+          <h1 className="center-main-heading">Diesel Register</h1>
+          <h2 className="" style={{ display: "flex", justifyContent: "center" }}>Polaris Bank</h2>
+          <p style={{ display: "flex", justifyContent: "center" }}>
+            Please fill in the required data below
+          </p>
+          {
+            <section className="cost-tracker-form-section">
+              <Form
+                form={form}
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                autoComplete="off"
+                className="cost-tracker-form"
+                onFinish={onFormSubmit}
+              >
+                <Table
+                  className="table-striped-rows row-head"
+                  columns={columns}
+                  dataSource={formData}
+                  // loading={loading}
+                  rowKey={(record) => record.id}
+                  pagination={false}
+                  footer={() => ``}
+                />
+                <div
+                  className=""
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <button className="generic-submit-button-other cost-tracker-form-submit-button color" style={{color: "FFCC4D"}}>
+                    Submit
+                  </button>
+                </div>
+              </Form>
+            </section>
+          }
         </Spin>
-    </div>
+        {/* Success Modal */}
+        <Modal
+          open={openSucsModal}
+          onOk={() => setOpenSucsModal(false)}
+          onCancel={() => setOpenSucsModal(false)}
+          width={400}
+          footer={null}
+        >
+          <SuccessEmail
+            setModal={setOpenSucsModal}
+            responseMsg={responseMsg}
+          />
+        </Modal>
+
+        {/* Failed Modal */}
+        <Modal
+          open={openFailModal}
+          onOk={() => setOpenFailModal(false)}
+          onCancel={() => setOpenFailModal(false)}
+          width={400}
+          footer={null}
+        >
+          <FailedEmail
+            setModal={setOpenFailModal}
+            responseMsg={responseMsg}
+          />
+        </Modal>
+      </div>
+    );
 }
 
 const mapDispatchToProps = {
