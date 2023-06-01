@@ -134,86 +134,100 @@ function FillDieselEntry(props) {
 
 
     return (
-      <div
-        style={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        className="cost-tracker-forms-content-wrapper"
-      >
-        <Spin
-          spinning={
-            props.auth.allDevicesfetchLoading ||
-            props.auth.fetchDeviceReadingsLoading
-          }
-        >
-          <h1 className="center-main-heading">Diesel Register</h1>
-          <h2 className="" style={{ display: "flex", justifyContent: "center" }}>Polaris Bank (Adeola Odeku Branch)</h2>
-          <p style={{ display: "flex", justifyContent: "center"}}>
-            Please fill in the required data below
-          </p>
-          {
-            <section className="cost-tracker-form-section">
-              <Form
-                form={form}
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                autoComplete="off"
-                className="cost-tracker-form"
-                onFinish={onFormSubmit}
+      <>
+        <div className="diesel_container_1">
+          <div className="diesel_container_2">
+            <div
+              style={{
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              className="cost-tracker-forms-content-wrapper"
+            >
+              <Spin
+                spinning={
+                  props.auth.allDevicesfetchLoading ||
+                  props.auth.fetchDeviceReadingsLoading
+                }
               >
-                <Table
-                  className="table-striped-rows row-head"
-                  columns={columns}
-                  dataSource={formData}
-                  // loading={loading}
-                  rowKey={(record) => record.id}
-                  pagination={false}
-                  footer={() => ``}
-                />
-                <div
+                <h1 className="center-main-heading">Diesel Register</h1>
+                <h2
                   className=""
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <button className="generic-submit-button-other cost-tracker-form-submit-button color" style={{color: "FFCC4D"}}>
-                    Submit
-                  </button>
-                </div>
-              </Form>
-            </section>
-          }
-        </Spin>
-        {/* Success Modal */}
-        <Modal
-          open={openSucsModal}
-          onOk={() => setOpenSucsModal(false)}
-          onCancel={() => setOpenSucsModal(false)}
-          width={400}
-          footer={null}
-        >
-          <SuccessEmail
-            setModal={setOpenSucsModal}
-            responseMsg={responseMsg}
-          />
-        </Modal>
+                  Polaris Bank (Adeola Odeku Branch)
+                </h2>
+                <p style={{ display: "flex", justifyContent: "center" }}>
+                  Please fill in the required data below
+                </p>
+                {
+                  <section className="cost-tracker-form-section">
+                    <Form
+                      form={form}
+                      name="basic"
+                      labelCol={{ span: 8 }}
+                      wrapperCol={{ span: 16 }}
+                      autoComplete="off"
+                      className="cost-tracker-form"
+                      onFinish={onFormSubmit}
+                    >
+                      <Table
+                        className="table-striped-rows row-head"
+                        columns={columns}
+                        dataSource={formData}
+                        // loading={loading}
+                        rowKey={(record) => record.id}
+                        pagination={false}
+                        footer={() => ``}
+                      />
+                      <div
+                        className=""
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <button
+                          className="generic-submit-button-other cost-tracker-form-submit-button color"
+                          style={{ color: "FFCC4D" }}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </Form>
+                  </section>
+                }
+              </Spin>
+              {/* Success Modal */}
+              <Modal
+                open={openSucsModal}
+                onOk={() => setOpenSucsModal(false)}
+                onCancel={() => setOpenSucsModal(false)}
+                width={400}
+                footer={null}
+              >
+                <SuccessEmail
+                  setModal={setOpenSucsModal}
+                  responseMsg={responseMsg}
+                />
+              </Modal>
 
-        {/* Failed Modal */}
-        <Modal
-          open={openFailModal}
-          onOk={() => setOpenFailModal(false)}
-          onCancel={() => setOpenFailModal(false)}
-          width={400}
-          footer={null}
-        >
-          <FailedEmail
-            setModal={setOpenFailModal}
-            responseMsg={responseMsg}
-          />
-        </Modal>
-      </div>
+              {/* Failed Modal */}
+              <Modal
+                open={openFailModal}
+                onOk={() => setOpenFailModal(false)}
+                onCancel={() => setOpenFailModal(false)}
+                width={400}
+                footer={null}
+              >
+                <FailedEmail
+                  setModal={setOpenFailModal}
+                  responseMsg={responseMsg}
+                />
+              </Modal>
+            </div>
+          </div>
+        </div>
+      </>
     );
 }
 
