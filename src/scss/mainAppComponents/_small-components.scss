@@ -75,8 +75,12 @@
   background-color: #FFCC4D;
 }
 
-.table-striped-rows.row-head {
+.ant-table-thead .ant-table-cell {
   background-color: #FFF7DA;
+}
+
+th, td {
+  border: 1px solid #DBDBDB;
 }
 
 .generic-submit-button {

@@ -124,7 +124,7 @@ function FillDieselEntry(props) {
                     },
                   ]}
                 name={record.date}>
-                    <Input type="text" />
+                    <Input type="text" style={{ marginTop:'22px', display:'flex', justifyContent:'center'}}/>
                 </Form.Item>
 
             )
@@ -150,8 +150,8 @@ function FillDieselEntry(props) {
           }
         >
           <h1 className="center-main-heading">Diesel Register</h1>
-          <h2 className="" style={{ display: "flex", justifyContent: "center" }}>Polaris Bank</h2>
-          <p style={{ display: "flex", justifyContent: "center" }}>
+          <h2 className="" style={{ display: "flex", justifyContent: "center" }}>Polaris Bank (Adeola Odeku Branch)</h2>
+          <p style={{ display: "flex", justifyContent: "center"}}>
             Please fill in the required data below
           </p>
           {
