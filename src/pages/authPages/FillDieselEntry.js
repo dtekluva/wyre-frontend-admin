@@ -17,29 +17,31 @@ function FillDieselEntry(props) {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState();
-  const [branchId, setBranchId] = useState();
   const [openSucsModal, setOpenSucsModal] = useState(false);
   const [openFailModal, setOpenFailModal] = useState(false);
   const [responseMsg, setResponseMsg] = useState();
   const [loading, setIsLoading] = useState(false);
+  const [branchData, setBranchData] = useState(false);
 
   useEffect(() => {
     const branch = searchParams.get('ef');
-    const branch_info = searchParams.get('ej');
+    const entryData = searchParams.get('ej');
 
     // Creating the buffer object with utf8 encoding
     let branchString = Buffer.from(branch, "base64").toString();
-    const branchInfoString = Buffer.from(branch_info, "base64").toString();
+    const dieselEntryString = Buffer.from(entryData, "base64").toString();
 
     if (branchString) {
-      setBranchId(branchString)
+      const ab = branchString.replace(/'/g, '"');
+      const branchData = JSON.parse(ab);
+      setBranchData(branchData);
     }
 
-    if (branchInfoString) {
-      const yy = branchInfoString.replace(/'/g, '"');
+    if (dieselEntryString) {
+      const yy = dieselEntryString.replace(/'/g, '"');
       const data = JSON.parse(yy)
-
-
+    
+ 
       // format the data to be in the required format
       const myData = Object.keys(data).map((key) => {
         // const keyData
@@ -60,7 +62,7 @@ function FillDieselEntry(props) {
     try {
       setIsLoading(true)
       const submitForm = await APIServiceNoAuth
-        .post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchId}/`, values);
+        .post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchData.branch_id}/`, values);
       setResponseMsg(submitForm.data.message)
       setIsLoading(false)
       handleSuccessModal()
@@ -136,7 +138,7 @@ function FillDieselEntry(props) {
                 className=""
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                Polaris Bank (Adeola Odeku Branch)
+                {branchData.name}
               </h2>
               <p style={{ display: "flex", justifyContent: "center" }}>
                 Please fill in the required data below
