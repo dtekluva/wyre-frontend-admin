@@ -1,4 +1,6 @@
+import EnvData from '../../config/EnvData';
 import './MailAlert.css'
+
 function FailedEmail({responseMsg, setModal}) {
     return (
         <div className="App">
@@ -10,7 +12,7 @@ function FailedEmail({responseMsg, setModal}) {
             <p className='response_message'>{responseMsg}</p>
             <div class="button_section">
                 <button class="button_1" onClick={() => setModal(false)}>Go back</button>
-                <button class="button_2"><a href={"https://dashboard.wyreng.com/dashboard"}>Sign in</a></button>
+                <button class="button_2"><a href={EnvData.REACT_APP_DASHBOARD_LINK}>Sign in</a></button>
             </div>
         </div>
         
