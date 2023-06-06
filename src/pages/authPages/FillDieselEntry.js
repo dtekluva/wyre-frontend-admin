@@ -34,6 +34,7 @@ function FillDieselEntry(props) {
     if (branchString) {
       const ab = branchString.replace(/'/g, '"');
       const branchData = JSON.parse(ab);
+      
       setBranchData(branchData);
     }
 
