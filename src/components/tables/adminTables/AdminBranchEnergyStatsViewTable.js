@@ -1,4 +1,5 @@
-import { Table } from 'antd';
+import { Table, Dropdown } from 'antd';
+import { DownOutlined, EditOutlined } from '@ant-design/icons';
 
 const AdminBranchEnergyStatsViewTable = (props) => {
 
@@ -14,19 +15,20 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             sortDirections: ['descend', 'ascend'],
         },
         {
+            title: 'Generator Efficiency',
+            dataIndex: 'generator_efficiency',
+            key: 'generator_efficiency',
+            // ...getColumnSearchProps('generator_efficiency'),
+            sorter: (a, b) => a.generator_efficiency.localeCompare(b.generator_efficiency),
+            sortDirections: ['descend', 'ascend'],
+          },
+        {
             title: 'Total (kWh)',
             dataIndex: 'total_kwh',
             key: 'total_kwh',
             sorter: (a, b) => a.total_kwh.localeCompare(b.total_kwh),
             sortDirections: ['descend', 'ascend'],
         },
-        // {
-        //     title: 'Blended Cost',
-        //     dataIndex: 'blended_cost',
-        //     key: 'blended_cost',
-        //     sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
-        //     sortDirections: ['descend', 'ascend'],
-        // },
         {
             title: 'Min Energy (kVA)',
             dataIndex: 'min_kva',
@@ -47,7 +49,7 @@ const AdminBranchEnergyStatsViewTable = (props) => {
             key: 'avg_kva',
             sorter: (a, b) => a.avg_kva - b.avg_kva,
             sortDirections: ['descend', 'ascend'],
-        },     
+        },    
     ];
 
     return (

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-// import CompleteDataContext from '../Context';
-// import { useNavigation } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeftOutlined } from "@ant-design/icons";
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import HeaderLink from './HeaderLink';
 import HeaderIcon from '../icons/HeaderIcon';
@@ -15,7 +15,6 @@ import MessageIcon from '../icons/MessageIcon';
 import NotificationIcon from '../icons/NotificationIcon';
 import ChevronDown from '../icons/ChevronDown';
 
-import avatar from '../../images/avatar.png';
 
 import HeaderLinkWithDropdown from '../groups/HeaderLinkWithDropdown';
 import HeaderMobileAvatarWithDropdown from '../groups/HeaderMobileAvatarWithDropdown';
@@ -36,11 +35,13 @@ function AdminHeader() {
   //   organization
   // } = useContext(CompleteDataContext);
 
+  const userData = useSelector((state) => state.auth.userData);
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
 
   const dispatch = useDispatch();
+
 
   // const navigate = useNavigation();
 
@@ -78,11 +79,7 @@ function AdminHeader() {
 
 
     // Go home
-    // navigate('/');
-
     window.location.href = '/';
-    // Refresh page
-    // history.go(0);
   };
 
   // const { image: orgImage } = organization
@@ -108,7 +105,6 @@ function AdminHeader() {
               <LatestLogo className='header-logo-latest-image--auth' />
             </Link>
           </div>
-
           <button
             type='button'
             className='headerMenu-button hamburger-button h-hidden-1296-up'
@@ -224,24 +220,22 @@ function AdminHeader() {
           </ul>
         </nav>
       </HeaderGroup1AndNav>
-
       <div className='all-header-icons h-hidden-1296-down'>
-        <HeaderIcon
+        {/* <HeaderIcon
           count={4}
           iconClassName='message-icon'
           countClassName='header-icon__count'
         >
           <MessageIcon className='header-icon__image' />
-        </HeaderIcon>
+        </HeaderIcon> */}
 
-        <HeaderIcon
+        {/* <HeaderIcon
           count={2}
           iconClassName='notification-icon'
           countClassName='header-icon__count'
         >
           <NotificationIcon className='header-icon__image' />
-        </HeaderIcon>
-
+        </HeaderIcon> */}
         <HeaderDesktopAvatarWithDropdown
           setIsDesktopAvatarMenuOpen={setIsDesktopAvatarMenuOpen}
         >
@@ -250,7 +244,8 @@ function AdminHeader() {
             onClick={toggleDesktopAvatarMenu}
             className='header-avatar'
           >
-            <img src={avatar} alt='' />
+            {/* <img src={avatar} alt='' /> */}
+            <img src={process.env.REACT_APP_API_URL + '/' + userData.client_image} alt='' />
           </button>
 
           <ul

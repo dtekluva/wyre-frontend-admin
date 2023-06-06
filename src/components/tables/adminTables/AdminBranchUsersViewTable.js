@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table, Dropdown, Switch } from 'antd';
 
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
@@ -12,7 +12,6 @@ const AdminBranchUsersViewTable = (props) => {
     const setUserData = props.setUserData;
     const userRoletextData = props.userRoletextData
     const setUserSwitch = props.setUserSwitch;
-    const setUserCheckedStatus = props.setUserCheckedStatus;
 
     const itemData = (record) => {
         return [
@@ -119,19 +118,6 @@ const AdminBranchUsersViewTable = (props) => {
             key: 'email',
             sorter: (a, b) => a.email - b.email,
             sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: 'Branch',
-            dataIndex: 'branch',
-            key: 'branch',
-            sorter: (a, b) => a.branch - b.branch,
-            sortDirections: ['descend', 'ascend'],
-            render: (_, record) => (
-                <p>
-                    {props.branchName}
-                </p>
-
-            )
         },
         {
             title: 'Last Login',

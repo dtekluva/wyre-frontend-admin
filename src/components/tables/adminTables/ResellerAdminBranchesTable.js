@@ -189,35 +189,8 @@ const AdminBranchesTable = (props) => {
       }
     },
     {
-      title: 'Blended Cost of Energy',
-      dataIndex: 'blended_cost',
-      key: 'blended_cost',
-      ...getColumnSearchProps('blended_cost'),
-      sorter: (a, b) => a.blended_cost.localeCompare(b.blended_cost),
-      sortDirections: ['descend', 'ascend'],
-      render: (blended_cost, record) => {
-        return numberFormatter(blended_cost)
-      }
-    },
-    {
-      title: 'Usage Accuracy Diesel',
-      dataIndex: 'diesel_accuracy',
-      key: 'diesel_accuracy',
-      ...getColumnSearchProps('diesel_accuracy'),
-      sorter: (a, b) => a.diesel_accuracy - b.diesel_accuracy,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'Usage Accuracy Utility',
-      dataIndex: 'utility_accuracy',
-      key: 'utility_accuracy',
-      ...getColumnSearchProps('utility_accuracy'),
-      sorter: (a, b) => a.utility_accuracy - b.utility_accuracy,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
       title: 'Cost Of Energy',
-      dataIndex: 'energy_cost',
+      dataIndex: 'bill',
       key: 'energy_cost',
       ...getColumnSearchProps('energy_cost'),
       sorter: (a, b) => a.energy_cost - b.energy_cost,
@@ -227,19 +200,11 @@ const AdminBranchesTable = (props) => {
       }
     },
     {
-      title: 'PAPR',
-      dataIndex: 'papr',
-      key: 'papr',
-      ...getColumnSearchProps('papr'),
-      sorter: (a, b) => a.papr - b.papr,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'Fuel Efficiency',
-      dataIndex: 'fuel_efficiency',
-      key: 'fuel_efficiency',
-      ...getColumnSearchProps('fuel_efficiency'),
-      sorter: (a, b) => a.fuel_efficiency - b.fuel_efficiency,
+      title: 'Tariff',
+      dataIndex: 'tariff',
+      key: 'tariff',
+      ...getColumnSearchProps('tariff'),
+      sorter: (a, b) => a.tariff - b.tariff,
       sortDirections: ['descend', 'ascend'],
     },
     optionsColumn()

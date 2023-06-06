@@ -6,22 +6,26 @@ import BreadCrumb from '../../../components/BreadCrumb';
 import AdminBranchUsersViewTable from '../../../components/tables/adminTables/AdminBranchUsersViewTable';
 import AdminBranchDevicesViewTable from '../../../components/tables/adminTables/AdminBranchDevicesViewTable';
 import AdminBranchEnergyStatsViewTable from '../../../components/tables/adminTables/AdminBranchEnergyStatsViewTable';
+import AdminResellerBranchEnergyStatsViewTable from '../../../components/tables/adminTables/AdminResellerBranchEnergyStatsViewTable';
 
 import { connect, useSelector } from 'react-redux';
 
 import { disableDevice, getDevicesOverview, getDeviceTypes } from '../../../redux/actions/devices/device.action';
 import { disableUser, getUsersOverview, removeUser, updateUser } from '../../../redux/actions/users/user.action';
-import { getABranch, getABranchEnergyStats } from '../../../redux/actions/branches/branches.action';
+import { getABranch, getAResellerBranch, getAResellerBranchEnergyStats } from '../../../redux/actions/branches/branches.action';
 
 import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
 
 import UpdateUserForm from '../modal/UpdateUserForm';
 import UpdateDeviceForm from '../modal/UpdateDeviceForm';
+import AddTariffForm from '../modal/AddTariffForm';
+import UpadateTariffForm from '../modal/UpadateTariffForm';
+import { numberFormatter } from '../../../helpers/GeneralHelper';
 
 
 
-function ViewBranch(props) {
+function ViewResellerBranch(props) {
 
     const [searchParams] = useSearchParams();
     const [visibleUser, setVisibleUser] = useState(false);
@@ -32,6 +36,9 @@ function ViewBranch(props) {
     const [userSwitch, setUserSwitch] = useState(false);
     const [chechedStatus, setCheckedStatus] = useState(null);
     const [dateChange, setDateChange] = useState(false);
+    const [resellerData, setResellerData] = useState({});
+    const [tariffModal, setTariffModal] = useState(false);
+    const [editTariffModal, setEditTariffModal] = useState(false);
 
     const branch_id_ = searchParams.get("branch_id") || props.auth.deviceData.branch_id;
     const breadCrumbRoutes = [
@@ -40,6 +47,7 @@ function ViewBranch(props) {
     ];
 
     const headers = useSelector((state) => state.headers);
+// const typeOfDevice = props.devices.fetchedDeviceType.map((element) => element.choice_name)
 
     const handleOkDevice = async () => {
         const bodyParams = {
@@ -84,6 +92,7 @@ function ViewBranch(props) {
     }
 
     const userRoletextData = props.auth.userData.role_text;
+    const clientType = props.auth.userData.client_type;
 
     useEffect(() => {
         // const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
@@ -97,7 +106,7 @@ function ViewBranch(props) {
 
         if (dateChange !== headers.selectedDate) {
             setDateChange(headers.selectedDate);
-            props.getABranch(branch_id, startDate, endDate);
+            props.getAResellerBranch(branch_id, startDate, endDate);
         }
 
         if (!props.devices.fetchedDeviceType) {
@@ -105,9 +114,9 @@ function ViewBranch(props) {
         }
         props.getDevicesOverview(branch_id);
         props.getUsersOverview(branch_id);
-        props.getABranchEnergyStats(branch_id, startDate, endDate);
+        props.getAResellerBranchEnergyStats(branch_id, startDate, endDate);
 
-    }, [headers.selectedDate]);
+    }, []);
 
     return (
         <>
@@ -123,7 +132,7 @@ function ViewBranch(props) {
                         </button>
                     </div> */}
 
-                    <h3 className='table-header__heading'>{props.branches?.fetchedBranch[0]?.name}</h3>
+                    <h3 className='table-header__heading'>{props.branches?.fetchedResellerBranch[0]?.name}</h3>
 
                     {/* <button
                         type='button'
@@ -133,21 +142,18 @@ function ViewBranch(props) {
                         <span>Download in Excel</span>
                     </button> */}
                 </div>
-                <Spin spinning={props.branches?.fetchBranchLoading}>
+                <Spin spinning={props.branches?.fetchResellerBranchLoading}>
                     <div className="view_branch_top">
                         <Row>
                             <Col md={8}>
                                 <div>
-                                    <p className='view_branch-text'>Total Energy: <span>{props.branches?.fetchedBranch[0]?.total_energy.toFixed(2)}</span></p>
-                                    {/* <p className='view_branch-text'>Baseline Score: <span>{props.branches?.fetchedBranch[0]?.baseline.toFixed(2)}</span></p> */}
-                                    <p className='view_branch-text'>Cost of Energy: <span> {props.branches?.fetchedBranch[0]?.energy_cost.toFixed(2)}</span></p>
-                                    {/* <p className='view_branch-text'>Generator Efficiency: <span> {props.branches?.fetchedBranch[0]?.generator_efficiency.toFixed(2)}</span></p> */}
+                                    <p className='view_branch-text'>Total Energy: <span>{numberFormatter(props.branches?.fetchedResellerBranch[0]?.total_energy.toFixed(2))}</span></p>
+                                    
                                 </div>
                             </Col>
                             <Col md={8}>
                                 <div>
-                                    <p className='view_branch-text'>Fuel Efficiency: <span> {props.branches?.fetchedBranch[0]?.fuel_efficiency.toFixed(2)}</span></p>
-                                    <p className='view_branch-text'>PAPR: <span>{props.branches?.fetchedBranch[0]?.papr?.toFixed(2)}</span></p>
+                                <p className='view_branch-text'>Cost of Energy: <span> {numberFormatter(props.branches?.fetchedResellerBranch[0]?.bill.toFixed(2))}</span></p>
                                 </div>
                             </Col>
                         </Row>
@@ -183,7 +189,7 @@ function ViewBranch(props) {
                         onOk={handleOkDevice}
                         onCancel={() => setDeviceSwitch(false)}
                     >
-                        <h1>Are Sure You Want To {deviceSwitch ? 'Enable' : 'Disable'} this Device?</h1>
+                        <h1>Are You Sure You Want To {deviceSwitch ? 'Enable' : 'Disable'} this Device?</h1>
                         {deviceSwitch}
                     </Modal>
                 </div>
@@ -223,10 +229,40 @@ function ViewBranch(props) {
                         <h3 className='table-header__heading'>Energy Stats</h3>
                     </div>
 
-                    <AdminBranchEnergyStatsViewTable
-                        loading={props.branches?.fetchBranchEnergyStatsLoading}
-                        listOfBranchEnergyStatsViewData={props.branches?.fetchedBranchEnergyStats}
+                    <AdminResellerBranchEnergyStatsViewTable
+                        loading={props.branches?.fetchResellerBranchEnergyStatsLoading}
+                        listOfResellerBranchEnergyStatsViewData={props.branches?.fetchedResellerBranchEnergyStats}
+                        deviceType={props.devices?.fetchedDeviceType}
+                        setTariffModal={setTariffModal}
+                        setEditTariffModal={setEditTariffModal}
+                        setResellerData={setResellerData}
+                        resellerData={resellerData}
+                        setDeviceData={setDeviceData}
+                        userRoletextData={userRoletextData}
                     />
+                    <Modal 
+                      open={tariffModal}
+                      onOk={() => setTariffModal(false)}
+                      onCancel={() => setTariffModal(false)} width={1000} footer={null}
+                    >
+                        <AddTariffForm
+                          setModal={setTariffModal}
+                          deviceData={deviceData} 
+                          resellerData={resellerData}
+                        />
+                    </Modal>
+
+                    <Modal 
+                      open={editTariffModal}
+                      onOk={() => setEditTariffModal(false)}
+                      onCancel={() => setEditTariffModal(false)} width={1000} footer={null}
+                    >
+                        <UpadateTariffForm
+                          setModal={setEditTariffModal}
+                          deviceData={deviceData} 
+                          resellerData={resellerData} 
+                        />
+                    </Modal>
                     
                     
                 </div>
@@ -238,13 +274,13 @@ function ViewBranch(props) {
 
 const mapDispatchToProps = {
     getABranch,
-    getABranchEnergyStats,
+    getAResellerBranch,
+    getAResellerBranchEnergyStats,
     getDevicesOverview,
     getDeviceTypes,
     disableDevice,
     getUsersOverview,
     removeUser,
-    // disableUser,
     updateUser,
 }
 
@@ -255,4 +291,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewBranch)
+export default connect(mapStateToProps, mapDispatchToProps)(ViewResellerBranch)

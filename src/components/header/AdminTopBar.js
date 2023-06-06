@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Link } from 'react-router-dom';
 import { Input, Modal } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import AddDeviceForm from '../../pages/adminPages/modal/AddDeviceForm';
 import AddBranchForm from '../../pages/adminPages/modal/AddBranchForm';
@@ -25,6 +25,7 @@ function AdminTopBar(props) {
   const [isTopBarAdminClientUsersLeftDisplayed, setIsTopBarAdminClientUsersLeftDisplayed] = useState(false);
   const [isTopBarAdminUserBranchRightDisplayed, setIsTopBarAdminUserBranchRightDisplayed] = useState(false);
   const location = useLocation();
+  const backStepNav = useNavigate()
 
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function AdminTopBar(props) {
         <div>
 
           <SwitchablePicker />
+          <button style={{marginLeft:"50px"}} onClick={() => (backStepNav(-1))}><ArrowLeftOutlined /></button>
         </div>
 
         {/* <div

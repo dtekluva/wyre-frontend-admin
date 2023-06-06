@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { getBranches, getBranchesTop } from '../../redux/actions/branches/branches.action';
+import { getBranches, getBranchesTop, getResellerBranchesTop, getResellerViewBranches } from '../../redux/actions/branches/branches.action';
 import moment from 'moment';
 
 
 import BreadCrumb from '../../components/BreadCrumb';
-import AdminBranchesTable from '../../components/tables/adminTables/AdminBranchesTable';
+// import AdminBranchesTable from '../../components/tables/adminTables/AdminBranchesTable';
+import ResellerAdminBranchesTable from '../../components/tables/adminTables/ResellerAdminBranchesTable';
 
 
 import ExcelIcon from '../../components/icons/ExcelIcon';
 import { useSearchParams } from 'react-router-dom';
 import { Modal, Spin } from 'antd';
 import UpdateBranchForm from './modal/UpdateBranchForm';
+import { numberFormatter } from '../../helpers/GeneralHelper';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -42,8 +44,8 @@ function ViewBranches(props) {
 
     if(dateChange !== headers.selectedDate){
       setDateChange(headers.selectedDate);
-      props.getBranches(client_id, startDate, endDate);
-      props.getBranchesTop(client_id, startDate, endDate)
+      props.getResellerViewBranches(client_id, startDate, endDate);
+      props.getResellerBranchesTop(client_id, startDate, endDate)
     }
 
 
@@ -76,16 +78,16 @@ function ViewBranches(props) {
             <span>Download in Excel</span>
           </button> */}
         </div>
-        <Spin spinning={props.branches?.fetchViewBranchesTopLoading} >
+        <Spin spinning={props.branches?.fetchResellerBranchesTopLoading} >
         <div className='branches-total_costs'>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total KWh</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_kwh?.toFixed(2)
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.total_kwh?.toFixed(2))
 }</p>
           </div>
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>Total Cost</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.total_cost?.toFixed(2)
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.total_bill?.toFixed(2))
 }</p>
           </div>
           {/* <div className='branches-total_costs-card'>
@@ -95,15 +97,15 @@ function ViewBranches(props) {
           </div> */}
           <div className='branches-total_costs-card'>
             <p className='branches-total_costs-title'>CO2</p>
-            <p className='branches-total_costs-text'>{props.branches?.fetchedViewBranchesTop.co2_total?.toFixed(2)}</p>
+            <p className='branches-total_costs-text'>{numberFormatter(props.branches?.fetchedResellerBranchesTop.co2_total?.toFixed(2))}</p>
           </div>
         </div>
         </Spin>
  
         <div className='h-overflow-auto'>
-          <AdminBranchesTable loading={props.branches.fetchViewBranchesLoading}
+          <ResellerAdminBranchesTable loading={props.branches.fetchResellerBranchesLoading}
              clientId={clientId}
-             listOfBranchesData={props.branches?.fetchedViewBranches}
+             listOfBranchesData={props.branches?.fetchedResellerBranches}
              setVisibleBranch={setVisibleBranch}
              setBranchData= {setBranchData}
           />
@@ -127,7 +129,9 @@ function ViewBranches(props) {
 
 const mapDispatchToProps = {
   getBranches,
-  getBranchesTop
+  getResellerViewBranches,
+  getBranchesTop,
+  getResellerBranchesTop
 }
 
 const mapStateToProps = (state) => ({

@@ -43,8 +43,8 @@ function UpdateBranchForm(props) {
         description: request.message,
       });
 
-      const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:MM');
-      const endDate = moment().format('DD-MM-YYYY HH:MM');
+      const startDate = moment().startOf('month').startOf('day').format('DD-MM-YYYY HH:mm');
+      const endDate = moment().format('DD-MM-YYYY HH:mm');
       return props.getBranches(client_id, startDate, endDate);
     }
     return notification.error({

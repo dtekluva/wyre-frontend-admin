@@ -106,7 +106,7 @@ const AdminBranchDevicesViewTable = (props) => {
             sortDirections: ['descend', 'ascend'],
             render: (type) => (
               <p>
-                  {props.deviceType.find((listOfDevice) => {
+                  {props.deviceType && props.deviceType?.find((listOfDevice) => {
                     return listOfDevice.id === type
                   }).choice_name} 
               </p>
