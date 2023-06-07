@@ -1,5 +1,7 @@
+import EnvData from '../../config/EnvData';
 import './MailAlert.css'
-function FailedEmail({responseMsg}) {
+
+function FailedEmail({responseMsg, setModal}) {
     return (
         <div className="App">
             <div class="container">
@@ -9,8 +11,8 @@ function FailedEmail({responseMsg}) {
             <h1>Failed Entry!</h1>
             <p className='response_message'>{responseMsg}</p>
             <div class="button_section">
-                <button class="button_1">Go back</button>
-                <button class="button_2">Sign in</button>
+                <button class="button_1" onClick={() => setModal(false)}>Go back</button>
+                <button class="button_2"><a href={EnvData.REACT_APP_DASHBOARD_LINK}>Sign in</a></button>
             </div>
         </div>
         

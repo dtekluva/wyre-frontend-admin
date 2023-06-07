@@ -87,3 +87,8 @@ p {
     text-align: center;
     line-height: 18px;
 }
+
+.button_2 a {
+    background-color: #5C3592;
+    color: white;
+}
