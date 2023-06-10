@@ -34,6 +34,7 @@ function FillDieselEntry(props) {
     if (branchString) {
       const ab = branchString.replace(/'/g, '"');
       const branchData = JSON.parse(ab);
+
       setBranchData(branchData);
     }
 
@@ -62,9 +63,10 @@ function FillDieselEntry(props) {
     try {
       setIsLoading(true)
       const submitForm = await APIServiceNoAuth
-        .post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchData.branch_id}/`, values);
+        .post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchData.id}/`, values);
       setResponseMsg(submitForm.data.message)
       setIsLoading(false)
+      
       handleSuccessModal()
     } catch (error) {
       setResponseMsg(error.response.data.error)
