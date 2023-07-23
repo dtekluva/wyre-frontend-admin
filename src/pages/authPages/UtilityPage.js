@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
 import React, { useEffect, useState } from 'react';
-// import { Spin, Form, notification, Select, DatePicker } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { Buffer } from 'buffer';
 
@@ -32,26 +31,23 @@ function UtilityPage(props) {
   const [responseMsg, setResponseMsg] = useState();
   const [loading, setIsLoading] = useState(false);
   const [branchIdInfo, setBranchIdInfo] = useState(false);
-  const [handledi, setHandleDi] = useState();
-  const [handledj, setHandleDj] = useState();
-  const [handleExpiration, setHandleExpiration] = useState();
+  const [handledi, setHandleDi] = useState(null);
+  const [handledj, setHandleDj] = useState(null);
+  const [handleExpiration, setHandleExpiration] = useState(null);
 
   useEffect(() => {
     const branch = searchParams.get('dj');
     const formEntry = searchParams.get('di');
+    if (!branch || !formEntry) {
+      return setOpenNoUrlModal(true)
+     }
+    setHandleDj(branch)
+    setHandleDi(formEntry)
     const fetchExpiration = jwtDecode(formEntry);
     const currentTime = (Date.now() - 30000) / 1000
 
-    const handleExp = fetchExpiration?.exp > currentTime
-    console.log("checking for exp", handleExp);
+    const handleExp = fetchExpiration?.exp < currentTime
     setHandleExpiration(handleExp)
-
-    if (!branch || !formEntry) {
-     return setOpenNoUrlModal(true)
-    }
-    
-    setHandleDj(branch)
-    setHandleDi(formEntry)
 
     let branchString = Buffer.from(branch, "base64").toString();
     let branchIdInfo
@@ -171,20 +167,22 @@ function UtilityPage(props) {
 
   return (
     <> 
+      <>
+        {(!handledj || !handledi || handleExpiration) && (
+          <Modal
+            open={openNoUrlModal}
+            onOk={() => setOpenNoUrlModal(false)}
+            onCancel={() => setOpenNoUrlModal(false)}
+            width={400}
+            footer={null}
+          >
+            <NoUrlEmail setModal={setOpenNoUrlModal} />
+          </Modal>
+        )}
+      </>
       { 
         utilityType === 'prepaid' ? (
           <>
-      {!handledj || !handledi ? (
-        <Modal
-          open={openNoUrlModal}
-          onOk={() => setOpenNoUrlModal(false)}
-          onCancel={() => setOpenNoUrlModal(false)}
-          width={400}
-          footer={null}
-        >
-          <NoUrlEmail setModal={setOpenNoUrlModal} />
-        </Modal>
-      ) : (
         <div className="diesel_container_1">
           <div className="diesel_container_2">
             <div
@@ -206,7 +204,7 @@ function UtilityPage(props) {
                 >
                   {branchIdInfo.name}
                 </h2>
-                <p style={{ display: "flex", justifyContent: "center" }}>
+                <p style={{ fontFamily:"montssera", display: "flex", justifyContent: "center" }}>
                   Please Input Your Pre Paid Utility Bills
                 </p>
                 <section className="cost-tracker-form-section">
@@ -310,22 +308,10 @@ function UtilityPage(props) {
             </div>
           </div>
         </div>
-      )}
           </>
         ) :
         utilityType === 'postPaid' ? (
           <>
-      {!handledj || !handledi ? (
-        <Modal
-          open={openNoUrlModal}
-          onOk={() => setOpenNoUrlModal(false)}
-          onCancel={() => setOpenNoUrlModal(false)}
-          width={400}
-          footer={null}
-        >
-          <NoUrlEmail setModal={setOpenNoUrlModal} />
-        </Modal>
-      ) : (
         <div className="diesel_container_1">
           <div className="diesel_container_2">
             <div
@@ -347,7 +333,7 @@ function UtilityPage(props) {
                 >
                   {branchIdInfo.name}
                 </h2>
-                <p style={{ display: "flex", justifyContent: "center" }}>
+                <p style={{fontFamily:"montssera", display: "flex", justifyContent: "center" }}>
                   Please Input Your Monthly Post Paid Utility Bills
                 </p>
                 <section className="cost-tracker-form-section">
@@ -384,7 +370,7 @@ function UtilityPage(props) {
                     { required: true, message: "Please enter the date period" },
                   ]}
                 >
-                  <RangePicker
+                  <DatePicker picker='month'
                     className="signup-login-contact-input outlined-input"
                     size="large"
                   />
@@ -451,7 +437,6 @@ function UtilityPage(props) {
             </div>
           </div>
         </div>
-      )}
           </>
         ) : (        
           <div

@@ -13,6 +13,7 @@ import FailedEmail from './FailedEmail';
 import SuccessEmail from './SuccessEmail';
 import FilledEmail from './FilledEmail';
 import NoUrlEmail from './NoUrlEmail';
+import jwtDecode from 'jwt-decode';
 
 
 function FillDieselEntry(props) {
@@ -28,12 +29,21 @@ function FillDieselEntry(props) {
   const [checkMailStatus, setCheckMailStatus] = useState();
   const [loading, setIsLoading] = useState(false);
   const [branchIdInfo, setBranchIdInfo] = useState(false);
-  const [handleEj, setHandleEj] = useState();
-  const [handleEf, setHandleEf] = useState();
+  const [handleEj, setHandleEj] = useState(null);
+  const [handleEf, setHandleEf] = useState(null);
+  const [handleExpiration, setHandleExpiration] = useState(null);
+
+  // const tokData = searchParams.get('tk');
 
   useEffect(() => {
     const branch = searchParams.get('ef');
     const entryData = searchParams.get('ej');
+    const tokData = searchParams.get('tk');
+    const fetchExpiration = jwtDecode(tokData);
+    const currentTime = (Date.now() - 30000) / 1000
+
+    const handleExp = fetchExpiration?.exp < currentTime
+    setHandleExpiration(handleExp)
 
     if (!branch || !entryData) {
      return setOpenNoUrlModal(true)
@@ -63,12 +73,22 @@ function FillDieselEntry(props) {
       const branchDateData = Object.keys(data).map((key) => {
         return key 
       })
+
       onCheckingReport(branchIdInfo, branchDateData)     
+    }
+
+    if (handleExpiration) { 
+      return setOpenNoUrlModal(false)
+    } else {
+      setOpenNoUrlModal(true)
     }
   }, [])
 
+  const tokData = searchParams.get('tk');
+
   const onCheckingReport = async (branchIdInfo, bodyData) => {
     const params = {
+      token: tokData,
       ej : bodyData
     }
         try {
@@ -105,6 +125,7 @@ function FillDieselEntry(props) {
       setIsLoading(true)
       const submitForm = await APIServiceNoAuth
         .post(`${EnvData.REACT_APP_API_BASE_URL}/api/v1/post_weekly_diesel_usage/${branchIdInfo.id}/`, values);
+      form.resetFields();
       setResponseMsg(submitForm.data.message)
       setIsLoading(false)
       
@@ -159,6 +180,19 @@ function FillDieselEntry(props) {
 
   return (
     <>
+      <>
+        {handleExpiration && (
+          <Modal
+            open={openNoUrlModal}
+            onOk={() => setOpenNoUrlModal(false)}
+            onCancel={() => setOpenNoUrlModal(false)}
+            width={400}
+            footer={null}
+          >
+            <NoUrlEmail setModal={setOpenNoUrlModal} />
+          </Modal>
+        )}
+      </>
       {!handleEf || !handleEj ? (
         <Modal
           open={openNoUrlModal}
