@@ -107,7 +107,10 @@ function FillDieselEntry(props) {
             }).filter((newData) => !newData.diesel_consumed)
             setFormData(myData);
             
-            setCheckMailStatus(testChecking.data.status)
+            if (testChecking.data.status === false) {
+               setOpenCompletedEntryModal(true)
+              setCheckMailStatus(testChecking.data.status)
+            }
             setCheckResponseMsg(testChecking.data.message)
           }
         } catch (error) {

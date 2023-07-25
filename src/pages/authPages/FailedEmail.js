@@ -5,7 +5,7 @@ function FailedEmail({responseMsg, setModal}) {
     return (
         <div className="App">
             <div class="container">
-        <div class="wyre_logo"> <img src="/images/Group 1@2x.png" alt="" srcset="" /></div>
+        <div class="wyre_logo"> <img src="/images/Group 1.png" alt="" srcset="" /></div>
         <div class="emoji"><img src="/images/emoji _worried face_.png" alt="" srcset="" /></div>
         <div class="text">
             <h1>Failed Entry!</h1>

@@ -225,7 +225,7 @@ function UtilityPage(props) {
                           ]}
                         >
                           <Input
-                            className="signup-login-contact-input outlined-input"
+                            className="ant-select-selector"
                             size="large"
                           />
                         </Form.Item>
@@ -238,7 +238,7 @@ function UtilityPage(props) {
                           ]}
                         >
                           <DatePicker
-                            className="signup-login-contact-input outlined-input"
+                            className="ant-select-selector"
                             size="large"
                           />
                         </Form.Item>
@@ -255,7 +255,7 @@ function UtilityPage(props) {
                           ]}
                         >
                           <Input
-                            className="signup-login-contact-input outlined-input"
+                            className="ant-select-selector"
                             size="large"
                           />
                         </Form.Item>
@@ -354,20 +354,20 @@ function UtilityPage(props) {
                             ]}
                           >
                             <Input
-                              className="signup-login-contact-input outlined-input"
+                              className="ant-select-selector"
                               size="large"
                             />
                           </Form.Item>
 
                           <Form.Item
                             name="date"
-                            label="Period Covered"
+                            label="Month"
                             rules={[
-                              { required: true, message: "Please enter the date period" },
+                              { required: true, message: "Please select a month" },
                             ]}
                           >
                             <DatePicker picker='month'
-                              className="signup-login-contact-input outlined-input"
+                              className="ant-select-selector"
                               size="large"
                             />
                           </Form.Item>
@@ -384,7 +384,7 @@ function UtilityPage(props) {
                             ]}
                           >
                             <Input
-                              className="signup-login-contact-input outlined-input"
+                              className="ant-select-selector"
                               size="large"
                             />
                           </Form.Item>
