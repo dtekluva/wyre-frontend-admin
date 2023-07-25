@@ -183,25 +183,25 @@ function FillDieselEntry(props) {
 
   return (
     <>
-      <>
+      {/* <>
         {handleExpiration && (
           <Modal
             open={openNoUrlModal}
             onOk={() => setOpenNoUrlModal(false)}
             onCancel={() => setOpenNoUrlModal(false)}
-            width={400}
+            width={450}
             footer={null}
           >
             <NoUrlEmail setModal={setOpenNoUrlModal} />
           </Modal>
         )}
-      </>
-      {!handleEf || !handleEj ? (
+      </> */}
+      {!handleEf || !handleEj || handleExpiration ? (
         <Modal
           open={openNoUrlModal}
           onOk={() => setOpenNoUrlModal(false)}
           onCancel={() => setOpenNoUrlModal(false)}
-          width={400}
+          width={450}
           footer={null}
         >
           <NoUrlEmail setModal={setOpenNoUrlModal} />
@@ -212,7 +212,7 @@ function FillDieselEntry(props) {
             open={openCompletedEntryModal}
             onOk={() => setOpenCompletedEntryModal(false)}
             onCancel={() => setOpenCompletedEntryModal(false)}
-            width={400}
+            width={450}
             footer={null}
           >
             <FilledEmail
@@ -284,7 +284,7 @@ function FillDieselEntry(props) {
                 open={openSucsModal}
                 onOk={() => setOpenSucsModal(false)}
                 onCancel={() => setOpenSucsModal(false)}
-                width={400}
+                width={450}
                 footer={null}
               >
                 <SuccessEmail
@@ -298,7 +298,7 @@ function FillDieselEntry(props) {
                 open={openFailModal}
                 onOk={() => setOpenFailModal(false)}
                 onCancel={() => setOpenFailModal(false)}
-                width={400}
+                width={450}
                 footer={null}
               >
                 <FailedEmail

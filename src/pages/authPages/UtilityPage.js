@@ -169,7 +169,7 @@ function UtilityPage(props) {
             open={openNoUrlModal}
             onOk={() => setOpenNoUrlModal(false)}
             onCancel={() => setOpenNoUrlModal(false)}
-            width={400}
+            width={450}
             footer={null}
           >
             <NoUrlEmail setModal={setOpenNoUrlModal} />
@@ -279,7 +279,7 @@ function UtilityPage(props) {
                     open={openSucsModal}
                     onOk={() => setOpenSucsModal(false)}
                     onCancel={() => setOpenSucsModal(false)}
-                    width={400}
+                    width={450}
                     footer={null}
                   >
                     <SuccessEmail
@@ -293,7 +293,7 @@ function UtilityPage(props) {
                     open={openFailModal}
                     onOk={() => setOpenFailModal(false)}
                     onCancel={() => setOpenFailModal(false)}
-                    width={400}
+                    width={450}
                     footer={null}
                   >
                     <FailedEmail
@@ -408,7 +408,7 @@ function UtilityPage(props) {
                       open={openSucsModal}
                       onOk={() => setOpenSucsModal(false)}
                       onCancel={() => setOpenSucsModal(false)}
-                      width={400}
+                      width={450}
                       footer={null}
                     >
                       <SuccessEmail
@@ -422,7 +422,7 @@ function UtilityPage(props) {
                       open={openFailModal}
                       onOk={() => setOpenFailModal(false)}
                       onCancel={() => setOpenFailModal(false)}
-                      width={400}
+                      width={450}
                       footer={null}
                     >
                       <FailedEmail

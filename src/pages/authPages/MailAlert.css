@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-    margin-top: 120px;
+    margin-top: 183px;
     box-sizing: border-box;
     position: absolute;
     width: 499px;
@@ -48,18 +48,19 @@ p.response_message {
 }
 
  h1 {
-    padding-top: 12px;
+    /* padding-top: 12px; */
      color: #5C3592;
      font-weight: 600;
      font-size: 28px;
      line-height: 34px;
      text-align: center;
      font-family: 'Montserrat';
+     margin-top: 20px;
  }
 
 p {
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding-bottom: 20px;
     padding-top: 0px;
     font-size: 17px;
