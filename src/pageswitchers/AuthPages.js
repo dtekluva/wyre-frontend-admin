@@ -17,6 +17,7 @@ import Error from '../pages/authPages/Error';
 import Footer from '../components/footer/Footer';
 import AuthHeader from '../components/header/AuthHeader';
 import FillDieselEntry from '../pages/authPages/FillDieselEntry';
+import UtilityPage from '../pages/authPages/UtilityPage';
 // import Footer from '../components/Footer';
 
 function AuthPages() {
@@ -33,6 +34,7 @@ function AuthPages() {
             <Route path='/reset-password' element={<ResetPassword />} />
             <Route path='/download-csv' element={<DownloadPage />} />
             <Route path='/diesel-entry' element={<FillDieselEntry />} />
+            <Route path='/utility' element={<UtilityPage />} />
             {/* <Route path='/about' component={About} />
             <Route path='/features' component={Features} />
             <Route path='/log-in' component={Login} />
