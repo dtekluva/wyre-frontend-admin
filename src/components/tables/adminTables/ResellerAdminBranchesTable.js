@@ -189,6 +189,17 @@ const AdminBranchesTable = (props) => {
       }
     },
     {
+      title: 'Meter Reading',
+      dataIndex: 'meter_reading',
+      key: 'meter_reading',
+      ...getColumnSearchProps('meter_reading'),
+      sorter: (a, b) => a.meter_reading - b.meter_reading,
+      sortDirections: ['descend', 'ascend'],
+      render: (meter_reading, record) => {
+        return numberFormatter(meter_reading)
+      }
+    },
+    {
       title: 'Cost Of Energy',
       dataIndex: 'bill',
       key: 'energy_cost',
