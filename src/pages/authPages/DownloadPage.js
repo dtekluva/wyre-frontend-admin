@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 
-import { getDownloadAllDevices, getDownloadDeviceReadings, getAggregateDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
+import { getDownloadAllDevices, getDownloadDeviceReadings } from '../../redux/actions/auth/auth.action';
 import { connect } from 'react-redux';
 
 import { Spin, Form, notification, Select, DatePicker } from 'antd';
@@ -319,7 +319,6 @@ function DownloadPage(props) {
 const mapDispatchToProps = {
     getDownloadAllDevices,
     getDownloadDeviceReadings,
-    getAggregateDownloadDeviceReadings
 };
 
 const mapStateToProps = (state) => ({

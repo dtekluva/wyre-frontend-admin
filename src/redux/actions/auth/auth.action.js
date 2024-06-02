@@ -90,7 +90,6 @@ export const getAggregateDownloadDeviceReadings = (password, deviceId, userDateR
   try {
     const response = await APIService.get(requestUrl);
 
-    console.log(response, '=============>>>>> response here')
     dispatch(getDeviceReadingsLoading(false))
     return { fulfilled: true, message: 'successful', data: response.data }
   } catch (error) {
