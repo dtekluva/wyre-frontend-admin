@@ -10,6 +10,7 @@ import { Input } from 'antd';
 import { downloadFile } from '../../helpers/GeneralHelper';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import EnvData from '../../config/EnvData';
 
 const { convertArrayToCSV } = require('convert-array-to-csv');
 
@@ -132,7 +133,7 @@ function DownloadPage(props) {
                 message: 'successful',
                 description: 'successful',
             });
-            return window.location.href = downloadUrl;
+            return window.location.href = `${EnvData.REACT_APP_API_URL}${downloadUrl}`;
 
     }
 
