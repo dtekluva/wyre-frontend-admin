@@ -137,183 +137,237 @@ function DownloadPage(props) {
 
     }
 
-    return <div style={{ height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-        className='cost-tracker-forms-content-wrapper'>
-        <Spin spinning={props.auth.allDevicesfetchLoading || props.auth.fetchDeviceReadingsLoading}>
-            <h1 className='center-main-heading'>Download CSV File</h1>
-            {
-                !props.auth.allDevicesfetched ? (<section className='cost-tracker-form-section'>
-                    <Form
-                        form={form}
-                        name="basic"
-                        labelCol={{ span: 8 }}
-                        wrapperCol={{ span: 16 }}
-                        autoComplete="off"
-                        className='cost-tracker-form'
-                        onFinish={onPasswordFormSubmit}
+    return (
+      <div
+        style={{
+        //   height: "500px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        className="cost-tracker-forms-content-wrapper"
+      >
+        <Spin
+          spinning={
+            props.auth.allDevicesfetchLoading ||
+            props.auth.fetchDeviceReadingsLoading
+          }
+        >
+          <h1 className="center-main-heading">Download CSV File</h1>
+          {!props.auth.allDevicesfetched ? (
+            <section className="cost-tracker-form-section">
+              <Form
+                form={form}
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                autoComplete="off"
+                className="cost-tracker-form"
+                onFinish={onPasswordFormSubmit}
+              >
+                <div className="add-cclient-form-inputs-wrapper">
+                  <div className="add-client-input-container-half">
+                    <Form.Item
+                      name="password"
+                      label="Password"
+                      labelCol={{ span: 24 }}
+                      validateTrigger={["onChange", "onBlur"]}
+                      rules={[
+                        { required: true, message: "Please enter password" },
+                        {
+                          max: 60,
+                          message: "username cannot be more than 60 characters",
+                        },
+                      ]}
                     >
+                      <Input.Password
+                        size="large"
+                        className=" outlined-input_second"
+                        type="password"
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className="add_user_form_btn_align">
+                  <button className="generic-submit-button cost-tracker-form-submit-button">
+                    Submit
+                  </button>
+                </div>
+              </Form>
+            </section>
+          ) : (
+            <>
+              <section className="cost-tracker-form-section">
+                <h2>Download Device Readings</h2>
+                <Form
+                  form={formTwo}
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  autoComplete="off"
+                  className="cost-tracker-form"
+                  onFinish={onSelectFormSubmit}
+                >
+                  <div className="add-cclient-form-inputs-wrapper">
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="branch"
+                          name="branchId"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a branch!",
+                            },
+                          ]}
+                        >
+                          {branchSelector}
+                        </Form.Item>
+                      }
+                    </div>
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="Device"
+                          name="deviceId"
+                          disabled={!branchName}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a device!",
+                            },
+                          ]}
+                        >
+                          {devicesSelector}
+                        </Form.Item>
+                      }
+                    </div>
 
-                        <div className='add-cclient-form-inputs-wrapper'>
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="Pick a Date"
+                          name="dateRange"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a date range!",
+                            },
+                          ]}
+                        >
+                          <RangePicker
+                            style={{ width: "300px" }}
+                            disabledDate={(current) =>
+                              current.isAfter(moment())
+                            }
+                            size="large"
+                          />
+                        </Form.Item>
+                      }
+                    </div>
+                  </div>
 
-                            <div className='add-client-input-container-half'>
-                                <Form.Item
-                                    name='password'
-                                    label='Password'
-                                    labelCol={{ span: 24 }}
-                                    validateTrigger={['onChange', 'onBlur']}
-                                    rules={[
-                                        { required: true, message: 'Please enter password' },
-                                        { max: 60, message: 'username cannot be more than 60 characters' }
-                                    ]}
-                                >
-                                    <Input.Password size='large' className=' outlined-input_second' type='password' />
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='add_user_form_btn_align'>
-                            <button className='generic-submit-button cost-tracker-form-submit-button'>
-                                Submit
-                            </button>
-                        </div>
-                    </Form>
-                </section>) :
-                    (
-                        <>
-                                                <section className='cost-tracker-form-section'>
-                            <Form
-                                form={formTwo}
-                                name="basic"
-                                labelCol={{ span: 8 }}
-                                wrapperCol={{ span: 16 }}
-                                autoComplete="off"
-                                className='cost-tracker-form'
+                  <div className="add_user_form_btn_align">
+                    <button className="generic-submit-button cost-tracker-form-submit-button">
+                      Download
+                    </button>
+                  </div>
+                </Form>
+              </section>
+              <section className="cost-tracker-form-section">
+                <h2>Download Aggregated Device Readings</h2>
+                <Form
+                  form={formThree}
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  autoComplete="off"
+                  className="cost-tracker-form"
+                  onFinish={onSelectAggregateFormSubmit}
+                >
+                  <div className="add-cclient-form-inputs-wrapper">
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="branch"
+                          name="branchId"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a branch!",
+                            },
+                          ]}
+                        >
+                          {branchSelector}
+                        </Form.Item>
+                      }
+                    </div>
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="Device"
+                          name="deviceId"
+                          disabled={!branchName}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a device!",
+                            },
+                          ]}
+                        >
+                          {devicesSelector}
+                        </Form.Item>
+                      }
+                    </div>
 
-                                onFinish={onSelectFormSubmit}
-                            >
-                                <div className='add-cclient-form-inputs-wrapper'>
+                    <div className="add-client-input-container-half">
+                      {
+                        <Form.Item
+                          labelCol={{ span: 24 }}
+                          wrapperCol={{ span: 24 }}
+                          label="Pick a Date"
+                          name="dateRange"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a date range!",
+                            },
+                          ]}
+                        >
+                          <RangePicker
+                            style={{ width: "300px" }}
+                            disabledDate={(current) =>
+                              current.isAfter(moment())
+                            }
+                            size="large"
+                          />
+                        </Form.Item>
+                      }
+                    </div>
+                  </div>
 
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="branch"
-                                                name="branchId"
-                                                rules={[{ required: true, message: 'Please select a branch!' }]}
-                                            >
-                                                {branchSelector}
-                                            </Form.Item>
-                                        }
-                                    </div>
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="Device"
-                                                name="deviceId"
-                                                disabled={!branchName}
-                                                rules={[{ required: true, message: 'Please select a device!' }]}
-                                            >
-                                                {devicesSelector}
-                                            </Form.Item>
-                                        }
-                                    </div>
-
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="Pick a Date"
-                                                name="dateRange"
-                                                rules={[{ required: true, message: 'Please select a date range!' }]}
-                                            >
-                                                <RangePicker style={{width: '300px'}} disabledDate={(current) => current.isAfter(moment())} size='large' />
-                                            </Form.Item>
-                                        }
-                                    </div>
-
-                                </div>
-
-                                <div className='add_user_form_btn_align'>
-                                    <button className='generic-submit-button cost-tracker-form-submit-button'>
-                                        Download
-                                    </button>
-                                </div>
-                            </Form>
-                        </section>
-                        <section className='cost-tracker-form-section'>
-                                <h2>Aggregate Data Download</h2>
-                            <Form
-                                form={formThree}
-                                name="basic"
-                                labelCol={{ span: 8 }}
-                                wrapperCol={{ span: 16 }}
-                                autoComplete="off"
-                                className='cost-tracker-form'
-                                onFinish={onSelectAggregateFormSubmit}
-                            >
-                                <div className='add-cclient-form-inputs-wrapper'>
-
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="branch"
-                                                name="branchId"
-                                                rules={[{ required: true, message: 'Please select a branch!' }]}
-                                            >
-                                                {branchSelector}
-                                            </Form.Item>
-                                        }
-                                    </div>
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="Device"
-                                                name="deviceId"
-                                                disabled={!branchName}
-                                                rules={[{ required: true, message: 'Please select a device!' }]}
-                                            >
-                                                {devicesSelector}
-                                            </Form.Item>
-                                        }
-                                    </div>
-
-                                    <div className='add-client-input-container-half'>
-                                        {
-                                            <Form.Item
-                                                labelCol={{ span: 24 }}
-                                                wrapperCol={{ span: 24 }}
-                                                label="Pick a Date"
-                                                name="dateRange"
-                                                rules={[{ required: true, message: 'Please select a date range!' }]}
-                                            >
-                                                <RangePicker style={{width: '300px'}} disabledDate={(current) => current.isAfter(moment())} size='large' />
-                                            </Form.Item>
-                                        }
-                                    </div>
-
-                                </div>
-
-                                <div className='add_user_form_btn_align'>
-                                    <button className='generic-submit-button cost-tracker-form-submit-button'>
-                                        Download
-                                    </button>
-                                </div>
-                            </Form>
-                        </section>
-                        </>
-
-                    )
-            }
-
+                  <div className="add_user_form_btn_align">
+                    <button className="generic-submit-button cost-tracker-form-submit-button">
+                      Download
+                    </button>
+                  </div>
+                </Form>
+              </section>
+            </>
+          )}
         </Spin>
-    </div>
+      </div>
+    );
 }
 
 const mapDispatchToProps = {
