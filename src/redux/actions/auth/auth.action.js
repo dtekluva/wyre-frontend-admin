@@ -83,6 +83,20 @@ export const getDownloadDeviceReadings = (password, deviceId, userDateRange) => 
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+export const getAggregateDownloadDeviceReadings = (password, deviceId, userDateRange) => async (dispatch) => {
+
+  dispatch(getDeviceReadingsLoading(true));
+  const requestUrl = `/api/v1/get_aggregated_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/`;
+  try {
+    const response = await APIService.get(requestUrl);
+
+    dispatch(getDeviceReadingsLoading(false))
+    return { fulfilled: true, message: 'successful', data: response.data }
+  } catch (error) {
+    dispatch(getDeviceReadingsLoading(false));
+    return { fulfilled: false, message: error.response.data }
+  }
+};
 
 export const addUsers = (parameters) => async (dispatch) => {
   dispatch(addUsersLoading(true));

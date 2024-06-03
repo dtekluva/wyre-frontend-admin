@@ -9,6 +9,8 @@ import { CaretDownFilled } from '@ant-design/icons';
 import { Input } from 'antd';
 import { downloadFile } from '../../helpers/GeneralHelper';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import EnvData from '../../config/EnvData';
 
 const { convertArrayToCSV } = require('convert-array-to-csv');
 
@@ -16,6 +18,7 @@ const { convertArrayToCSV } = require('convert-array-to-csv');
 function DownloadPage(props) {
     const [form] = Form.useForm();
     const [formTwo] = Form.useForm();
+    const [formThree] = Form.useForm();
     const [pPassword, setPPassword] = useState(null);
     const [deviceName, setDeviceName] = useState(null);
     const [deviceId, setDeviceId] = useState(null);
@@ -120,6 +123,20 @@ function DownloadPage(props) {
 
     }
 
+    const onSelectAggregateFormSubmit = async (values) => {
+        const { dateRange } = values;
+            const downloadUrl = `/api/v1/get_aggregated_device_readings/${pPassword}/${deviceId}/${moment(dateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(dateRange[1]).format('DD-MM-YYYY HH:mm')}/`;
+
+            form.resetFields();
+
+            notification.info({
+                message: 'successful',
+                description: 'successful',
+            });
+            return window.location.href = `${EnvData.REACT_APP_API_URL}${downloadUrl}`;
+
+    }
+
     return <div style={{ height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         className='cost-tracker-forms-content-wrapper'>
         <Spin spinning={props.auth.allDevicesfetchLoading || props.auth.fetchDeviceReadingsLoading}>
@@ -161,7 +178,8 @@ function DownloadPage(props) {
                     </Form>
                 </section>) :
                     (
-                        <section className='cost-tracker-form-section'>
+                        <>
+                                                <section className='cost-tracker-form-section'>
                             <Form
                                 form={formTwo}
                                 name="basic"
@@ -225,6 +243,72 @@ function DownloadPage(props) {
                                 </div>
                             </Form>
                         </section>
+                        <section className='cost-tracker-form-section'>
+                                <h2>Aggregate Data Download</h2>
+                            <Form
+                                form={formThree}
+                                name="basic"
+                                labelCol={{ span: 8 }}
+                                wrapperCol={{ span: 16 }}
+                                autoComplete="off"
+                                className='cost-tracker-form'
+                                onFinish={onSelectAggregateFormSubmit}
+                            >
+                                <div className='add-cclient-form-inputs-wrapper'>
+
+                                    <div className='add-client-input-container-half'>
+                                        {
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                wrapperCol={{ span: 24 }}
+                                                label="branch"
+                                                name="branchId"
+                                                rules={[{ required: true, message: 'Please select a branch!' }]}
+                                            >
+                                                {branchSelector}
+                                            </Form.Item>
+                                        }
+                                    </div>
+                                    <div className='add-client-input-container-half'>
+                                        {
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                wrapperCol={{ span: 24 }}
+                                                label="Device"
+                                                name="deviceId"
+                                                disabled={!branchName}
+                                                rules={[{ required: true, message: 'Please select a device!' }]}
+                                            >
+                                                {devicesSelector}
+                                            </Form.Item>
+                                        }
+                                    </div>
+
+                                    <div className='add-client-input-container-half'>
+                                        {
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                wrapperCol={{ span: 24 }}
+                                                label="Pick a Date"
+                                                name="dateRange"
+                                                rules={[{ required: true, message: 'Please select a date range!' }]}
+                                            >
+                                                <RangePicker style={{width: '300px'}} disabledDate={(current) => current.isAfter(moment())} size='large' />
+                                            </Form.Item>
+                                        }
+                                    </div>
+
+                                </div>
+
+                                <div className='add_user_form_btn_align'>
+                                    <button className='generic-submit-button cost-tracker-form-submit-button'>
+                                        Download
+                                    </button>
+                                </div>
+                            </Form>
+                        </section>
+                        </>
+
                     )
             }
 
