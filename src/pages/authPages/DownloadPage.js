@@ -15,6 +15,7 @@ import { downloadFile } from "../../helpers/GeneralHelper";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import EnvData from "../../config/EnvData";
+import { render } from "react-dom";
 
 const { convertArrayToCSV } = require("convert-array-to-csv");
 
@@ -129,6 +130,7 @@ function DownloadPage(props) {
       title: "Non Post Attention",
       dataIndex: "non_post_attention",
       key: "non_post_attention",
+      render: (value) => <>{value.toString()}</>
     },
     // deviceStatus,
     {
