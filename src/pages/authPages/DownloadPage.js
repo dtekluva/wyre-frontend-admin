@@ -139,7 +139,7 @@ function DownloadPage(props) {
     render: (_, record) => {
       return (
         <Switch
-          defaultChecked
+          // defaultChecked
           onClick={() => {
             setDeviceData(record);
             setDeviceSwitch(deviceSwitch);
