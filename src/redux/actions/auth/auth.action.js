@@ -1,7 +1,7 @@
 
 import moment from "moment";
 import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
-import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getAllDevicesLoading, getAllDevicesSuccess, getDeviceReadingsLoading, getDeviceReadingsSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
+import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getAllDevicesLoading, getAllDevicesSuccess, getDeviceReadingsLoading, getDeviceReadingsSuccess, getDeviceSwitchLoading, getDeviceSwitchSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
 
 
@@ -83,6 +83,23 @@ export const getDownloadDeviceReadings = (password, deviceId, userDateRange) => 
     return { fulfilled: false, message: error.response.data.detail }
   }
 };
+
+export const toggleNonPostingDevice = (deviceId) => async (dispatch) => {
+
+  dispatch(getDeviceSwitchLoading(true));
+  const requestUrl = `/api/v1/toggle_npa/${deviceId}/`;
+  try {
+    const response = await APIService.post(requestUrl);
+
+    dispatch(getDeviceSwitchSuccess(response.data.authenticatedData));
+    dispatch(getDeviceSwitchLoading(false))
+    return { fulfilled: true, message: 'successful', data: response.data }
+  } catch (error) {
+    dispatch(getDeviceSwitchLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
+  }
+};
+
 export const getAggregateDownloadDeviceReadings = (password, deviceId, userDateRange) => async (dispatch) => {
 
   dispatch(getDeviceReadingsLoading(true));
