@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   getDownloadAllDevices,
@@ -7,8 +7,9 @@ import {
   toggleNonPostingDevice,
 } from "../../redux/actions/auth/auth.action";
 import { connect } from "react-redux";
+import { AlertFilled, FireFilled } from '@ant-design/icons';
 
-import { Spin, Form, notification, Select, DatePicker, Table, Switch } from "antd";
+import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag } from "antd";
 import { CaretDownFilled } from "@ant-design/icons";
 import { Input } from "antd";
 import { downloadFile } from "../../helpers/GeneralHelper";
@@ -29,6 +30,7 @@ function DownloadPage(props) {
   const [branchName, setBranchName] = useState(false);
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
+  const [monitorDataState, setMonitorDataState] = useState([]);
 
   const { RangePicker } = DatePicker;
 
@@ -42,6 +44,7 @@ function DownloadPage(props) {
     setBranchName(selected);
   };
 
+
   const { Option } = Select;
 
   const branches =
@@ -49,35 +52,25 @@ function DownloadPage(props) {
     props.auth?.allDevicesfetched?.filter(
       (value, index, self) =>
         index === self.findIndex((t) => t.branch_name === value.branch_name)
-    );
-
-// var hour = 47.5;
-// var day = 0;
-// var minute = parseInt((hour % 1) * 60);
-// if (hour > 24) {
-//   day = parseInt(hour / 24);
-//   hour = parseInt(hour % 24);
-// } else {
-//   hour = parseInt(hour);
-// }
-// alert(day);
-// alert(hour);
-// alert(minute);    
+    );  
     
   const handleNonPostingTurggle = async () => {
-    console.log("Device Id ======== ", deviceData.device_id);
     const request = await props.toggleNonPostingDevice(deviceData.device_id);
 
     if (request.fulfilled) {
-      // setDeviceData()
-      
       return notification.info({
-        message: "Devicee Exempted Successfully",
+        message: "Successful",
         description: request.message,
       });
     }
   } 
   const tableData = props.auth.allDevicesfetched
+  // const sortedData = tableData.sort((a,b) => parseFloat(a.hours_since_last_post) - parseFloat(b.hours_since_last_post))
+  useEffect(() => {
+    if (props.auth.allDevicesfetched) {
+      setMonitorDataState(tableData.filter(newtable => newtable.non_post_attention))
+    }
+  }, [props.auth.allDevicesfetched])
 
   const deviceStatus = () => ({
     title: "Device Control",
@@ -91,8 +84,6 @@ function DownloadPage(props) {
           onClick={() => {
             setDeviceSwitch(true);
             setDeviceData(record);
-            console.log("DEVICE-SWITCH ======> ", deviceSwitch );
-            console.log("DEVICE-DATA ======> ", deviceData );
           }}
         />
       );
@@ -119,34 +110,100 @@ function DownloadPage(props) {
       title: "Hours Since Last Post",
       dataIndex: "hours_since_last_post",
       key: "hours_since_last_post",
-      render : (value) => <>{Math.floor(value/60) + " Hour(s)"}</> 
+      render : (value) => <>{value + " Hour(s) "} <br /> <span>({Math.floor(value/24) + "Days,"}  {Math.floor(value % 24)+ "Hrs"})</span></>
     },
     {
       title: "Last Posted",
       dataIndex: "last_posted",
       key: "last_posted",
+      render: (value) => value === null ? value : new Date(value).toDateString()
     },
+    // {
+    //   title: "Non Post Attention",
+    //   dataIndex: "non_post_attention",
+    //   key: "non_post_attention",
+    //   render: (value) => <>{value.toString()}</>
+    // },
     {
-      title: "Non Post Attention",
-      dataIndex: "non_post_attention",
-      key: "non_post_attention",
-      render: (value) => <>{value.toString()}</>
+      title: "Status",
+      dataIndex: "hours_since_last_post",
+      key: "hours_since_last_post",
+      render: (value) => value <= 36 ? <Tag icon={<AlertFilled  color="green"/>} color="green" ></Tag> : <Tag icon={<FireFilled  color="red"/>} color="red" ></Tag>
     },
     // deviceStatus,
     {
-      title: "Device Control",
+      title: "Add to Monitor",
     key: "control",
     width: "10%",
     dataIndex: "control",
     render: (_, record) => {
       return (
         <Switch
-          // defaultChecked
-          onClick={() => {
+          checked = {record.non_post_attention}
+          onClick={(value) => {
             setDeviceData(record);
-            setDeviceSwitch(deviceSwitch);
+            setDeviceSwitch(value);
             handleNonPostingTurggle()
           }}
+        />
+      );
+    },
+    }
+  ]
+  const monitorColumn = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Branch Name",
+      dataIndex: "branch_name",
+      key: "branch_name",
+    },
+    {
+      title: "Client Name",
+      dataIndex: "client_name",
+      key: "client_name",
+    },
+    {
+      title: "Hours Since Last Post",
+      dataIndex: "hours_since_last_post",
+      key: "hours_since_last_post",
+      render : (value) => <>{value + " Hour(s) "} <br /> <span>({Math.floor(value/24) + "Days,"}  {Math.floor(value % 24)+ "Hrs"})</span></>
+    },
+    {
+      title: "Last Posted",
+      dataIndex: "last_posted",
+      key: "last_posted",
+      render: (value) => value === null ? value : new Date(value).toDateString()
+    },
+    // {
+    //   title: "Non Post Attention",
+    //   dataIndex: "non_post_attention",
+    //   key: "non_post_attention",
+    //   render: (value) => <>{value.toString()}</>
+    // },
+    {
+      title: "Status",
+      dataIndex: "hours_since_last_post",
+      key: "hours_since_last_post",
+      render: (value) => value <= 36 ? <Tag icon={<AlertFilled  color="green"/>} color="green" ></Tag> : <Tag icon={<FireFilled  color="red"/>} color="red" ></Tag>
+    },
+    {
+      title: "Remove From Monitor",
+    key: "control",
+    width: "10%",
+    dataIndex: "control",
+    render: (_, record) => {
+      return (
+        <Switch
+          checked = {record.non_post_attention}
+          // onClick={(value) => {
+          //   setDeviceData(record);
+          //   setDeviceSwitch(value);
+          //   handleNonPostingTurggle()
+          // }}
         />
       );
     },
@@ -484,89 +541,16 @@ function DownloadPage(props) {
               </Form>
             </section>
             <section className="cost-tracker-form-section">
-              <h2>Non Posting Devices Table</h2>
-              {/* <Form
-                form={formThree}
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                autoComplete="off"
-                className="cost-tracker-form"
-                onFinish={onSelectAggregateFormSubmit}
-              >
-                <div className="add-cclient-form-inputs-wrapper">
-                  <div className="add-client-input-container-half">
-                    {
-                      <Form.Item
-                        labelCol={{ span: 24 }}
-                        wrapperCol={{ span: 24 }}
-                        label="branch"
-                        name="branchId"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a branch!",
-                          },
-                        ]}
-                      >
-                        {branchSelector}
-                      </Form.Item>
-                    }
-                  </div>
-                  <div className="add-client-input-container-half">
-                    {
-                      <Form.Item
-                        labelCol={{ span: 24 }}
-                        wrapperCol={{ span: 24 }}
-                        label="Device"
-                        name="deviceId"
-                        disabled={!branchName}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a device!",
-                          },
-                        ]}
-                      >
-                        {devicesSelector}
-                      </Form.Item>
-                    }
-                  </div>
-
-                  <div className="add-client-input-container-half">
-                    {
-                      <Form.Item
-                        labelCol={{ span: 24 }}
-                        wrapperCol={{ span: 24 }}
-                        label="Pick a Date"
-                        name="dateRange"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a date range!",
-                          },
-                        ]}
-                      >
-                        <RangePicker
-                          style={{ width: "300px" }}
-                          disabledDate={(current) => current.isAfter(moment())}
-                          size="large"
-                        />
-                      </Form.Item>
-                    }
-                  </div>
+              <>
+                <div className="all_devices_table">
+                  <h2>All Devices Table</h2>
+                  <Table dataSource={tableData} columns={columnData} />
                 </div>
-
-                <div className="add_user_form_btn_align">
-                  <button className="generic-submit-button cost-tracker-form-submit-button">
-                    Download
-                  </button>
+                <div className="monitoring_table">
+                  <h2>Monitoring Table</h2>
+                  <Table dataSource={monitorDataState} columns={monitorColumn} />
                 </div>
-              </Form> */}
-              <Table 
-                dataSource={tableData}
-                columns={columnData}
-              />
+              </>
             </section>
           </>
         )}
