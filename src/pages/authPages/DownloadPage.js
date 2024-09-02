@@ -542,13 +542,13 @@ function DownloadPage(props) {
             </section>
             <section className="cost-tracker-form-section">
               <>
-                <div className="all_devices_table">
-                  <h2>All Devices Table</h2>
-                  <Table dataSource={tableData} columns={columnData} />
-                </div>
                 <div className="monitoring_table">
                   <h2>Monitoring Table</h2>
                   <Table dataSource={monitorDataState} columns={monitorColumn} />
+                </div>
+                <div className="all_devices_table">
+                  <h2>All Devices Table</h2>
+                  <Table dataSource={tableData} columns={columnData} />
                 </div>
               </>
             </section>
