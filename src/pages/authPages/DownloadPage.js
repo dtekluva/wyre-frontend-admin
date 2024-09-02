@@ -31,6 +31,7 @@ function DownloadPage(props) {
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
+  const [disabled, setDisabled] = useState(true);
 
   const { RangePicker } = DatePicker;
 
@@ -199,6 +200,7 @@ function DownloadPage(props) {
       return (
         <Switch
           checked = {record.non_post_attention}
+          disabled
           // onClick={(value) => {
           //   setDeviceData(record);
           //   setDeviceSwitch(value);
