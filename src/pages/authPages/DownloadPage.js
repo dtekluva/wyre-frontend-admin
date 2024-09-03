@@ -117,7 +117,7 @@ function DownloadPage(props) {
       title: "Last Posted",
       dataIndex: "last_posted",
       key: "last_posted",
-      render: (value) => value === null ? value : new Date(value).toDateString()
+      render: (value) => value === null ? value : new Date(value).toString().toString().split(' ').slice(0, 5).join(' ')
     },
     // {
     //   title: "Non Post Attention",
@@ -177,7 +177,7 @@ function DownloadPage(props) {
       title: "Last Posted",
       dataIndex: "last_posted",
       key: "last_posted",
-      render: (value) => value === null ? value : new Date(value).toDateString()
+      render: (value) => value === null ? value : new Date(value).toString().split(' ').slice(0, 5).join(' ')
     },
     // {
     //   title: "Non Post Attention",
