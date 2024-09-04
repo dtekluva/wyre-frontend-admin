@@ -63,7 +63,7 @@ function DownloadPage(props) {
         message: "Successful",
         description: request.message,
       });
-    }
+    }   
   } 
   const tableData = props.auth.allDevicesfetched
   // const sortedData = tableData.sort((a,b) => parseFloat(a.hours_since_last_post) - parseFloat(b.hours_since_last_post))
@@ -141,6 +141,7 @@ function DownloadPage(props) {
       return (
         <Switch
           checked = {record.non_post_attention}
+          defaultChecked
           onClick={(value) => {
             setDeviceData(record);
             setDeviceSwitch(value);
@@ -200,12 +201,12 @@ function DownloadPage(props) {
       return (
         <Switch
           checked = {record.non_post_attention}
-          disabled
-          // onClick={(value) => {
-          //   setDeviceData(record);
-          //   setDeviceSwitch(value);
-          //   handleNonPostingTurggle()
-          // }}
+          // disabled
+          onClick={(value) => {
+            setDeviceData(record);
+            setDeviceSwitch(value);
+            handleNonPostingTurggle()
+          }}
         />
       );
     },
