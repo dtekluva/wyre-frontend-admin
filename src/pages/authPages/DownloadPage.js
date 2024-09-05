@@ -59,6 +59,7 @@ function DownloadPage(props) {
     const request = await props.toggleNonPostingDevice(deviceData.device_id);
 
     if (request.fulfilled) {
+      props.getDownloadAllDevices(pPassword);
       return notification.info({
         message: "Successful",
         description: request.message,
