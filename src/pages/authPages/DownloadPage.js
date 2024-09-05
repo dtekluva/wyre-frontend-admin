@@ -31,6 +31,7 @@ function DownloadPage(props) {
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
+  const [sortedDataState, setSortedDataState] = useState([]);
   const [disabled, setDisabled] = useState(true);
 
   const { RangePicker } = DatePicker;
@@ -67,10 +68,11 @@ function DownloadPage(props) {
     }   
   } 
   const tableData = props.auth.allDevicesfetched
-  // const sortedData = tableData.sort((a,b) => parseFloat(a.hours_since_last_post) - parseFloat(b.hours_since_last_post))
   useEffect(() => {
     if (props.auth.allDevicesfetched) {
-      setMonitorDataState(tableData.filter(newtable => newtable.non_post_attention))
+      const sortedData = tableData.sort((a,b) => parseFloat(b.hours_since_last_post) - parseFloat(a.hours_since_last_post))
+      setSortedDataState(sortedData)
+      setMonitorDataState(sortedData.filter(newtable => newtable.non_post_attention))
     }
   }, [props.auth.allDevicesfetched])
 
@@ -552,7 +554,7 @@ function DownloadPage(props) {
                 </div>
                 <div className="all_devices_table">
                   <h2>All Devices Table</h2>
-                  <Table dataSource={tableData} columns={columnData} />
+                  <Table dataSource={sortedDataState} columns={columnData} />
                 </div>
               </>
             </section>
