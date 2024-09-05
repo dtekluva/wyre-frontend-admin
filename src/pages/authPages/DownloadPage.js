@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   getDownloadAllDevices,
@@ -7,9 +7,9 @@ import {
   toggleNonPostingDevice,
 } from "../../redux/actions/auth/auth.action";
 import { connect } from "react-redux";
-import { AlertFilled, FireFilled } from '@ant-design/icons';
+import { AlertFilled, FireFilled, SearchOutlined } from '@ant-design/icons';
 
-import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag } from "antd";
+import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag, Button, Space } from "antd";
 import { CaretDownFilled } from "@ant-design/icons";
 import { Input } from "antd";
 import { downloadFile } from "../../helpers/GeneralHelper";
@@ -17,6 +17,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import EnvData from "../../config/EnvData";
 import { render } from "react-dom";
+import Highlighter from "react-highlight-words";
 
 const { convertArrayToCSV } = require("convert-array-to-csv");
 
@@ -31,6 +32,10 @@ function DownloadPage(props) {
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
+  const [sortedDataState, setSortedDataState] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
   const [disabled, setDisabled] = useState(true);
 
   const { RangePicker } = DatePicker;
@@ -66,11 +71,117 @@ function DownloadPage(props) {
       });
     }   
   } 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+  
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1677ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+  
   const tableData = props.auth.allDevicesfetched
-  // const sortedData = tableData.sort((a,b) => parseFloat(a.hours_since_last_post) - parseFloat(b.hours_since_last_post))
   useEffect(() => {
     if (props.auth.allDevicesfetched) {
-      setMonitorDataState(tableData.filter(newtable => newtable.non_post_attention))
+      const sortedData = tableData.sort((a,b) => parseFloat(b.hours_since_last_post) - parseFloat(a.hours_since_last_post))
+      setSortedDataState(sortedData)
+      setMonitorDataState(sortedData.filter(newtable => newtable.non_post_attention))
     }
   }, [props.auth.allDevicesfetched])
 
@@ -102,11 +213,13 @@ function DownloadPage(props) {
       title: "Branch Name",
       dataIndex: "branch_name",
       key: "branch_name",
+      ...getColumnSearchProps('branch_name')
     },
     {
       title: "Client Name",
       dataIndex: "client_name",
       key: "client_name",
+      ...getColumnSearchProps('client_name')
     },
     {
       title: "Hours Since Last Post",
@@ -163,11 +276,13 @@ function DownloadPage(props) {
       title: "Branch Name",
       dataIndex: "branch_name",
       key: "branch_name",
+      ...getColumnSearchProps('branch_name')
     },
     {
       title: "Client Name",
       dataIndex: "client_name",
       key: "client_name",
+      ...getColumnSearchProps('client_name')
     },
     {
       title: "Hours Since Last Post",
@@ -552,7 +667,7 @@ function DownloadPage(props) {
                 </div>
                 <div className="all_devices_table">
                   <h2>All Devices Table</h2>
-                  <Table dataSource={tableData} columns={columnData} />
+                  <Table dataSource={sortedDataState} columns={columnData} />
                 </div>
               </>
             </section>
