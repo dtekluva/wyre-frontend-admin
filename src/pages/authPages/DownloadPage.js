@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useEffect, useRef, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import {
   getDownloadAllDevices,
@@ -32,11 +33,11 @@ function DownloadPage(props) {
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
+  const [cookies, setCookie] = useCookies(["myCookie"]);
   const [sortedDataState, setSortedDataState] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-  const [disabled, setDisabled] = useState(true);
 
   const { RangePicker } = DatePicker;
 
@@ -50,7 +51,6 @@ function DownloadPage(props) {
     setBranchName(selected);
   };
 
-
   const { Option } = Select;
 
   const branches =
@@ -60,17 +60,17 @@ function DownloadPage(props) {
         index === self.findIndex((t) => t.branch_name === value.branch_name)
     );  
     
-  const handleNonPostingTurggle = async () => {
-    const request = await props.toggleNonPostingDevice(deviceData.device_id);
+  // const handleNonPostingTurggle = async () => {
+  //   const request = await props.toggleNonPostingDevice();
 
-    if (request.fulfilled) {
-      props.getDownloadAllDevices(pPassword);
-      return notification.info({
-        message: "Successful",
-        description: request.message,
-      });
-    }   
-  } 
+  //   if (request.fulfilled) {
+  //     props.getDownloadAllDevices(pPassword);
+  //     return notification.info({
+  //       message: "Successful",
+  //       description: request.message,
+  //     });
+  //   }   
+  // } 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -185,24 +185,6 @@ function DownloadPage(props) {
     }
   }, [props.auth.allDevicesfetched])
 
-  const deviceStatus = () => ({
-    title: "Device Control",
-    key: "control",
-    width: "10%",
-    dataIndex: "control",
-    render: (_, record) => {
-      return (
-        <Switch
-          defaultChecked
-          onClick={() => {
-            setDeviceSwitch(true);
-            setDeviceData(record);
-          }}
-        />
-      );
-    },
-  });
-
   const columnData = [
     {
       title: "Name",
@@ -258,7 +240,19 @@ function DownloadPage(props) {
           defaultChecked
           onClick={(value) => {
             setDeviceData(record);
+            
             setDeviceSwitch(value);
+            const handleNonPostingTurggle = async () => {
+              const request = await props.toggleNonPostingDevice(record.device_id);
+          
+              if (request.fulfilled) {
+                props.getDownloadAllDevices(pPassword);
+                return notification.info({
+                  message: "Successful",
+                  description: request.message,
+                });
+              }   
+            }
             handleNonPostingTurggle()
           }}
         />
@@ -321,6 +315,17 @@ function DownloadPage(props) {
           onClick={(value) => {
             setDeviceData(record);
             setDeviceSwitch(value);
+            const handleNonPostingTurggle = async () => {
+              const request = await props.toggleNonPostingDevice(record.device_id);
+          
+              if (request.fulfilled) {
+                props.getDownloadAllDevices(pPassword);
+                return notification.info({
+                  message: "Successful",
+                  description: request.message,
+                });
+              }   
+            }
             handleNonPostingTurggle()
           }}
         />
