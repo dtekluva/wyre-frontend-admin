@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 import React, { useEffect, useRef, useState } from "react";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
+
 
 import {
   getDownloadAllDevices,
@@ -13,7 +15,7 @@ import { AlertFilled, FireFilled, SearchOutlined } from '@ant-design/icons';
 import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag, Button, Space } from "antd";
 import { CaretDownFilled } from "@ant-design/icons";
 import { Input } from "antd";
-import { downloadFile } from "../../helpers/GeneralHelper";
+import { downloadFile, compareDateInfo } from "../../helpers/GeneralHelper";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import EnvData from "../../config/EnvData";
@@ -33,7 +35,7 @@ function DownloadPage(props) {
   const [deviceSwitch, setDeviceSwitch] = useState(false)
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
-  const [cookies, setCookie] = useCookies(["myCookie"]);
+  // const [cookies, setCookie] = useCookies(["myCookie"]);
   const [sortedDataState, setSortedDataState] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -184,6 +186,13 @@ function DownloadPage(props) {
       setMonitorDataState(sortedData.filter(newtable => newtable.non_post_attention))
     }
   }, [props.auth.allDevicesfetched])
+  useEffect(() => {
+    if(!props.auth.allDevicesfetched){
+      const password = base64_decode(sessionStorage.getItem('pp'));
+      props.getDownloadAllDevices(password);
+    }
+    
+  }, [sessionStorage.getItem('pp') || compareDateInfo(sessionStorage.getItem('ppt'), 30)])
 
   const columnData = [
     {
@@ -384,7 +393,14 @@ function DownloadPage(props) {
 
   const onPasswordFormSubmit = async (values) => {
     const { password } = values;
+    
     const request = await props.getDownloadAllDevices(password);
+
+    // save password in session storag
+
+    var b = base64_encode(password);
+    sessionStorage.setItem('pp', b)
+    sessionStorage.setItem('ppt', new Date());
 
     if (request.fulfilled) {
       setPPassword(password);
@@ -459,7 +475,7 @@ function DownloadPage(props) {
         }
       >
         <h1 className="center-main-heading">Download CSV File</h1>
-        {!props.auth.allDevicesfetched ? (
+        {!sessionStorage.getItem('pp') || compareDateInfo(sessionStorage.getItem('ppt'), 30)?  (
           <section className="cost-tracker-form-section">
             <Form
               form={form}
