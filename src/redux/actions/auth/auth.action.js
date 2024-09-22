@@ -1,7 +1,7 @@
 
 import moment from "moment";
 import { APIService, APIServiceNoAuth } from "../../../config/api/apiConfig";
-import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getAllDevicesLoading, getAllDevicesSuccess, getDeviceReadingsLoading, getDeviceReadingsSuccess, getDeviceSwitchLoading, getDeviceSwitchSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
+import { addUserBranchLoading, addUserBranchSuccess, addUsersLoading, addUsersSuccess, editUserLoading, editUserSuccess, getAllDevicesLoading, getAllDevicesSuccess, getDeviceConsumptionLoading, getDeviceConsumptionSuccess, getDeviceReadingsLoading, getDeviceReadingsSuccess, getDeviceSwitchLoading, getDeviceSwitchSuccess, getRolesLoading, getRolesSuccess, loginUserLoading } from "./auth.creator";
 
 
 
@@ -100,18 +100,20 @@ export const toggleNonPostingDevice = (deviceId) => async (dispatch) => {
   }
 };
 
-export const getAggregateDownloadDeviceReadings = (password, deviceId, userDateRange) => async (dispatch) => {
+export const getDownloadDeviceConsumption = (password, deviceId, userDateRange, operatingTimeRange) => async (dispatch) => {
 
-  dispatch(getDeviceReadingsLoading(true));
-  const requestUrl = `/api/v1/get_aggregated_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/`;
+  dispatch(getDeviceConsumptionLoading(true));
+  console.log('values from ACTION === ', deviceId, userDateRange, operatingTimeRange);
+  const requestUrl = `/api/v1/get_timed_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/${moment(operatingTimeRange[0]).format('HH:mm:ss') + '/' + moment(operatingTimeRange[1]).format('HH:mm:ss')}`;
   try {
     const response = await APIService.get(requestUrl);
 
-    dispatch(getDeviceReadingsLoading(false))
+    dispatch(getDeviceConsumptionSuccess(response.data.authenticatedData));
+    dispatch(getDeviceConsumptionLoading(false))
     return { fulfilled: true, message: 'successful', data: response.data }
   } catch (error) {
-    dispatch(getDeviceReadingsLoading(false));
-    return { fulfilled: false, message: error.response.data }
+    dispatch(getDeviceConsumptionLoading(false));
+    return { fulfilled: false, message: error.response.data.detail }
   }
 };
 

@@ -6,13 +6,18 @@ import {decode as base64_decode, encode as base64_encode} from 'base-64';
 
 import {
   getDownloadAllDevices,
+  getDownloadDeviceConsumption,
   getDownloadDeviceReadings,
   toggleNonPostingDevice,
 } from "../../redux/actions/auth/auth.action";
 import { connect } from "react-redux";
 import { AlertFilled, FireFilled, SearchOutlined } from '@ant-design/icons';
 
-import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag, Button, Space } from "antd";
+import { Spin, Form, notification, Select, DatePicker, Table, Switch, Tag, Button, Space, ConfigProvider, TimePicker } from "antd";
+import en from 'antd/es/date-picker/locale/en_US';
+import enUS from 'antd/es/locale/en_US';
+import dayjs from 'dayjs';
+import buddhistEra from 'dayjs/plugin/buddhistEra';
 import { CaretDownFilled } from "@ant-design/icons";
 import { Input } from "antd";
 import { downloadFile, compareDateInfo } from "../../helpers/GeneralHelper";
@@ -24,24 +29,54 @@ import Highlighter from "react-highlight-words";
 
 const { convertArrayToCSV } = require("convert-array-to-csv");
 
+dayjs.extend(buddhistEra);
+
 function DownloadPage(props) {
   const [form] = Form.useForm();
   const [formTwo] = Form.useForm();
   const [formThree] = Form.useForm();
+  const [formFour] = Form.useForm();
   const [pPassword, setPPassword] = useState(null);
   const [deviceName, setDeviceName] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
   const [branchName, setBranchName] = useState(false);
-  const [deviceSwitch, setDeviceSwitch] = useState(false)
+  const [deviceSwitch, setDeviceSwitch] = useState(false);
   const [deviceData, setDeviceData] = useState({});
   const [monitorDataState, setMonitorDataState] = useState([]);
   // const [cookies, setCookie] = useCookies(["myCookie"]);
   const [sortedDataState, setSortedDataState] = useState([]);
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [operationTime, setOperationTime] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
   const { RangePicker } = DatePicker;
+
+  // Component level locale
+  const buddhistLocale = {
+    ...en,
+    lang: {
+      ...en.lang,
+      fieldDateFormat: "YYYY-MM-DD",
+      fieldDateTimeFormat: "YYYY-MM-DD HH:mm:ss",
+      yearFormat: "YYYY",
+      cellYearFormat: "YYYY",
+    },
+  };
+
+  // ConfigProvider level locale
+  const globalBuddhistLocale = {
+    ...enUS,
+    DatePicker: {
+      ...enUS.DatePicker,
+      lang: buddhistLocale.lang,
+    },
+  };
+
+  const onChange = (_, inputedTime) => {
+    setOperationTime(inputedTime)
+    console.log('onChange:', inputedTime);
+  };
 
   const onDeviceSelection = (selected, _) => {
     console.log(selected, _);
@@ -60,19 +95,8 @@ function DownloadPage(props) {
     props.auth?.allDevicesfetched?.filter(
       (value, index, self) =>
         index === self.findIndex((t) => t.branch_name === value.branch_name)
-    );  
-    
-  // const handleNonPostingTurggle = async () => {
-  //   const request = await props.toggleNonPostingDevice();
+    );
 
-  //   if (request.fulfilled) {
-  //     props.getDownloadAllDevices(pPassword);
-  //     return notification.info({
-  //       message: "Successful",
-  //       description: request.message,
-  //     });
-  //   }   
-  // } 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -80,11 +104,17 @@ function DownloadPage(props) {
   };
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
-  
+
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
       <div
         style={{
           padding: 8,
@@ -95,11 +125,13 @@ function DownloadPage(props) {
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
-            display: 'block',
+            display: "block",
           }}
         />
         <Space>
@@ -151,7 +183,7 @@ function DownloadPage(props) {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? '#1677ff' : undefined,
+          color: filtered ? "#1677ff" : undefined,
         }}
       />
     ),
@@ -166,26 +198,32 @@ function DownloadPage(props) {
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
-            backgroundColor: '#ffc069',
+            backgroundColor: "#ffc069",
             padding: 0,
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
       ),
   });
-  
-  const tableData = props.auth.allDevicesfetched
+
+  const tableData = props.auth.allDevicesfetched;
   useEffect(() => {
     if (props.auth.allDevicesfetched) {
-      const sortedData = tableData.sort((a,b) => parseFloat(b.hours_since_last_post) - parseFloat(a.hours_since_last_post))
-      setSortedDataState(sortedData)
-      setMonitorDataState(sortedData.filter(newtable => newtable.non_post_attention))
+      const sortedData = tableData.sort(
+        (a, b) =>
+          parseFloat(b.hours_since_last_post) -
+          parseFloat(a.hours_since_last_post)
+      );
+      setSortedDataState(sortedData);
+      setMonitorDataState(
+        sortedData.filter((newtable) => newtable.non_post_attention)
+      );
     }
-  }, [props.auth.allDevicesfetched])
+  }, [props.auth.allDevicesfetched]);
   useEffect(() => {
     if(!props.auth.allDevicesfetched){
       const password = base64_decode(sessionStorage.getItem('pp'));
@@ -204,25 +242,41 @@ function DownloadPage(props) {
       title: "Branch Name",
       dataIndex: "branch_name",
       key: "branch_name",
-      ...getColumnSearchProps('branch_name')
+      ...getColumnSearchProps("branch_name"),
     },
     {
       title: "Client Name",
       dataIndex: "client_name",
       key: "client_name",
-      ...getColumnSearchProps('client_name')
+      ...getColumnSearchProps("client_name"),
     },
     {
       title: "Hours Since Last Post",
       dataIndex: "hours_since_last_post",
       key: "hours_since_last_post",
-      render : (value) => <>{value + " Hour(s) "} <br /> <span>({Math.floor(value/24) + "Days,"}  {Math.floor(value % 24)+ "Hrs"})</span></>
+      render: (value) => (
+        <>
+          {value + " Hour(s) "} <br />{" "}
+          <span>
+            ({Math.floor(value / 24) + "Days,"} {Math.floor(value % 24) + "Hrs"}
+            )
+          </span>
+        </>
+      ),
     },
     {
       title: "Last Posted",
       dataIndex: "last_posted",
       key: "last_posted",
-      render: (value) => value === null ? value : new Date(value).toString().toString().split(' ').slice(0, 5).join(' ')
+      render: (value) =>
+        value === null
+          ? value
+          : new Date(value)
+              .toString()
+              .toString()
+              .split(" ")
+              .slice(0, 5)
+              .join(" "),
     },
     // {
     //   title: "Non Post Attention",
@@ -234,41 +288,48 @@ function DownloadPage(props) {
       title: "Status",
       dataIndex: "hours_since_last_post",
       key: "hours_since_last_post",
-      render: (value) => value <= 36 ? <Tag icon={<AlertFilled  color="green"/>} color="green" ></Tag> : <Tag icon={<FireFilled  color="red"/>} color="red" ></Tag>
+      render: (value) =>
+        value <= 36 ? (
+          <Tag icon={<AlertFilled color="green" />} color="green"></Tag>
+        ) : (
+          <Tag icon={<FireFilled color="red" />} color="red"></Tag>
+        ),
     },
     // deviceStatus,
     {
       title: "Add to Monitor",
-    key: "control",
-    width: "10%",
-    dataIndex: "control",
-    render: (_, record) => {
-      return (
-        <Switch
-          checked = {record.non_post_attention}
-          defaultChecked
-          onClick={(value) => {
-            setDeviceData(record);
-            
-            setDeviceSwitch(value);
-            const handleNonPostingTurggle = async () => {
-              const request = await props.toggleNonPostingDevice(record.device_id);
-          
-              if (request.fulfilled) {
-                props.getDownloadAllDevices(pPassword);
-                return notification.info({
-                  message: "Successful",
-                  description: request.message,
-                });
-              }   
-            }
-            handleNonPostingTurggle()
-          }}
-        />
-      );
+      key: "control",
+      width: "10%",
+      dataIndex: "control",
+      render: (_, record) => {
+        return (
+          <Switch
+            checked={record.non_post_attention}
+            defaultChecked
+            onClick={(value) => {
+              setDeviceData(record);
+
+              setDeviceSwitch(value);
+              const handleNonPostingTurggle = async () => {
+                const request = await props.toggleNonPostingDevice(
+                  record.device_id
+                );
+
+                if (request.fulfilled) {
+                  props.getDownloadAllDevices(pPassword);
+                  return notification.info({
+                    message: "Successful",
+                    description: request.message,
+                  });
+                }
+              };
+              handleNonPostingTurggle();
+            }}
+          />
+        );
+      },
     },
-    }
-  ]
+  ];
   const monitorColumn = [
     {
       title: "Name",
@@ -279,25 +340,36 @@ function DownloadPage(props) {
       title: "Branch Name",
       dataIndex: "branch_name",
       key: "branch_name",
-      ...getColumnSearchProps('branch_name')
+      ...getColumnSearchProps("branch_name"),
     },
     {
       title: "Client Name",
       dataIndex: "client_name",
       key: "client_name",
-      ...getColumnSearchProps('client_name')
+      ...getColumnSearchProps("client_name"),
     },
     {
       title: "Hours Since Last Post",
       dataIndex: "hours_since_last_post",
       key: "hours_since_last_post",
-      render : (value) => <>{value + " Hour(s) "} <br /> <span>({Math.floor(value/24) + "Days,"}  {Math.floor(value % 24)+ "Hrs"})</span></>
+      render: (value) => (
+        <>
+          {value + " Hour(s) "} <br />{" "}
+          <span>
+            ({Math.floor(value / 24) + "Days,"} {Math.floor(value % 24) + "Hrs"}
+            )
+          </span>
+        </>
+      ),
     },
     {
       title: "Last Posted",
       dataIndex: "last_posted",
       key: "last_posted",
-      render: (value) => value === null ? value : new Date(value).toString().split(' ').slice(0, 5).join(' ')
+      render: (value) =>
+        value === null
+          ? value
+          : new Date(value).toString().split(" ").slice(0, 5).join(" "),
     },
     // {
     //   title: "Non Post Attention",
@@ -309,39 +381,46 @@ function DownloadPage(props) {
       title: "Status",
       dataIndex: "hours_since_last_post",
       key: "hours_since_last_post",
-      render: (value) => value <= 36 ? <Tag icon={<AlertFilled  color="green"/>} color="green" ></Tag> : <Tag icon={<FireFilled  color="red"/>} color="red" ></Tag>
+      render: (value) =>
+        value <= 36 ? (
+          <Tag icon={<AlertFilled color="green" />} color="green"></Tag>
+        ) : (
+          <Tag icon={<FireFilled color="red" />} color="red"></Tag>
+        ),
     },
     {
       title: "Remove From Monitor",
-    key: "control",
-    width: "10%",
-    dataIndex: "control",
-    render: (_, record) => {
-      return (
-        <Switch
-          checked = {record.non_post_attention}
-          // disabled
-          onClick={(value) => {
-            setDeviceData(record);
-            setDeviceSwitch(value);
-            const handleNonPostingTurggle = async () => {
-              const request = await props.toggleNonPostingDevice(record.device_id);
-          
-              if (request.fulfilled) {
-                props.getDownloadAllDevices(pPassword);
-                return notification.info({
-                  message: "Successful",
-                  description: request.message,
-                });
-              }   
-            }
-            handleNonPostingTurggle()
-          }}
-        />
-      );
+      key: "control",
+      width: "10%",
+      dataIndex: "control",
+      render: (_, record) => {
+        return (
+          <Switch
+            checked={record.non_post_attention}
+            // disabled
+            onClick={(value) => {
+              setDeviceData(record);
+              setDeviceSwitch(value);
+              const handleNonPostingTurggle = async () => {
+                const request = await props.toggleNonPostingDevice(
+                  record.device_id
+                );
+
+                if (request.fulfilled) {
+                  props.getDownloadAllDevices(pPassword);
+                  return notification.info({
+                    message: "Successful",
+                    description: request.message,
+                  });
+                }
+              };
+              handleNonPostingTurggle();
+            }}
+          />
+        );
+      },
     },
-    }
-  ]
+  ];
 
   const devicesSelector = (
     <Select
@@ -430,6 +509,33 @@ function DownloadPage(props) {
       downloadFile(abc, downloadName);
 
       form.resetFields();
+      return notification.info({
+        message: "successful",
+        description: request.message,
+      });
+    }
+    return notification.error({
+      message: "failed",
+      description: request.message,
+    });
+  };
+  const onOperatingTimeSubmit = async (values) => {
+    const { dateRange, timeRange } = values;
+    
+    const request = await props.getDownloadDeviceConsumption(
+      pPassword,
+      deviceId,
+      dateRange,
+      timeRange
+    );
+
+    if (request.fulfilled) {
+      const abc = convertArrayToCSV(request.data);
+
+      const downloadName = `${deviceName}.csv`;
+      downloadFile(abc, downloadName);
+
+      formFour.resetFields();
       return notification.info({
         message: "successful",
         description: request.message,
@@ -681,10 +787,115 @@ function DownloadPage(props) {
               </Form>
             </section>
             <section className="cost-tracker-form-section">
+              <h2>Download Device Operating Time</h2>
+              <Form
+                form={formFour}
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                autoComplete="off"
+                className="cost-tracker-form"
+                onFinish={onOperatingTimeSubmit}
+              >
+                <div className="add-cclient-form-inputs-wrapper">
+                  <div className="add-client-input-container-half">
+                    {
+                      <Form.Item
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        label="branch"
+                        name="branchId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a branch!",
+                          },
+                        ]}
+                      >
+                        {branchSelector}
+                      </Form.Item>
+                    }
+                  </div>
+                  <div className="add-client-input-container-half">
+                    {
+                      <Form.Item
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        label="Device"
+                        name="deviceId"
+                        disabled={!branchName}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a device!",
+                          },
+                        ]}
+                      >
+                        {devicesSelector}
+                      </Form.Item>
+                    }
+                  </div>
+
+                  <div className="add-client-input-container-half">
+                    {
+                      <Form.Item
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        label="Pick a Date"
+                        name="dateRange"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a date range!",
+                          },
+                        ]}
+                      >
+                        <RangePicker
+                          style={{ width: "300px" }}
+                          disabledDate={(current) => current.isAfter(moment())}
+                          size="large"
+                        />
+                      </Form.Item>
+                    }
+                  </div>
+                  <div className="add-client-input-container-half">
+                    {
+                      <Form.Item
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        label="Select time range"
+                        name="timeRange"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a time range!",
+                          },
+                        ]}
+                      >
+                        <TimePicker.RangePicker
+                          style={{ width: "300px" }}
+                          size="large"
+                        />
+                      </Form.Item>
+                    }
+                  </div>
+                </div>
+
+                <div className="add_user_form_btn_align">
+                  <button className="generic-submit-button cost-tracker-form-submit-button">
+                    Download
+                  </button>
+                </div>
+              </Form>
+            </section>
+            <section className="cost-tracker-form-section">
               <>
                 <div className="monitoring_table">
                   <h2>Monitoring Table</h2>
-                  <Table dataSource={monitorDataState} columns={monitorColumn} />
+                  <Table
+                    dataSource={monitorDataState}
+                    columns={monitorColumn}
+                  />
                 </div>
                 <div className="all_devices_table">
                   <h2>All Devices Table</h2>
@@ -702,6 +913,7 @@ function DownloadPage(props) {
 const mapDispatchToProps = {
   getDownloadAllDevices,
   getDownloadDeviceReadings,
+  getDownloadDeviceConsumption,
   toggleNonPostingDevice,
 };
 

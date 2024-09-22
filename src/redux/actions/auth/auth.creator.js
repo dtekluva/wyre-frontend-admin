@@ -47,6 +47,15 @@ export const getDeviceReadingsSuccess = (payload = true) => ({
   payload,
 });
 
+export const getDeviceConsumptionLoading = (payload = true) => ({
+  type: authTypes.GET_DEVICE_CONSUMPTION_LOADING,
+  payload,
+});
+export const getDeviceConsumptionSuccess = (payload = true) => ({
+  type: authTypes.GET_DEVICE_CONSUMPTION_SUCCESS,
+  payload,
+});
+
 export const getDeviceSwitchLoading = (payload = true) => ({
   type: authTypes.GET_DEVICE_SWITCH_LOADING,
   payload,
