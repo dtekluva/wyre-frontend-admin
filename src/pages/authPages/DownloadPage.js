@@ -227,6 +227,7 @@ function DownloadPage(props) {
   useEffect(() => {
     if(!props.auth.allDevicesfetched){
       const password = base64_decode(sessionStorage.getItem('pp'));
+      setPPassword(password);
       props.getDownloadAllDevices(password);
     }
     
