@@ -26,6 +26,7 @@ import { Link } from "react-router-dom";
 import EnvData from "../../config/EnvData";
 import { render } from "react-dom";
 import Highlighter from "react-highlight-words";
+import Password from "antd/lib/input/Password";
 
 const { convertArrayToCSV } = require("convert-array-to-csv");
 
@@ -449,6 +450,32 @@ function DownloadPage(props) {
         )}
     </Select>
   );
+  const devicesOperatingSelector = (
+    <Select
+      className="cost-tracker-select h-4-br"
+      id="role-state"
+      showSearch
+      size="large"
+      style={{ width: "300px" }}
+      disabled={!branchName}
+      suffixIcon={<CaretDownFilled />}
+      onSelect={onDeviceSelection}
+    >
+      {branchName &&
+        props.auth?.allDevicesfetched?.map(
+          (device) =>
+            device.branch_name === branchName && (
+              <Option
+                key={device.device_id}
+                className="active-state-option"
+                value={device.device_id}
+              >
+                {device.name}
+              </Option>
+            )
+        )}
+    </Select>
+  );
   const branchSelector = (
     <Select
       className="cost-tracker-select h-4-br"
@@ -520,33 +547,33 @@ function DownloadPage(props) {
       description: request.message,
     });
   };
-  const onOperatingTimeSubmit = async (values) => {
-    const { dateRange, timeRange } = values;
+  // const onOperatingTimeSubmit = async (values) => {
+  //   const { dateRange, timeRange } = values;
     
-    const request = await props.getDownloadDeviceConsumption(
-      pPassword,
-      deviceId,
-      dateRange,
-      timeRange
-    );
+  //   const request = await props.getDownloadDeviceConsumption(
+  //     pPassword,
+  //     deviceId,
+  //     dateRange,
+  //     timeRange
+  //   );
 
-    if (request.fulfilled) {
-      const abc = convertArrayToCSV(request.data);
+  //   if (request.fulfilled) {
+  //     const abc = convertArrayToCSV(request.data);
 
-      const downloadName = `${deviceName}.csv`;
-      downloadFile(abc, downloadName);
+  //     const downloadName = `${deviceName}.csv`;
+  //     downloadFile(abc, downloadName);
 
-      formFour.resetFields();
-      return notification.info({
-        message: "successful",
-        description: request.message,
-      });
-    }
-    return notification.error({
-      message: "failed",
-      description: request.message,
-    });
-  };
+  //     formFour.resetFields();
+  //     return notification.info({
+  //       message: "successful",
+  //       description: request.message,
+  //     });
+  //   }
+  //   return notification.error({
+  //     message: "failed",
+  //     description: request.message,
+  //   });
+  // };
 
   const onSelectAggregateFormSubmit = async (values) => {
     const { dateRange } = values;
@@ -555,6 +582,19 @@ function DownloadPage(props) {
       "/" +
       moment(dateRange[1]).format("DD-MM-YYYY HH:mm")
     }/`;
+
+    form.resetFields();
+
+    notification.info({
+      message: "successful",
+      description: "successful",
+    });
+    return (window.location.href = `${EnvData.REACT_APP_API_URL}${downloadUrl}`);
+  };
+  
+  const onOperatingTimeSubmit = async (values) => {
+    const { deviceId, dateRange, timeRange } = values;
+    const downloadUrl = `/api/v1/get_timed_device_readings/${pPassword}/${deviceId}/${moment(dateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(dateRange[1]).format('DD-MM-YYYY HH:mm')}/${moment(timeRange[0]).format('HH') + '/' + moment(timeRange[1]).format('HH')}`;
 
     form.resetFields();
 
@@ -832,7 +872,7 @@ function DownloadPage(props) {
                           },
                         ]}
                       >
-                        {devicesSelector}
+                        {devicesOperatingSelector}
                       </Form.Item>
                     }
                   </div>

@@ -104,7 +104,7 @@ export const getDownloadDeviceConsumption = (password, deviceId, userDateRange, 
 
   dispatch(getDeviceConsumptionLoading(true));
   console.log('values from ACTION === ', deviceId, userDateRange, operatingTimeRange);
-  const requestUrl = `/api/v1/get_timed_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/${moment(operatingTimeRange[0]).format('HH:mm:ss') + '/' + moment(operatingTimeRange[1]).format('HH:mm:ss')}`;
+  const requestUrl = `/api/v1/get_timed_device_readings/${password}/${deviceId}/${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}/${moment(operatingTimeRange[0]).format('HH') + '/' + moment(operatingTimeRange[1]).format('HH')}`;
   try {
     const response = await APIService.get(requestUrl);
 
