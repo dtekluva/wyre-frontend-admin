@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const multipartFormBuilder = (object) => {
     const formData = new FormData();
     Object.keys(object).forEach(key => formData.append(key, object[key]));
@@ -27,3 +29,26 @@ export const numberFormatter = (x) => {
 
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+
+export const randomFixedInteger = (length) =>{
+    return Math.floor(Math.pow(10, length-1) + Math.random() * (Math.pow(10, length) - Math.pow(10, length-1) - 1));
+}
+
+export const passwordMixGen = (length) =>{
+    // get random 5 for start
+    // get random 7 for middle
+    // get random 9 for end
+
+    // divide password into two
+
+}
+
+
+export const naiveReverse = (string) =>{
+    return string.split('').reverse().join('');
+}
+export const compareDateInfo = (dateInfo, minutes) =>{
+    console.log('this si sjdkjsjod', moment().isAfter(moment(dateInfo).add('minutes', minutes)))
+    return moment().isAfter(moment(dateInfo).add('minutes', minutes));
+}

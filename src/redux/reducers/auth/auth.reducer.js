@@ -9,6 +9,10 @@ const INITIAL_STATE = {
     allDevicesfetchLoading: false,
     fetchedDeviceReadings: false,
     fetchDeviceReadingsLoading: false,
+    fetchedDeviceConsumption: false,
+    fetchDeviceConsumptionLoading: false,
+    fetchedDeviceSwitch: false,
+    fetchDeviceSwitchLoading: false,
     newUserLoading: false,
     newUsers: false,
     newUserBranchLoading: false,
@@ -79,6 +83,36 @@ const authReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 fetchedDeviceReadings: action.payload,
+            };
+            
+        case authTypes.GET_DEVICE_CONSUMPTION_LOADING:
+
+            return {
+
+                ...state,
+                fetchDeviceConsumptionLoading: action.payload,
+
+            };
+        case authTypes.GET_DEVICE_CONSUMPTION_SUCCESS:
+
+            return {
+                ...state,
+                fetchedDeviceConsumption: action.payload,
+            };
+            
+        case authTypes.GET_DEVICE_SWITCH_LOADING:
+
+            return {
+
+                ...state,
+                fetchDeviceSwitchLoading: action.payload,
+
+            };
+        case authTypes.GET_DEVICE_SWITCH_SUCCESS:
+
+            return {
+                ...state,
+                fetchedDeviceSwitch: action.payload,
             };
 
         case authTypes.ADD_USERS_LOADING:
